@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYSTEM_TERMINAL // BHAVIT_BANSAL</title>
+    <style>
+        :root {
+            --term-green: #00ff66;
+            --term-green-bright: #33ff88;
+            --term-cyan: #00e5ff;
+            --term-dim: #00a843;
+            --bg-dark: #040a05;
+            --crt-glow: rgba(0, 255, 102, 0.35);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Consolas', 'Courier New', Courier, monospace;
+        }
+
+        body {
+            background-color: #080808;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--term-green-bright);
+        }
+
+        /* CRT Monitor Outer Frame */
+        .crt-container {
+            width: 100%;
+            max-width: 1100px;
+            background: #181a19;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: inset 0 0 15px #000, 0 10px 40px rgba(0, 0, 0, 0.9);
+            border: 4px solid #2a2c2b;
+            position: relative;
+        }
+
+        .crt-screen {
+            background-color: var(--bg-dark);
+            border-radius: 10px;
+            padding: 25px;
+            border: 2px solid #1a2e1e;
+            box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.95);
+            position: relative;
+            overflow: hidden;
+            text-shadow: 0 0 6px var(--crt-glow);
+        }
+
+        /* Subtle Scanline Overlay Effect */
+        .crt-screen::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+            background-size: 100% 4px;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        /* Header / Banner */
+        .terminal-header {
+            border-bottom: 2px solid var(--term-dim);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .title-block h1 {
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            color: #ffffff;
+            text-shadow: 0 0 10px var(--term-green);
+        }
+
+        .title-block p {
+            color: var(--term-green);
+            font-weight: bold;
+            font-size: 0.95rem;
+            margin-top: 4px;
+        }
+
+        .profile-badges {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar-img {
+            width: 75px;
+            height: 75px;
+            border-radius: 8px;
+            border: 2px solid var(--term-green-bright);
+            object-fit: cover;
+            box-shadow: 0 0 12px var(--crt-glow);
+        }
+
+        .institution-logo {
+            height: 48px;
+            background: rgba(0, 255, 102, 0.1);
+            padding: 5px;
+            border: 1px solid var(--term-green);
+            border-radius: 6px;
+        }
+
+        /* Layout Grid */
+        .terminal-body {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .terminal-body {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Quick Action Navigation */
+        .hud-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .hud-btn {
+            background: rgba(0, 255, 102, 0.08);
+            border: 1px solid var(--term-green);
+            color: var(--term-green-bright);
+            padding: 12px 14px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            text-decoration: none;
+            display: block;
+        }
+
+        .hud-btn:hover {
+            background: var(--term-green-bright);
+            color: #000;
+            box-shadow: 0 0 15px var(--term-green-bright);
+        }
+
+        /* Command Output Display */
+        .output-window {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--term-dim);
+            padding: 18px;
+            min-height: 300px;
+            max-height: 420px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #e0ffe0;
+        }
+
+        .output-line {
+            margin-bottom: 8px;
+            word-wrap: break-word;
+        }
+
+        .cmd-prefix {
+            color: var(--term-cyan);
+            font-weight: bold;
+        }
+
+        /* Terminal Links */
+        .term-link {
+            color: var(--term-cyan);
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        .term-link:hover {
+            color: #ffffff;
+            text-shadow: 0 0 8px var(--term-cyan);
+        }
+
+        /* Command Input Section */
+        .input-line {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0, 255, 102, 0.08);
+            border: 1px solid var(--term-green-bright);
+            padding: 12px 15px;
+        }
+
+        .prompt-symbol {
+            color: var(--term-cyan);
+            font-weight: bold;
+        }
+
+        .terminal-input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #ffffff;
+            font-size: 1.05rem;
+            font-weight: bold;
+            width: 100%;
+            text-shadow: 0 0 5px var(--term-green);
+        }
+
+        /* Quick Help Bar */
+        .quick-help {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: #88c999;
+        }
+
+        .highlight {
+            color: #ffffff;
+            font-weight: bold;
+            text-shadow: 0 0 6px #ffffff;
+        }
+
+        .highlight-cyan {
+            color: var(--term-cyan);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="crt-container">
+    <div class="crt-screen">
+        
+        <header class="terminal-header">
+            <div class="title-block">
+                <h1>[SYSTEM_TERMINAL v1.2]</h1>
+                <p>> USER: BHAVIT BANSAL // OPERATIONAL</p>
+            </div>
+            
+            <div class="profile-badges">
+                <img src="Bhavit.png" alt="Bhavit Bansal" class="avatar-img" title="Bhavit Bansal">
+                <img src="vardhman.jpg" alt="Vardhman School" class="institution-logo" title="Vardhman School">
+                <img src="tensor.png" alt="Tensor College" class="institution-logo" title="Tensor College">
+            </div>
+        </header>
+
+        <div class="terminal-body">
+            
+            <nav class="hud-buttons">
+                <button class="hud-btn" onclick="executeCommand('sys_info')">[SYS_INFO]</button>
+                <button class="hud-btn" onclick="executeCommand('achievements')">[ACHIEVEMENTS]</button>
+                <button class="hud-btn" onclick="executeCommand('skills')">[TECH_STACK]</button>
+                <button class="hud-btn" onclick="executeCommand('links')">[CONNECT_LINKS]</button>
+                <button class="hud-btn" onclick="executeCommand('help')">[HELP_MENU]</button>
+                <button class="hud-btn" onclick="executeCommand('clear')">[CLEAR_LOGS]</button>
+            </nav>
+
+            <main>
+                <div class="output-window" id="terminal-output">
+                    <div class="output-line">> INITIALIZING KERNEL... BOOT SUCCESSFUL.</div>
+                    <div class="output-line">> WELCOME TO BHAVIT BANSAL'S CYBER TERMINAL.</div>
+                    <div class="output-line">> TYPE <span class="highlight">'help'</span> OR CLICK HUD BUTTONS TO NAVIGATE.</div>
+                    <div class="output-line">--------------------------------------------------</div>
+                </div>
+
+                <div class="input-line">
+                    <span class="prompt-symbol">USER@BHAVIT:~$</span>
+                    <input type="text" id="terminal-input" class="terminal-input" autofocus autocomplete="off" spellcheck="false">
+                </div>
+            </main>
+        </div>
+
+        <div class="quick-help">
+            COMMANDS: <span class="highlight">help</span> | <span class="highlight">sys_info</span> | <span class="highlight">achievements</span> | <span class="highlight">skills</span> | <span class="highlight">links</span> | <span class="highlight">clear</span>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // Audio feedback synthesizer for mechanical keystrokes
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playClickSound() {
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(120, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.03);
+        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.03);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.03);
+    }
+
+    const inputField = document.getElementById('terminal-input');
+    const outputArea = document.getElementById('terminal-output');
+
+    // Keypress handler
+    inputField.addEventListener('keydown', (e) => {
+        playClickSound();
+        if (e.key === 'Enter') {
+            const command = inputField.value.trim().toLowerCase();
+            if (command) {
+                printLine(`<span class="cmd-prefix">USER@BHAVIT:~$</span> ${inputField.value}`);
+                executeCommand(command);
+                inputField.value = '';
+            }
+        }
+    });
+
+    function printLine(text) {
+        const line = document.createElement('div');
+        line.className = 'output-line';
+        line.innerHTML = text;
+        outputArea.appendChild(line);
+        outputArea.scrollTop = outputArea.scrollHeight;
+    }
+
+    function executeCommand(cmd) {
+        playClickSound();
+        switch (cmd) {
+            case 'sys_info':
+            case 'about':
+                printLine('>>> <span class="highlight">[SYSTEM INFO / KERNEL SPECS]</span>');
+                printLine('NAME       : <span class="highlight">Bhavit Bansal</span>');
+                printLine('SCHOOL     : Vardhman School');
+                printLine('COLLEGE    : Tensor College');
+                printLine('STATUS     : Active / Learning & Building AI');
+                break;
+
+            case 'achievements':
+            case 'logs':
+                printLine('>>> <span class="highlight">[SYSTEM LOGS / ACHIEVEMENTS]</span>');
+                printLine('🏆 AI Camp U-19          : <span class="highlight">SILVER MEDAL</span>');
+                printLine('🛡️ Ethical Hacking Camp  : <span class="highlight">BRONZE MEDAL</span>');
+                break;
+
+            case 'skills':
+            case 'tech':
+                printLine('>>> <span class="highlight">[TECH STACK & CORE COMPETENCIES]</span>');
+                printLine('LANGUAGES KNOWN    : <span class="highlight">Python, C</span>');
+                printLine('CURRENT OPERATIVE  : <span class="highlight-cyan">Machine Learning (In Progress...)</span>');
+                break;
+
+            case 'links':
+            case 'social':
+            case 'github':
+            case 'linkedin':
+                printLine('>>> <span class="highlight">[CONNECT & TRANSMISSION LINKS]</span>');
+                printLine('🌐 GITHUB PORTFOLIO : <a href="http://bhavitbansal.github.io/" target="_blank" class="term-link">bhavitbansal.github.io</a>');
+                printLine('💼 LINKEDIN PROFILE : <a href="https://www.linkedin.com/in/bhavit-bansal" target="_blank" class="term-link">linkedin.com/in/bhavit-bansal</a>');
+                break;
+
+            case 'help':
+                printLine('>>> <span class="highlight">[AVAILABLE COMMANDS]</span>');
+                printLine('  <span class="highlight">sys_info</span>     - Display user credentials & institutions');
+                printLine('  <span class="highlight">achievements</span> - Display medals and awards');
+                printLine('  <span class="highlight">skills</span>       - List programming languages & active focus');
+                printLine('  <span class="highlight">links</span>        - Display GitHub and LinkedIn URLs');
+                printLine('  <span class="highlight">clear</span>        - Clear terminal screen');
+                break;
+
+            case 'clear':
+                outputArea.innerHTML = '';
+                break;
+
+            default:
+                printLine(`Command not recognized: '<span style="color:#ff5555;">${cmd}</span>'. Type '<span class="highlight">help</span>' for a list of available commands.`);
+                break;
+        }
+    }
+</script>
+
+</body>
+</html>
