@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bhavit Bansal — Frontend Developer & UI Engineer</title>
+    <title>Bhavit Bansal — Digital Portfolio</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -49,7 +49,7 @@
 
         body {
             min-height: 100vh;
-            line-height: 1.6;
+            line-height: 1.65;
             -webkit-font-smoothing: antialiased;
             position: relative;
             overflow-x: hidden;
@@ -171,7 +171,7 @@
             background: radial-gradient(circle at center, transparent 65%, rgba(42, 27, 61, 0.05) 100%);
         }
 
-        /* Abstract Vertical Pitch Scroll Tracker */
+        /* Abstract Pitch Scroll Progress Indicator */
         #pitch-progress {
             position: fixed;
             right: 20px;
@@ -251,28 +251,60 @@
             transition: width 1s ease-in-out;
         }
 
+        /* NAVBAR */
         #navbar {
             position: fixed;
             top: 24px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 100;
-            background: rgba(255, 255, 255, 0.75);
+            background: rgba(255, 255, 255, 0.78);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border-subtle);
             box-shadow: 0 10px 30px rgba(168, 85, 247, 0.06);
             border-radius: 999px;
-            padding: 8px 24px;
+            padding: 10px 28px;
             display: flex;
             align-items: center;
-            gap: 24px;
+            gap: 28px;
             transition: transform 0.4s ease, opacity 0.4s ease;
         }
 
         #navbar.nav-hidden {
             transform: translate(-50%, -120%);
             opacity: 0;
+        }
+
+        .nav-brand {
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            line-height: 1.1;
+        }
+
+        .brand-title {
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+
+        .brand-subtitle {
+            font-family: var(--font-mono);
+            font-size: 0.48rem;
+            font-weight: 500;
+            color: var(--accent-purple);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-top: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
         }
 
         .nav-link {
@@ -286,11 +318,11 @@
             color: var(--accent-purple);
         }
 
-        /* Layout & Typography */
+        /* HERO SECTION */
         .container {
-            max-width: 1100px;
+            max-width: 1120px;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 0 28px;
             position: relative;
             z-index: 10;
         }
@@ -299,14 +331,15 @@
             min-height: 100vh;
             display: flex;
             align-items: center;
-            padding-top: 80px;
+            padding-top: 130px;
+            padding-bottom: 90px;
             position: relative;
         }
 
         .hero-grid {
             display: grid;
             grid-template-columns: 1fr auto;
-            gap: 48px;
+            gap: 64px;
             align-items: center;
             width: 100%;
         }
@@ -314,9 +347,10 @@
         @media (max-width: 850px) {
             .hero-grid {
                 grid-template-columns: 1fr;
-                gap: 32px;
+                gap: 40px;
             }
             #pitch-progress { display: none; }
+            .nav-links { display: none; }
         }
 
         .status-badge {
@@ -324,50 +358,42 @@
             align-items: center;
             gap: 8px;
             font-family: var(--font-mono);
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             color: var(--accent-purple);
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            margin-bottom: 16px;
+            margin-bottom: 24px;
             background: rgba(168, 85, 247, 0.08);
-            padding: 6px 14px;
+            padding: 6px 16px;
             border-radius: 999px;
             border: 1px solid var(--border-subtle);
         }
 
         .status-dot {
-            width: 8px;
-            height: 8px;
+            width: 7px;
+            height: 7px;
             background-color: var(--accent-pink);
             border-radius: 50%;
             box-shadow: 0 0 10px var(--accent-pink);
         }
 
-        .hero-editorial {
+        .hero-headline {
             font-family: var(--font-display);
-            font-size: clamp(1rem, 2vw, 1.25rem);
-            font-weight: 600;
-            color: var(--accent-purple);
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-        }
-
-        .hero-title {
-            font-family: var(--font-display);
-            font-size: clamp(2.6rem, 5.5vw, 4.8rem);
+            font-size: clamp(2.8rem, 5.8vw, 5rem);
             font-weight: 800;
-            line-height: 1.08;
-            letter-spacing: -0.03em;
+            line-height: 1.06;
+            letter-spacing: -0.035em;
             color: var(--text-primary);
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .hero-subtitle {
-            font-size: clamp(1.05rem, 2vw, 1.25rem);
+            font-size: clamp(1.05rem, 1.9vw, 1.25rem);
             color: var(--text-secondary);
-            max-width: 620px;
-            margin-bottom: 36px;
+            max-width: 580px;
+            margin-bottom: 40px;
             font-weight: 400;
+            line-height: 1.7;
         }
 
         .hero-actions {
@@ -379,7 +405,7 @@
         .btn {
             display: inline-flex;
             align-items: center;
-            padding: 13px 26px;
+            padding: 14px 28px;
             border-radius: 999px;
             font-size: 0.9rem;
             font-weight: 600;
@@ -395,7 +421,7 @@
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(168, 85, 247, 0.35);
+            box-shadow: 0 12px 32px rgba(168, 85, 247, 0.38);
         }
 
         .btn-secondary {
@@ -413,28 +439,28 @@
             transform: translateY(-2px);
         }
 
-        /* Profile & Floating Cards */
         .profile-card {
             display: flex;
             flex-direction: column;
             align-items: center;
             background: var(--card-glass);
             border: 1px solid var(--border-subtle);
-            padding: 18px;
-            border-radius: 28px;
+            padding: 20px;
+            border-radius: 32px;
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            box-shadow: 0 16px 40px rgba(168, 85, 247, 0.08);
+            box-shadow: 0 20px 50px rgba(168, 85, 247, 0.08);
         }
 
         .profile-img {
-            width: 170px;
-            height: 170px;
-            border-radius: 22px;
+            width: 180px;
+            height: 180px;
+            border-radius: 24px;
             object-fit: cover;
             border: 1px solid var(--border-subtle);
         }
 
+        /* SECTION COMMONS */
         section {
             padding: 110px 0;
             position: relative;
@@ -536,7 +562,181 @@
             line-height: 1.65;
         }
 
-        /* Certificate Mockup Frame */
+        /* REFINED ABOUT SECTION STYLING */
+        .about-story-card {
+            background: var(--card-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 28px;
+            padding: 44px 48px;
+            box-shadow: 0 12px 36px rgba(168, 85, 247, 0.05);
+            max-width: 860px;
+        }
+
+        .about-story-text {
+            font-size: clamp(1.05rem, 1.8vw, 1.18rem);
+            line-height: 1.85;
+            color: var(--text-secondary);
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+
+        @media (max-width: 600px) {
+            .about-story-card {
+                padding: 28px 24px;
+            }
+        }
+
+        /* REFINED CURIOSITY SECTION STYLING */
+        .curiosity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 28px;
+        }
+
+        .curiosity-card {
+            background: var(--card-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.04);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            height: 100%;
+            transition: transform 300ms ease, border-color 300ms ease, box-shadow 300ms ease, background 300ms ease;
+        }
+
+        .curiosity-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--border-hover);
+            background: var(--card-glass-hover);
+            box-shadow: 0 18px 40px rgba(168, 85, 247, 0.09);
+        }
+
+        .curiosity-title {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
+        }
+
+        .curiosity-desc {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-weight: 400;
+        }
+
+        /* EXPLORING SECTION CHIPS */
+        .exploring-container {
+            margin-top: 48px;
+            padding-top: 36px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .exploring-title {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            letter-spacing: -0.01em;
+        }
+
+        .exploration-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .explore-pill {
+            background: var(--card-glass);
+            border: 1px solid var(--border-subtle);
+            padding: 10px 22px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            box-shadow: 0 4px 12px rgba(168, 85, 247, 0.04);
+            transition: transform 250ms ease, border-color 250ms ease, color 250ms ease;
+        }
+
+        .explore-pill:hover {
+            border-color: var(--accent-purple);
+            transform: translateY(-2px);
+            color: var(--accent-purple);
+        }
+
+        /* REFINED SKILLS CATEGORIES & CARDS */
+        .skills-categories {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .skills-category {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .category-label {
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            color: var(--accent-purple);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .skill-card {
+            background: var(--card-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            height: 84px;
+            box-shadow: 0 8px 24px rgba(168, 85, 247, 0.03);
+            transition: transform 250ms ease, border-color 250ms ease, box-shadow 250ms ease, background 250ms ease;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-hover);
+            background: var(--card-glass-hover);
+            box-shadow: 0 14px 32px rgba(168, 85, 247, 0.08);
+        }
+
+        .skill-icon {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .skill-name {
+            font-family: var(--font-display);
+            font-size: 0.98rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
         .cert-card-img {
             width: 100%;
             height: 190px;
@@ -555,7 +755,6 @@
             border-color: var(--accent-purple);
         }
 
-        /* Certificate Modal Overlay */
         #cert-modal {
             position: fixed;
             inset: 0;
@@ -608,33 +807,192 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
-        /* Exploration Pills */
-        .exploration-grid {
+        /* FEATURED WORK / PROJECTS SECTION */
+        .section-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-top: 6px;
+            font-weight: 400;
+        }
+
+        .projects-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .project-card {
+            background: var(--card-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 28px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.04);
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 32px;
+            align-items: center;
+            transition: transform 280ms ease-in-out, box-shadow 280ms ease-in-out, border-color 280ms ease-in-out;
+        }
+
+        .project-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            border-color: var(--border-hover);
+            box-shadow: 0 20px 45px rgba(168, 85, 247, 0.12);
+        }
+
+        .project-card.featured-project {
+            background: rgba(255, 255, 255, 0.85);
+            border-color: rgba(168, 85, 247, 0.22);
+            box-shadow: 0 14px 38px rgba(168, 85, 247, 0.08);
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: 20px;
+            right: 24px;
+            background-color: var(--accent-purple);
+            color: #FFFFFF;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 5px 14px;
+            border-radius: 999px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(168, 85, 247, 0.2);
+        }
+
+        .project-image-wrapper {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-secondary);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 280ms ease-in-out;
+        }
+
+        .project-card:hover .project-image {
+            transform: scale(1.05);
+        }
+
+        .project-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            justify-content: center;
+        }
+
+        .project-title {
+            font-family: var(--font-display);
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .project-subtitle {
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            color: var(--accent-purple);
+            margin-bottom: 12px;
+        }
+
+        .project-desc {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .project-tags,
+        .project-features {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 16px;
+            gap: 8px;
+            margin-bottom: 16px;
         }
 
-        .explore-pill {
-            background: var(--card-glass);
-            border: 1px solid var(--border-subtle);
-            padding: 10px 20px;
-            border-radius: 999px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            box-shadow: 0 4px 12px rgba(168, 85, 247, 0.04);
-            transition: all 0.25s ease;
-        }
-
-        .explore-pill:hover {
-            border-color: var(--accent-purple);
-            transform: translateY(-2px);
+        .tech-chip {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            background: rgba(168, 85, 247, 0.08);
             color: var(--accent-purple);
+            padding: 4px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--border-subtle);
         }
 
-        /* Terminal Window */
+        .feature-chip {
+            font-size: 0.75rem;
+            font-weight: 500;
+            background: var(--card-glass);
+            color: var(--text-primary);
+            padding: 4px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .project-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-sm {
+            padding: 8px 18px;
+            font-size: 0.82rem;
+            border-radius: 999px;
+        }
+
+        .btn-disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            background: rgba(0, 0, 0, 0.04);
+            border-color: var(--border-subtle);
+            color: var(--text-muted);
+        }
+
+        .btn-disabled:hover {
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        .badge-coming-soon {
+            font-size: 0.65rem;
+            font-family: var(--font-mono);
+            background: rgba(168, 85, 247, 0.15);
+            color: var(--accent-purple);
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 6px;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 900px) {
+            .project-card {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 24px;
+            }
+
+            .featured-badge {
+                top: 16px;
+                right: 16px;
+            }
+        }
+
         .terminal-container {
             background: rgba(42, 27, 61, 0.95);
             backdrop-filter: blur(20px);
@@ -756,13 +1114,20 @@
     </div>
 
     <nav id="navbar">
-        <a href="#hero" class="nav-link">Home</a>
-        <a href="#about" class="nav-link">About</a>
-        <a href="#curiosity" class="nav-link">Curiosity</a>
-        <a href="#education" class="nav-link">Education</a>
-        <a href="#achievements" class="nav-link">Honors</a>
-        <a href="#skills" class="nav-link">Skills</a>
-        <a href="#contact" class="nav-link">Terminal</a>
+        <a href="#hero" class="nav-brand">
+            <span class="brand-title">Bhavit Bansal</span>
+            <span class="brand-subtitle">Digital Portfolio</span>
+        </a>
+        <div class="nav-links">
+            <a href="#hero" class="nav-link">Home</a>
+            <a href="#about" class="nav-link">Who I Am</a>
+            <a href="#projects" class="nav-link">Projects</a>
+            <a href="#curiosity" class="nav-link">Curiosity</a>
+            <a href="#skills" class="nav-link">Skills</a>
+            <a href="#education" class="nav-link">Education</a>
+            <a href="#achievements" class="nav-link">Honors</a>
+            <a href="#contact" class="nav-link">Terminal</a>
+        </div>
     </nav>
 
     <div class="container">
@@ -774,9 +1139,8 @@
                         <span class="status-dot"></span>
                         Available for Engineering Roles
                     </div>
-                    <div class="hero-editorial">Crafting digital experiences that feel effortless.</div>
-                    <h1 class="hero-title">Hi, I'm Bhavit Bansal.</h1>
-                    <p class="hero-subtitle">Frontend Developer, UI Engineer &amp; Curious Systems Thinker. Constructing high-performance digital interfaces and pursuing B.Tech in Computer Science &amp; AI.</p>
+                    <h1 class="hero-headline">Engineering software where precision meets human intuition.</h1>
+                    <p class="hero-subtitle">Hi, I'm Bhavit Bansal—a Frontend Developer and UI Engineer pursuing B.Tech in CS &amp; AI. I construct high-performance digital products, blending clean architecture with analytical insights from cricket biomechanics.</p>
                     <div class="hero-actions">
                         <a href="mailto:bhavitbansal@gmail.com" class="btn btn-primary">✉ Email Me</a>
                         <a href="https://github.com/bhavitbansal" target="_blank" class="btn btn-secondary">GitHub</a>
@@ -792,20 +1156,13 @@
 
         <section id="about">
             <div class="section-header">
-                <span class="section-tag">Story &amp; Mindset</span>
-                <h2 class="section-title">Driven by Quality, Intent &amp; Clarity</h2>
+                <span class="section-tag">Background &amp; Intent</span>
+                <h2 class="section-title">Who I Am</h2>
             </div>
-            <div class="grid-2">
-                <div class="card">
-                    <span class="card-icon">🌸</span>
-                    <h3 class="card-title">Why I Build Software</h3>
-                    <p class="card-desc">Software is most compelling when technical precision meets thoughtful design. I enjoy building web systems that feel fast, accessible, and naturally intuitive.</p>
-                </div>
-                <div class="card">
-                    <span class="card-icon">⚡</span>
-                    <h3 class="card-title">Engineering Approach</h3>
-                    <p class="card-desc">From systems programming in C to modern frontend architecture and Python automation, I prioritize clean logic, deep research, and deliberate craftsmanship.</p>
-                </div>
+            <div class="about-story-card">
+                <p class="about-story-text">
+                    My path into engineering began with an interest in how complex mechanisms work—first in physical movement and biomechanics, then in software. I started programming to turn structural ideas into working systems. I gravitate toward frontend development because it sits directly at the intersection of engineering rigor and human interaction. Building interfaces requires balancing speed, logic, and visual clarity. I approach technical challenges by analyzing underlying mechanics before writing code, aiming to engineer systems that feel predictable, responsive, and clear.
+                </p>
             </div>
         </section>
 
@@ -814,36 +1171,211 @@
                 <span class="section-tag">Interests &amp; Exploration</span>
                 <h2 class="section-title">What I'm Curious About</h2>
             </div>
-            <div class="grid-3">
-                <div class="card">
-                    <span class="card-icon">🏏</span>
-                    <h3 class="card-title">Cricket Biomechanics</h3>
-                    <p class="card-desc">I enjoy reading biomechanics research and understanding how movement, technique, and decision-making influence cricket performance.</p>
+            
+            <div class="curiosity-grid">
+                <div class="curiosity-card">
+                    <h3 class="curiosity-title">Cricket Biomechanics</h3>
+                    <p class="curiosity-desc">I enjoy reading biomechanics research and analyzing how movement, timing and technique influence performance in cricket.</p>
                 </div>
-                <div class="card">
-                    <span class="card-icon">🧠</span>
-                    <h3 class="card-title">Systems Thinking</h3>
-                    <p class="card-desc">I'm fascinated by understanding complex systems—whether in software architecture or sports—and breaking them into simpler, improvable parts.</p>
+
+                <div class="curiosity-card">
+                    <h3 class="curiosity-title">Systems Thinking</h3>
+                    <p class="curiosity-desc">I enjoy understanding complex systems and breaking them into simpler, more efficient solutions, whether in software or sports.</p>
                 </div>
-                <div class="card">
-                    <span class="card-icon">📚</span>
-                    <h3 class="card-title">Research-Driven Learning</h3>
-                    <p class="card-desc">I enjoy reading technical articles, researching topics deeply, and learning foundational principles before building solutions.</p>
+
+                <div class="curiosity-card">
+                    <h3 class="curiosity-title">Research-Driven Learning</h3>
+                    <p class="curiosity-desc">Before building solutions, I enjoy researching deeply, exploring different approaches and understanding the reasoning behind them.</p>
+                </div>
+            </div>
+
+            <div class="exploring-container">
+                <h3 class="exploring-title">Currently Exploring</h3>
+                <div class="exploration-grid">
+                    <span class="explore-pill">Motion Design</span>
+                    <span class="explore-pill">Accessibility</span>
+                    <span class="explore-pill">Web Performance</span>
+                    <span class="explore-pill">AI Assisted Development</span>
+                    <span class="explore-pill">Cricket Analytics</span>
                 </div>
             </div>
         </section>
 
-        <section id="exploring" style="padding-top: 0;">
-            <div class="section-header" style="margin-bottom: 24px;">
-                <span class="section-tag">Active Horizons</span>
-                <h2 class="section-title" style="font-size: 1.8rem;">Currently Exploring</h2>
+        <section id="projects">
+            <div class="section-header">
+                <span class="section-tag">Portfolio Showcase</span>
+                <h2 class="section-title">Featured Work</h2>
+                <p class="section-subtitle">A selection of projects that reflect my approach to building thoughtful digital experiences.</p>
             </div>
-            <div class="exploration-grid">
-                <span class="explore-pill">Motion Design</span>
-                <span class="explore-pill">Web Performance</span>
-                <span class="explore-pill">Cricket Biomechanics Analytics</span>
-                <span class="explore-pill">AI-Assisted Development</span>
-                <span class="explore-pill">Accessibility (a11y)</span>
+
+            <div class="projects-grid">
+                <article class="project-card featured-project">
+                    <div class="featured-badge">★ Featured Build</div>
+                    
+                    <div class="project-image-wrapper">
+                        <img src="game-preview.jpg" alt="Browser Arcade Game Gameplay Screenshot" class="project-image" onerror="this.src='https://placehold.co/600x340/2A1B3D/E9D5FF?text=Arcade+Game+Preview'">
+                    </div>
+
+                    <div class="project-content">
+                        <h3 class="project-title">Browser Arcade Game</h3>
+                        <div class="project-subtitle">Built using HTML, CSS and Vanilla JavaScript</div>
+                        
+                        <p class="project-desc">
+                            Designed and developed a browser-based arcade game from scratch focusing on responsive gameplay, animation systems, collision detection, score management and clean JavaScript architecture.
+                        </p>
+
+                        <div class="project-tags">
+                            <span class="tech-chip">HTML5</span>
+                            <span class="tech-chip">CSS3</span>
+                            <span class="tech-chip">JavaScript</span>
+                            <span class="tech-chip">Canvas</span>
+                        </div>
+
+                        <div class="project-features">
+                            <span class="feature-chip">Custom Game Logic</span>
+                            <span class="feature-chip">Collision Detection</span>
+                            <span class="feature-chip">Animation Loop</span>
+                            <span class="feature-chip">Responsive Gameplay</span>
+                            <span class="feature-chip">Performance Optimized</span>
+                            <span class="feature-chip">Score System</span>
+                        </div>
+
+                        <div class="project-actions">
+                            <a href="https://bhavitbansal.github.io/Game/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">Play Live</a>
+                            <a href="https://github.com/bhavitbansal" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm">GitHub</a>
+                            <button class="btn btn-secondary btn-sm btn-disabled" disabled aria-disabled="true">
+                                Case Study <span class="badge-coming-soon">Coming Soon</span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-image-wrapper">
+                        <img src="portfolio-preview.jpg" alt="Bhavit Bansal Portfolio Screenshot" class="project-image" onerror="this.src='https://placehold.co/600x340/2A1B3D/E9D5FF?text=Portfolio+Preview'">
+                    </div>
+
+                    <div class="project-content">
+                        <h3 class="project-title">Bhavit Bansal Portfolio</h3>
+                        <div class="project-subtitle">Digital Portfolio &amp; Interactive Web Systems</div>
+                        
+                        <p class="project-desc">
+                            A high-performance personal website featuring smooth canvas animations, dynamic scroll tracking, terminal integration, and dark lavender aesthetics.
+                        </p>
+
+                        <div class="project-tags">
+                            <span class="tech-chip">HTML5</span>
+                            <span class="tech-chip">CSS3</span>
+                            <span class="tech-chip">JavaScript</span>
+                            <span class="tech-chip">Canvas API</span>
+                        </div>
+
+                        <div class="project-actions">
+                            <a href="https://bhavitbansal.github.io/Portfolio1/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">View Live</a>
+                            <a href="https://github.com/bhavitbansal/Portfolio1" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm">GitHub</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-image-wrapper">
+                        <img src="document-parser-preview.jpg" alt="Document Parser Screenshot" class="project-image" onerror="this.src='https://placehold.co/600x340/2A1B3D/E9D5FF?text=Document+Parser+Preview'">
+                    </div>
+
+                    <div class="project-content">
+                        <h3 class="project-title">Document Parser</h3>
+                        <div class="project-subtitle">Automated Information Extraction Tool</div>
+                        
+                        <p class="project-desc">
+                            An efficient document parsing and analysis tool designed to extract structural data, text metadata, and key metrics from various document formats.
+                        </p>
+
+                        <div class="project-tags">
+                            <span class="tech-chip">Python</span>
+                            <span class="tech-chip">Data Extraction</span>
+                            <span class="tech-chip">Automation</span>
+                        </div>
+
+                        <div class="project-actions">
+                            <a href="https://github.com/bhavitbansal" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm">GitHub</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="skills">
+            <div class="section-header">
+                <span class="section-tag">Capabilities</span>
+                <h2 class="section-title">Technical Capabilities</h2>
+            </div>
+            
+            <div class="skills-categories">
+                <div class="skills-category">
+                    <span class="category-label">Frontend Development</span>
+                    <div class="skills-grid">
+                        <div class="skill-card">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5" class="skill-icon">
+                            <span class="skill-name">HTML5</span>
+                        </div>
+                        <div class="skill-card">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3" class="skill-icon">
+                            <span class="skill-name">CSS3</span>
+                        </div>
+                        <div class="skill-card">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" class="skill-icon">
+                            <span class="skill-name">JavaScript</span>
+                        </div>
+                        <div class="skill-card">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" class="skill-icon">
+                            <span class="skill-name">React</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="skills-category">
+                    <span class="category-label">Backend &amp; Languages</span>
+                    <div class="skills-grid">
+                        <div class="skill-card">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" class="skill-icon">
+                            <span class="skill-name">Node.js</span>
+                        </div>
+                        <div class="skill-card">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" alt="Express" class="skill-icon" style="filter: invert(0.8);">
+                            <span class="skill-name">Express</span>
+                        </div>
+                        <div class="skill-card">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" class="skill-icon">
+                            <span class="skill-name">Python</span>
+                        </div>
+                        <div class="skill-card">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg" alt="C" class="skill-icon">
+                            <span class="skill-name">C Programming</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="skills-category">
+                    <span class="category-label">Tools &amp; Ecosystem</span>
+                    <div class="skills-grid">
+                        <div class="skill-card">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" class="skill-icon">
+                            <span class="skill-name">Git</span>
+                        </div>
+                        <div class="skill-card">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" class="skill-icon" style="filter: invert(0.8);">
+                            <span class="skill-name">GitHub</span>
+                        </div>
+                        <div class="skill-card">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma" class="skill-icon">
+                            <span class="skill-name">Figma</span>
+                        </div>
+                        <div class="skill-card">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt="VS Code" class="skill-icon">
+                            <span class="skill-name">VS Code</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -892,29 +1424,6 @@
                     <span class="card-icon">🛡️</span>
                     <h3 class="card-title">Ethical Hacking Camp — Bronze Medal</h3>
                     <p class="card-desc">Recognized for demonstrating cybersecurity principles, network defense strategies, and vulnerability assessment.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="skills">
-            <div class="section-header">
-                <span class="section-tag">Capabilities</span>
-                <h2 class="section-title">Technical Capabilities</h2>
-            </div>
-            <div class="grid-3">
-                <div class="card">
-                    <h3 class="card-title">Languages</h3>
-                    <p class="card-desc">Python, C, HTML5, CSS3, JavaScript (ES6+)</p>
-                </div>
-                <div class="card">
-                    <h3 class="card-title">Active Focus</h3>
-                    <p class="card-desc">Machine Learning Models, Neural Networks, Systems Architecture</p>
-                </div>
-                <div class="card">
-                    <h3 class="card-title">Direct Contact</h3>
-                    <p class="card-desc">
-                        <a href="mailto:bhavitbansal@gmail.com" style="color: var(--accent-purple); text-decoration: underline; font-weight:600;">bhavitbansal@gmail.com</a>
-                    </p>
                 </div>
             </div>
         </section>
