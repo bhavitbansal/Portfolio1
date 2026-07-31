@@ -11,7 +11,7 @@
 
     <style>
         :root {
-            /* Bloom Theme Palette */
+            /* Bloom Palette */
             --bg-primary: #FFF7FC;
             --bg-secondary: #F8F1FF;
             --bg-gradient-soft: #FFE4F4;
@@ -26,8 +26,8 @@
             
             --border-subtle: rgba(168, 85, 247, 0.12);
             --border-hover: rgba(168, 85, 247, 0.28);
-            --card-glass: rgba(255, 255, 255, 0.68);
-            --card-glass-hover: rgba(255, 255, 255, 0.88);
+            --card-glass: rgba(255, 255, 255, 0.72);
+            --card-glass-hover: rgba(255, 255, 255, 0.90);
             
             --font-display: 'Sora', sans-serif;
             --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
@@ -171,6 +171,47 @@
             background: radial-gradient(circle at center, transparent 65%, rgba(42, 27, 61, 0.05) 100%);
         }
 
+        /* Pitch Scroll Progress Tracker */
+        #pitch-progress {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 90;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            pointer-events: none;
+        }
+
+        .pitch-track {
+            width: 2px;
+            height: 120px;
+            background: var(--border-subtle);
+            position: relative;
+            border-radius: 2px;
+        }
+
+        .pitch-fill {
+            position: absolute;
+            top: 0; left: 0; width: 100%;
+            height: 0%;
+            background: linear-gradient(180deg, var(--accent-purple), var(--accent-pink));
+            border-radius: 2px;
+            transition: height 0.1s linear;
+        }
+
+        .pitch-label {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--accent-purple);
+            text-transform: uppercase;
+            writing-mode: vertical-rl;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
         /* Preloader & Nav */
         #preloader {
             position: fixed;
@@ -216,7 +257,7 @@
             left: 50%;
             transform: translateX(-50%);
             z-index: 100;
-            background: rgba(255, 255, 255, 0.72);
+            background: rgba(255, 255, 255, 0.75);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border-subtle);
@@ -275,6 +316,7 @@
                 grid-template-columns: 1fr;
                 gap: 32px;
             }
+            #pitch-progress { display: none; }
         }
 
         .status-badge {
@@ -496,23 +538,25 @@
             line-height: 1.65;
         }
 
-        /* Certificate Preview Card */
+        /* Certificate Preview Image */
         .cert-card-img {
             width: 100%;
-            height: 180px;
+            height: 190px;
             object-fit: cover;
-            border-radius: 12px;
+            border-radius: 14px;
             border: 1px solid var(--border-subtle);
-            margin-top: 12px;
+            margin-top: 14px;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            background: rgba(255, 255, 255, 0.5);
         }
 
         .cert-card-img:hover {
             transform: scale(1.02);
+            border-color: var(--accent-purple);
         }
 
-        /* Certificate Modal Overlay */
+        /* Modal Overlay for Full-Size Certificate */
         #cert-modal {
             position: fixed;
             inset: 0;
@@ -654,6 +698,13 @@
 
     <div id="cursor-spotlight"></div>
 
+    <div id="pitch-progress">
+        <span class="pitch-label" id="innings-status">Start of Innings</span>
+        <div class="pitch-track">
+            <div class="pitch-fill" id="pitch-fill"></div>
+        </div>
+    </div>
+
     <div class="grain-overlay"></div>
     <div class="vignette-overlay"></div>
 
@@ -667,13 +718,14 @@
     <div id="cert-modal" onclick="closeCertModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
             <button class="modal-close" onclick="closeCertModal()">✕</button>
-            <img src="ai camp certificate.jpg" alt="U-19 AI Olympics Certificate of Excellence" class="modal-img">
+            <img src="ai camp certificate.jpg" id="modal-cert-img" alt="U-19 AI Olympics Certificate of Excellence" class="modal-img" onerror="this.src='image_159a1d.jpg'">
         </div>
     </div>
 
     <nav id="navbar">
         <a href="#hero" class="nav-link">Home</a>
         <a href="#about" class="nav-link">About</a>
+        <a href="#curiosity" class="nav-link">Curiosity</a>
         <a href="#education" class="nav-link">Education</a>
         <a href="#achievements" class="nav-link">Honors</a>
         <a href="#skills" class="nav-link">Skills</a>
@@ -689,9 +741,9 @@
                         <span class="status-dot"></span>
                         Available for Engineering Roles
                     </div>
-                    <div class="hero-editorial">Crafting Digital Experiences</div>
-                    <h1 class="hero-title">Bhavit Bansal</h1>
-                    <p class="hero-subtitle">Frontend Developer & UI Engineer constructing high-performance digital interfaces and pursuing B.Tech in Computer Science & AI.</p>
+                    <div class="hero-editorial">Crafting digital experiences that people remember.</div>
+                    <h1 class="hero-title">Hi, I'm Bhavit Bansal.</h1>
+                    <p class="hero-subtitle">Frontend Developer &amp; UI Engineer constructing high-performance digital interfaces and pursuing B.Tech in Computer Science &amp; AI.</p>
                     <div class="hero-actions">
                         <a href="mailto:bhavitbansal@gmail.com" class="btn btn-primary">✉ Email Me</a>
                         <a href="https://github.com/bhavitbansal" target="_blank" class="btn btn-secondary">GitHub</a>
@@ -707,19 +759,43 @@
 
         <section id="about">
             <div class="section-header">
-                <span class="section-tag">Philosophy & Focus</span>
-                <h2 class="section-title">Driven by Quality, Intent & Performance</h2>
+                <span class="section-tag">Story &amp; Mindset</span>
+                <h2 class="section-title">Driven by Quality, Intent &amp; Clarity</h2>
             </div>
             <div class="grid-2">
                 <div class="card">
                     <span class="card-icon">🌸</span>
-                    <h3 class="card-title">Why I Build</h3>
-                    <p class="card-desc">Software is most compelling when technical rigor meets thoughtful design. I enjoy creating responsive interfaces that balance speed, accessibility, and visual polish.</p>
+                    <h3 class="card-title">Why I Build Software</h3>
+                    <p class="card-desc">Software is most compelling when technical precision meets thoughtful design. I enjoy building web systems that feel fast, accessible, and naturally intuitive.</p>
                 </div>
                 <div class="card">
+                    <span class="card-icon">⚡</span>
+                    <h3 class="card-title">Engineering Approach</h3>
+                    <p class="card-desc">From systems programming in C to modern frontend frameworks and Python automation, I prioritize clean logic, deep research, and deliberate craftsmanship.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="curiosity">
+            <div class="section-header">
+                <span class="section-tag">Interests &amp; Exploration</span>
+                <h2 class="section-title">What I'm Curious About</h2>
+            </div>
+            <div class="grid-3">
+                <div class="card">
                     <span class="card-icon">🏏</span>
-                    <h3 class="card-title">Cricket Biomechanics & Analytics</h3>
-                    <p class="card-desc">Fascinated by the intersection of sports science and technology. I enjoy analyzing player movement kinematics, bowling technique biomechanics, and tactical performance metrics using computer vision and AI.</p>
+                    <h3 class="card-title">Cricket Biomechanics</h3>
+                    <p class="card-desc">I enjoy reading biomechanics research, understanding movement efficiency, and analyzing how technique influences performance.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🧠</span>
+                    <h3 class="card-title">Systems Thinking</h3>
+                    <p class="card-desc">I'm fascinated by breaking down complex systems, whether in software engineering or sports, into understandable and optimizable parts.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">📚</span>
+                    <h3 class="card-title">Research-Driven Learning</h3>
+                    <p class="card-desc">I enjoy reading technical articles, researching deeply before building solutions, and continuously learning through curiosity.</p>
                 </div>
             </div>
         </section>
@@ -735,8 +811,8 @@
                         <span class="card-icon" style="margin-bottom:0;">🎓</span>
                         <img src="tensor.png" alt="Tensor School of CS & AI" class="card-logo-img">
                     </div>
-                    <h3 class="card-title">Tensor School of CS & AI</h3>
-                    <div class="card-subtitle">B.Tech in Computer Science & AI</div>
+                    <h3 class="card-title">Tensor School of CS &amp; AI</h3>
+                    <div class="card-subtitle">B.Tech in Computer Science &amp; AI</div>
                     <p class="card-desc">Specializing in Artificial Intelligence, Neural Networks, Advanced Data Structures, and Software Engineering principles.</p>
                 </div>
 
@@ -755,14 +831,14 @@
         <section id="achievements">
             <div class="section-header">
                 <span class="section-tag">Recognition</span>
-                <h2 class="section-title">Honors & Competitions</h2>
+                <h2 class="section-title">Honors &amp; Competitions</h2>
             </div>
             <div class="grid-2">
                 <div class="card">
                     <span class="card-icon">🏆</span>
                     <h3 class="card-title">AI Camp U-19 — Silver Medal</h3>
-                    <p class="card-desc">Awarded <strong>Silver Medal</strong> (Ranked in Top 25) at the U-19 AI Olympics organized by Tensor School of CS & AI for constructing innovative artificial intelligence solutions.</p>
-                    <img src="ai camp certificate.jpg" alt="U-19 AI Olympics Certificate of Excellence" class="cert-card-img" onclick="openCertModal()" title="Click to view full certificate">
+                    <p class="card-desc">Awarded <strong>Silver Medal</strong> (Ranked in Top 25) at the U-19 AI Olympics organized by Tensor School of CS &amp; AI for constructing innovative artificial intelligence solutions.</p>
+                    <img src="ai camp certificate.jpg" alt="U-19 AI Olympics Certificate of Excellence" class="cert-card-img" onclick="openCertModal()" title="Click to view full certificate" onerror="this.src='image_159a1d.jpg'">
                 </div>
 
                 <div class="card">
@@ -810,8 +886,8 @@
                     <span style="font-size: 0.75rem; color: #A78BFA; margin-left: 8px;">bhavit@bloom-terminal:~</span>
                 </div>
                 <div class="terminal-window" id="terminal-window">
-                    <div>> SYSTEM INITIALIZED. TYPE <span style="color: var(--accent-pink);">help</span> FOR COMMANDS.</div>
-                    <div>> AVAILABLE COMMANDS: <span style="color: var(--accent-pink);">sys_info</span>, <span style="color: var(--accent-pink);">education</span>, <span style="color: var(--accent-pink);">email</span>, <span style="color: var(--accent-pink);">achievements</span>, <span style="color: var(--accent-pink);">skills</span>, <span style="color: var(--accent-pink);">github</span>, <span style="color: var(--accent-pink);">linkedin</span>, <span style="color: var(--accent-pink);">clear</span></div>
+                    <div>&gt; SYSTEM INITIALIZED. TYPE <span style="color: var(--accent-pink);">help</span> FOR COMMANDS.</div>
+                    <div>&gt; AVAILABLE COMMANDS: <span style="color: var(--accent-pink);">sys_info</span>, <span style="color: var(--accent-pink);">education</span>, <span style="color: var(--accent-pink);">email</span>, <span style="color: var(--accent-pink);">achievements</span>, <span style="color: var(--accent-pink);">skills</span>, <span style="color: var(--accent-pink);">github</span>, <span style="color: var(--accent-pink);">linkedin</span>, <span style="color: var(--accent-pink);">clear</span></div>
                 </div>
                 <div class="term-input-line">
                     <span class="term-prompt">USER@BHAVIT:~$</span>
@@ -827,7 +903,7 @@
     </div>
 
     <script>
-        // Inline Simplex Noise Generator
+        // Inline Simplex Noise Algorithm
         const SimplexNoise = (function() {
             const F2 = 0.5 * (Math.sqrt(3.0) - 1.0);
             const G2 = (3.0 - Math.sqrt(3.0)) / 6.0;
@@ -898,7 +974,7 @@
             };
         })();
 
-        // Topographic Canvas Engine
+        // Canvas Setup
         const canvas = document.getElementById('topo-canvas');
         const ctx = canvas.getContext('2d');
         const spotlight = document.getElementById('cursor-spotlight');
@@ -932,13 +1008,32 @@
 
         window.addEventListener('scroll', () => {
             scrollY = window.scrollY;
+            updateInningsProgress();
         });
 
         document.addEventListener('visibilitychange', () => {
             isTabActive = !document.hidden;
         });
 
-        // Bloom Topo Threshold Levels
+        // Innings Progress Tracker
+        function updateInningsProgress() {
+            const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const pct = Math.min(100, Math.max(0, (window.scrollY / (totalHeight || 1)) * 100));
+            
+            const fill = document.getElementById('pitch-fill');
+            const status = document.getElementById('innings-status');
+            
+            if (fill) fill.style.height = `${pct}%`;
+            
+            if (status) {
+                if (pct < 15) status.innerText = "Start of Innings";
+                else if (pct < 40) status.innerText = "Powerplay";
+                else if (pct < 70) status.innerText = "Middle Overs";
+                else if (pct < 95) status.innerText = "Death Overs";
+                else status.innerText = "Finish";
+            }
+        }
+
         const contourLevels = [
             { threshold: -0.4, color: 'rgba(168, 85, 247, 0.04)', width: 1.0 },
             { threshold: -0.2, color: 'rgba(236, 72, 153, 0.05)', width: 1.1 },
@@ -1064,7 +1159,7 @@
             document.getElementById('cert-modal').classList.remove('active');
         }
 
-        // UI Preloader & Terminal Interactions
+        // Preloader & Init
         window.addEventListener('DOMContentLoaded', () => {
             const progressBar = document.getElementById('loader-progress');
             const preloader = document.getElementById('preloader');
@@ -1077,9 +1172,11 @@
                 preloader.style.opacity = '0';
                 preloader.style.visibility = 'hidden';
             }, 1100);
+
+            updateInningsProgress();
         });
 
-        // Navbar Directional Auto-Hide
+        // Directional Nav Hide
         let lastScrollY = window.scrollY;
         const nav = document.getElementById('navbar');
 
@@ -1096,7 +1193,7 @@
             lastScrollY = window.scrollY;
         });
 
-        // Interactive Terminal Commands
+        // Interactive Terminal Logic
         const termInput = document.getElementById('term-input');
         const termWindow = document.getElementById('terminal-window');
 
@@ -1122,40 +1219,40 @@
         function handleCommand(cmd) {
             switch (cmd) {
                 case 'help':
-                    printTermLine('> Available commands: sys_info, education, email, achievements, skills, github, linkedin, clear');
+                    printTermLine('&gt; Available commands: sys_info, education, email, achievements, skills, github, linkedin, clear');
                     break;
                 case 'sys_info':
-                    printTermLine('> NAME: Bhavit Bansal | DEGREE: B.Tech CSE & AI | EMAIL: bhavitbansal@gmail.com');
+                    printTermLine('&gt; NAME: Bhavit Bansal | DEGREE: B.Tech CSE &amp; AI | EMAIL: bhavitbansal@gmail.com');
                     break;
                 case 'education':
-                    printTermLine('> COLLEGE: Tensor School of CS & AI (B.Tech CSE & AI)');
-                    printTermLine('> SCHOOL : Vardhman International School');
+                    printTermLine('&gt; COLLEGE: Tensor School of CS &amp; AI (B.Tech CSE &amp; AI)');
+                    printTermLine('&gt; SCHOOL : Vardhman International School');
                     break;
                 case 'email':
                 case 'contact':
-                    printTermLine('> EMAIL: bhavitbansal@gmail.com');
-                    printTermLine('> Opening email client...');
+                    printTermLine('&gt; EMAIL: bhavitbansal@gmail.com');
+                    printTermLine('&gt; Opening email client...');
                     window.location.href = 'mailto:bhavitbansal@gmail.com';
                     break;
                 case 'achievements':
-                    printTermLine('> AI Camp U-19: Silver Medal (Ranked Top 25) | Ethical Hacking Camp: Bronze Medal');
+                    printTermLine('&gt; AI Camp U-19: Silver Medal (Ranked Top 25) | Ethical Hacking Camp: Bronze Medal');
                     break;
                 case 'skills':
-                    printTermLine('> Python, C, JavaScript, Machine Learning, Cricket Biomechanics Analytics');
+                    printTermLine('&gt; Python, C, JavaScript, Machine Learning, Cricket Biomechanics Analytics');
                     break;
                 case 'github':
-                    printTermLine('> Redirecting to GitHub profile...');
+                    printTermLine('&gt; Redirecting to GitHub profile...');
                     window.open('https://github.com/bhavitbansal', '_blank');
                     break;
                 case 'linkedin':
-                    printTermLine('> Redirecting to LinkedIn...');
+                    printTermLine('&gt; Redirecting to LinkedIn...');
                     window.open('https://www.linkedin.com/in/bhavit-bansal', '_blank');
                     break;
                 case 'clear':
                     termWindow.innerHTML = '';
                     break;
                 default:
-                    printTermLine(`> Command not recognized: '${cmd}'. Type 'help' for options.`, '#f43f5e');
+                    printTermLine(`&gt; Command not recognized: '${cmd}'. Type 'help' for options.`, '#f43f5e');
             }
         }
     </script>
