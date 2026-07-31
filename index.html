@@ -171,7 +171,7 @@
             background: radial-gradient(circle at center, transparent 65%, rgba(42, 27, 61, 0.05) 100%);
         }
 
-        /* Pitch Scroll Progress Tracker */
+        /* Abstract Vertical Pitch Scroll Tracker */
         #pitch-progress {
             position: fixed;
             right: 20px;
@@ -212,7 +212,7 @@
             opacity: 0.8;
         }
 
-        /* Preloader & Nav */
+        /* Preloader & Floating Navigation */
         #preloader {
             position: fixed;
             inset: 0;
@@ -286,7 +286,7 @@
             color: var(--accent-purple);
         }
 
-        /* Layout Container */
+        /* Layout & Typography */
         .container {
             max-width: 1100px;
             margin: 0 auto;
@@ -345,11 +345,10 @@
 
         .hero-editorial {
             font-family: var(--font-display);
-            font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+            font-size: clamp(1rem, 2vw, 1.25rem);
             font-weight: 600;
             color: var(--accent-purple);
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            letter-spacing: 0.5px;
             margin-bottom: 8px;
         }
 
@@ -414,7 +413,7 @@
             transform: translateY(-2px);
         }
 
-        /* Profile Card */
+        /* Profile & Floating Cards */
         .profile-card {
             display: flex;
             flex-direction: column;
@@ -436,7 +435,6 @@
             border: 1px solid var(--border-subtle);
         }
 
-        /* Section Layouts & Floating Cards */
         section {
             padding: 110px 0;
             position: relative;
@@ -538,7 +536,7 @@
             line-height: 1.65;
         }
 
-        /* Certificate Preview Image */
+        /* Certificate Mockup Frame */
         .cert-card-img {
             width: 100%;
             height: 190px;
@@ -549,6 +547,7 @@
             cursor: pointer;
             transition: transform 0.3s ease, border-color 0.3s ease;
             background: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 6px 18px rgba(168, 85, 247, 0.08);
         }
 
         .cert-card-img:hover {
@@ -556,7 +555,7 @@
             border-color: var(--accent-purple);
         }
 
-        /* Modal Overlay for Full-Size Certificate */
+        /* Certificate Modal Overlay */
         #cert-modal {
             position: fixed;
             inset: 0;
@@ -607,6 +606,32 @@
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* Exploration Pills */
+        .exploration-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .explore-pill {
+            background: var(--card-glass);
+            border: 1px solid var(--border-subtle);
+            padding: 10px 20px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            box-shadow: 0 4px 12px rgba(168, 85, 247, 0.04);
+            transition: all 0.25s ease;
+        }
+
+        .explore-pill:hover {
+            border-color: var(--accent-purple);
+            transform: translateY(-2px);
+            color: var(--accent-purple);
         }
 
         /* Terminal Window */
@@ -672,13 +697,21 @@
         }
 
         footer {
-            padding: 44px 0;
+            padding: 56px 0;
             border-top: 1px solid var(--border-subtle);
             text-align: center;
-            color: var(--text-muted);
-            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
             position: relative;
             z-index: 10;
+        }
+
+        .footer-quote {
+            max-width: 650px;
+            margin: 0 auto 16px auto;
+            font-style: italic;
+            color: var(--text-primary);
+            line-height: 1.6;
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -741,9 +774,9 @@
                         <span class="status-dot"></span>
                         Available for Engineering Roles
                     </div>
-                    <div class="hero-editorial">Crafting digital experiences that people remember.</div>
+                    <div class="hero-editorial">Crafting digital experiences that feel effortless.</div>
                     <h1 class="hero-title">Hi, I'm Bhavit Bansal.</h1>
-                    <p class="hero-subtitle">Frontend Developer &amp; UI Engineer constructing high-performance digital interfaces and pursuing B.Tech in Computer Science &amp; AI.</p>
+                    <p class="hero-subtitle">Frontend Developer, UI Engineer &amp; Curious Systems Thinker. Constructing high-performance digital interfaces and pursuing B.Tech in Computer Science &amp; AI.</p>
                     <div class="hero-actions">
                         <a href="mailto:bhavitbansal@gmail.com" class="btn btn-primary">✉ Email Me</a>
                         <a href="https://github.com/bhavitbansal" target="_blank" class="btn btn-secondary">GitHub</a>
@@ -771,7 +804,7 @@
                 <div class="card">
                     <span class="card-icon">⚡</span>
                     <h3 class="card-title">Engineering Approach</h3>
-                    <p class="card-desc">From systems programming in C to modern frontend frameworks and Python automation, I prioritize clean logic, deep research, and deliberate craftsmanship.</p>
+                    <p class="card-desc">From systems programming in C to modern frontend architecture and Python automation, I prioritize clean logic, deep research, and deliberate craftsmanship.</p>
                 </div>
             </div>
         </section>
@@ -785,18 +818,32 @@
                 <div class="card">
                     <span class="card-icon">🏏</span>
                     <h3 class="card-title">Cricket Biomechanics</h3>
-                    <p class="card-desc">I enjoy reading biomechanics research, understanding movement efficiency, and analyzing how technique influences performance.</p>
+                    <p class="card-desc">I enjoy reading biomechanics research and understanding how movement, technique, and decision-making influence cricket performance.</p>
                 </div>
                 <div class="card">
                     <span class="card-icon">🧠</span>
                     <h3 class="card-title">Systems Thinking</h3>
-                    <p class="card-desc">I'm fascinated by breaking down complex systems, whether in software engineering or sports, into understandable and optimizable parts.</p>
+                    <p class="card-desc">I'm fascinated by understanding complex systems—whether in software architecture or sports—and breaking them into simpler, improvable parts.</p>
                 </div>
                 <div class="card">
                     <span class="card-icon">📚</span>
                     <h3 class="card-title">Research-Driven Learning</h3>
-                    <p class="card-desc">I enjoy reading technical articles, researching deeply before building solutions, and continuously learning through curiosity.</p>
+                    <p class="card-desc">I enjoy reading technical articles, researching topics deeply, and learning foundational principles before building solutions.</p>
                 </div>
+            </div>
+        </section>
+
+        <section id="exploring" style="padding-top: 0;">
+            <div class="section-header" style="margin-bottom: 24px;">
+                <span class="section-tag">Active Horizons</span>
+                <h2 class="section-title" style="font-size: 1.8rem;">Currently Exploring</h2>
+            </div>
+            <div class="exploration-grid">
+                <span class="explore-pill">Motion Design</span>
+                <span class="explore-pill">Web Performance</span>
+                <span class="explore-pill">Cricket Biomechanics Analytics</span>
+                <span class="explore-pill">AI-Assisted Development</span>
+                <span class="explore-pill">Accessibility (a11y)</span>
             </div>
         </section>
 
@@ -861,7 +908,7 @@
                 </div>
                 <div class="card">
                     <h3 class="card-title">Active Focus</h3>
-                    <p class="card-desc">Machine Learning Models, Neural Networks, Cricket Biomechanics Analytics</p>
+                    <p class="card-desc">Machine Learning Models, Neural Networks, Systems Architecture</p>
                 </div>
                 <div class="card">
                     <h3 class="card-title">Direct Contact</h3>
@@ -897,6 +944,7 @@
         </section>
 
         <footer>
+            <p class="footer-quote">"I enjoy building software with the same curiosity I bring to studying complex systems—whether that's frontend architecture or the biomechanics behind a cover drive."</p>
             <p>© 2026 Bhavit Bansal • bhavitbansal@gmail.com</p>
         </footer>
 
@@ -1015,7 +1063,7 @@
             isTabActive = !document.hidden;
         });
 
-        // Innings Progress Tracker
+        // Abstract Pitch Progress Function
         function updateInningsProgress() {
             const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
             const pct = Math.min(100, Math.max(0, (window.scrollY / (totalHeight || 1)) * 100));
