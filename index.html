@@ -1,391 +1,690 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SYSTEM_TERMINAL // BHAVIT_BANSAL</title>
+    <meta name="description" content="Portfolio of Bhavit Bansal - Frontend Developer & UI Engineer">
+    <title>Bhavit Bansal — Frontend Developer & UI Engineer</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.0.42/dist/lenis.css">
+    
     <style>
         :root {
-            --term-green: #00ff66;
-            --term-green-bright: #33ff88;
-            --term-cyan: #00e5ff;
-            --term-dim: #00a843;
-            --bg-dark: #040a05;
-            --crt-glow: rgba(0, 255, 102, 0.35);
+            --bg: #090a0f;
+            --surface: #12151e;
+            --surface-border: rgba(255, 255, 255, 0.08);
+            --surface-hover: rgba(255, 255, 255, 0.03);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --accent: #10b981;
+            --accent-glow: rgba(16, 185, 129, 0.15);
+            --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
         }
 
-        * {
+        /* Reset & Base Setup */
+        *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Consolas', 'Courier New', Courier, monospace;
+        }
+
+        html {
+            background-color: var(--bg);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            overflow-x: hidden;
+            scroll-behavior: initial; /* Managed by Lenis */
         }
 
         body {
-            background-color: #080808;
+            min-height: 100vh;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* Preloader */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 9999;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-            color: var(--term-green-bright);
+            gap: 12px;
         }
 
-        /* CRT Monitor Outer Frame */
-        .crt-container {
-            width: 100%;
-            max-width: 1100px;
-            background: #181a19;
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: inset 0 0 15px #000, 0 10px 40px rgba(0, 0, 0, 0.9);
-            border: 4px solid #2a2c2b;
-            position: relative;
+        .loader-text {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            color: var(--accent);
+            text-transform: uppercase;
         }
 
-        .crt-screen {
-            background-color: var(--bg-dark);
-            border-radius: 10px;
-            padding: 25px;
-            border: 2px solid #1a2e1e;
-            box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.95);
+        .loader-bar {
+            width: 140px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
             position: relative;
             overflow: hidden;
-            text-shadow: 0 0 6px var(--crt-glow);
+            border-radius: 2px;
         }
 
-        /* Subtle Scanline Overlay Effect */
-        .crt-screen::before {
-            content: " ";
-            display: block;
+        .loader-progress {
             position: absolute;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
-            background-size: 100% 4px;
-            z-index: 10;
-            pointer-events: none;
+            top: 0; left: 0; bottom: 0;
+            width: 0%;
+            background: var(--accent);
         }
 
-        /* Header / Banner */
-        .terminal-header {
-            border-bottom: 2px solid var(--term-dim);
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .title-block h1 {
-            font-size: 1.8rem;
-            letter-spacing: 2px;
-            color: #ffffff;
-            text-shadow: 0 0 10px var(--term-green);
-        }
-
-        .title-block p {
-            color: var(--term-green);
-            font-weight: bold;
-            font-size: 0.95rem;
-            margin-top: 4px;
-        }
-
-        .profile-badges {
+        /* Floating Navigation */
+        #navbar {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            background: rgba(18, 21, 30, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--surface-border);
+            border-radius: 999px;
+            padding: 8px 16px;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 24px;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
         }
 
-        .avatar-img {
-            width: 75px;
-            height: 75px;
-            border-radius: 8px;
-            border: 2px solid var(--term-green-bright);
-            object-fit: cover;
-            box-shadow: 0 0 12px var(--crt-glow);
+        #navbar.nav-hidden {
+            transform: translate(-50%, -120%);
+            opacity: 0;
         }
 
-        .institution-logo {
-            height: 48px;
-            background: rgba(0, 255, 102, 0.1);
-            padding: 5px;
-            border: 1px solid var(--term-green);
-            border-radius: 6px;
+        .nav-link {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: color 0.2s ease;
         }
 
-        /* Layout Grid */
-        .terminal-body {
+        .nav-link:hover, .nav-link.active {
+            color: var(--text-primary);
+        }
+
+        /* Layout Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero Section */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-top: 80px;
+        }
+
+        .hero-grid {
             display: grid;
-            grid-template-columns: 240px 1fr;
-            gap: 20px;
+            grid-template-columns: 1fr auto;
+            gap: 48px;
+            align-items: center;
+            width: 100%;
         }
 
-        @media (max-width: 768px) {
-            .terminal-body {
+        @media (max-width: 900px) {
+            .hero-grid {
                 grid-template-columns: 1fr;
+                gap: 32px;
             }
         }
 
-        /* Quick Action Navigation */
-        .hud-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 16px;
         }
 
-        .hud-btn {
-            background: rgba(0, 255, 102, 0.08);
-            border: 1px solid var(--term-green);
-            color: var(--term-green-bright);
-            padding: 12px 14px;
-            text-align: left;
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 12px var(--accent);
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 6vw, 5.5rem);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 20px;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            color: var(--text-secondary);
+            font-weight: 400;
+            max-width: 650px;
+            margin-bottom: 32px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 999px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: pointer;
-            font-size: 0.95rem;
-            font-weight: bold;
-            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--text-primary);
+            color: var(--bg);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-secondary {
+            background: var(--surface);
+            border: 1px solid var(--surface-border);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--surface-hover);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Profile & Institutional Badges */
+        .profile-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            background: var(--surface);
+            border: 1px solid var(--surface-border);
+            padding: 24px;
+            border-radius: 24px;
+        }
+
+        .profile-img {
+            width: 140px;
+            height: 140px;
+            border-radius: 18px;
+            object-fit: cover;
+            border: 1px solid var(--surface-border);
+        }
+
+        .logo-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .institution-logo {
+            height: 36px;
+            width: auto;
+            opacity: 0.85;
+            transition: opacity 0.2s;
+        }
+
+        .institution-logo:hover {
+            opacity: 1;
+        }
+
+        /* Section Commons */
+        section {
+            padding: 120px 0;
+            position: relative;
+        }
+
+        .section-header {
+            margin-bottom: 60px;
+        }
+
+        .section-tag {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--accent);
             text-transform: uppercase;
-            text-decoration: none;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
             display: block;
         }
 
-        .hud-btn:hover {
-            background: var(--term-green-bright);
-            color: #000;
-            box-shadow: 0 0 15px var(--term-green-bright);
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
         }
 
-        /* Command Output Display */
-        .output-window {
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid var(--term-dim);
-            padding: 18px;
-            min-height: 300px;
-            max-height: 420px;
-            overflow-y: auto;
-            margin-bottom: 15px;
-            font-size: 1rem;
-            line-height: 1.6;
-            color: #e0ffe0;
+        /* Showcase Cards Grid */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
         }
 
-        .output-line {
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--surface-border);
+            border-radius: 20px;
+            padding: 32px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-4px);
+            background: var(--surface-hover);
+        }
+
+        .card-icon {
+            font-size: 1.8rem;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
             margin-bottom: 8px;
-            word-wrap: break-word;
         }
 
-        .cmd-prefix {
-            color: var(--term-cyan);
-            font-weight: bold;
+        .card-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
         }
 
-        /* Terminal Links */
-        .term-link {
-            color: var(--term-cyan);
-            text-decoration: underline;
-            font-weight: bold;
+        /* Terminal Console Section (Contact) */
+        .terminal-container {
+            background: #0b0d14;
+            border: 1px solid var(--surface-border);
+            border-radius: 16px;
+            overflow: hidden;
+            font-family: var(--font-mono);
         }
 
-        .term-link:hover {
-            color: #ffffff;
-            text-shadow: 0 0 8px var(--term-cyan);
-        }
-
-        /* Command Input Section */
-        .input-line {
+        .terminal-topbar {
+            background: #141722;
+            padding: 12px 16px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            background: rgba(0, 255, 102, 0.08);
-            border: 1px solid var(--term-green-bright);
-            padding: 12px 15px;
+            gap: 8px;
+            border-bottom: 1px solid var(--surface-border);
         }
 
-        .prompt-symbol {
-            color: var(--term-cyan);
-            font-weight: bold;
+        .term-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
         }
 
-        .terminal-input {
+        .term-dot-red { background: #ef4444; }
+        .term-dot-yellow { background: #f59e0b; }
+        .term-dot-green { background: #10b981; }
+
+        .terminal-window {
+            padding: 24px;
+            min-height: 240px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        .term-input-line {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .term-prompt {
+            color: var(--accent);
+        }
+
+        .term-input {
             background: transparent;
             border: none;
             outline: none;
-            color: #ffffff;
-            font-size: 1.05rem;
-            font-weight: bold;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
             width: 100%;
-            text-shadow: 0 0 5px var(--term-green);
         }
 
-        /* Quick Help Bar */
-        .quick-help {
-            margin-top: 15px;
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid var(--surface-border);
+            text-align: center;
+            color: var(--text-muted);
             font-size: 0.85rem;
-            color: #88c999;
-        }
-
-        .highlight {
-            color: #ffffff;
-            font-weight: bold;
-            text-shadow: 0 0 6px #ffffff;
-        }
-
-        .highlight-cyan {
-            color: var(--term-cyan);
-            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-<div class="crt-container">
-    <div class="crt-screen">
-        
-        <header class="terminal-header">
-            <div class="title-block">
-                <h1>[SYSTEM_TERMINAL v1.2]</h1>
-                <p>> USER: BHAVIT BANSAL // OPERATIONAL</p>
-            </div>
-            
-            <div class="profile-badges">
-                <img src="Bhavit.png" alt="Bhavit Bansal" class="avatar-img" title="Bhavit Bansal">
-                <img src="vardhman.jpg" alt="Vardhman School" class="institution-logo" title="Vardhman School">
-                <img src="tensor.png" alt="Tensor College" class="institution-logo" title="Tensor College">
-            </div>
-        </header>
+    <div id="preloader">
+        <div class="loader-text">INITIALIZING PORTFOLIO</div>
+        <div class="loader-bar">
+            <div class="loader-progress" id="loader-progress"></div>
+        </div>
+    </div>
 
-        <div class="terminal-body">
-            
-            <nav class="hud-buttons">
-                <button class="hud-btn" onclick="executeCommand('sys_info')">[SYS_INFO]</button>
-                <button class="hud-btn" onclick="executeCommand('achievements')">[ACHIEVEMENTS]</button>
-                <button class="hud-btn" onclick="executeCommand('skills')">[TECH_STACK]</button>
-                <button class="hud-btn" onclick="executeCommand('links')">[CONNECT_LINKS]</button>
-                <button class="hud-btn" onclick="executeCommand('help')">[HELP_MENU]</button>
-                <button class="hud-btn" onclick="executeCommand('clear')">[CLEAR_LOGS]</button>
-            </nav>
+    <nav id="navbar">
+        <a href="#hero" class="nav-link active">Home</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#achievements" class="nav-link">Honors</a>
+        <a href="#skills" class="nav-link">Skills</a>
+        <a href="#contact" class="nav-link">Terminal</a>
+    </nav>
 
-            <main>
-                <div class="output-window" id="terminal-output">
-                    <div class="output-line">> INITIALIZING KERNEL... BOOT SUCCESSFUL.</div>
-                    <div class="output-line">> WELCOME TO BHAVIT BANSAL'S CYBER TERMINAL.</div>
-                    <div class="output-line">> TYPE <span class="highlight">'help'</span> OR CLICK HUD BUTTONS TO NAVIGATE.</div>
-                    <div class="output-line">--------------------------------------------------</div>
+    <div class="container">
+
+        <section id="hero">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <div class="status-badge">
+                        <span class="status-dot"></span>
+                        Available for Engineering Roles
+                    </div>
+                    <h1 class="hero-title">Bhavit Bansal</h1>
+                    <p class="hero-subtitle">Frontend Developer & UI Engineer constructing high-performance digital interfaces and exploring Machine Learning.</p>
+                    <div class="hero-actions">
+                        <a href="#contact" class="btn btn-primary">Open Terminal</a>
+                        <a href="http://bhavitbansal.github.io/" target="_blank" class="btn btn-secondary">GitHub</a>
+                        <a href="https://www.linkedin.com/in/bhavit-bansal" target="_blank" class="btn btn-secondary">LinkedIn</a>
+                    </div>
                 </div>
 
-                <div class="input-line">
-                    <span class="prompt-symbol">USER@BHAVIT:~$</span>
-                    <input type="text" id="terminal-input" class="terminal-input" autofocus autocomplete="off" spellcheck="false">
+                <div class="profile-card">
+                    <img src="Bhavit.png" alt="Bhavit Bansal" class="profile-img">
+                    <div class="logo-group">
+                        <img src="vardhman.jpg" alt="Vardhman School" class="institution-logo" title="Vardhman School">
+                        <img src="tensor.png" alt="Tensor College" class="institution-logo" title="Tensor College">
+                    </div>
                 </div>
-            </main>
-        </div>
+            </div>
+        </section>
 
-        <div class="quick-help">
-            COMMANDS: <span class="highlight">help</span> | <span class="highlight">sys_info</span> | <span class="highlight">achievements</span> | <span class="highlight">skills</span> | <span class="highlight">links</span> | <span class="highlight">clear</span>
-        </div>
+        <section id="about">
+            <div class="section-header">
+                <span class="section-tag">Philosophy</span>
+                <h2 class="section-title">Crafting Software with Intent</h2>
+            </div>
+            <div class="grid-2">
+                <div class="card">
+                    <span class="card-icon">⚡</span>
+                    <h3 class="card-title">Who I Am</h3>
+                    <p class="card-desc">I am a passionate software developer focused on web interfaces and systems architecture. Currently pursuing Computer Science & AI at Tensor College, following my foundation at Vardhman International School.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🎯</span>
+                    <h3 class="card-title">Engineering Focus</h3>
+                    <p class="card-desc">I believe digital products should be blazingly fast, accessible, and intuitively designed. My focus spans low-level C programming, Python automation, and modern web application development.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="achievements">
+            <div class="section-header">
+                <span class="section-tag">Recognition</span>
+                <h2 class="section-title">Honors & Competitions</h2>
+            </div>
+            <div class="grid-2">
+                <div class="card">
+                    <span class="card-icon">🏆</span>
+                    <h3 class="card-title">AI Camp U-19 — Silver Medal</h3>
+                    <p class="card-desc">Awarded Silver Medal for engineering artificial intelligence solution prototypes under rapid iteration timeframes.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🛡️</span>
+                    <h3 class="card-title">Ethical Hacking Camp — Bronze Medal</h3>
+                    <p class="card-desc">Recognized for demonstrating cybersecurity principles, network defense strategies, and vulnerability assessment.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills">
+            <div class="section-header">
+                <span class="section-tag">Capabilities</span>
+                <h2 class="section-title">Technical Capabilities</h2>
+            </div>
+            <div class="grid-3">
+                <div class="card">
+                    <h3 class="card-title">Languages</h3>
+                    <p class="card-desc">Python, C, HTML5, CSS3, JavaScript (ES6+)</p>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">Active Learning</h3>
+                    <p class="card-desc">Machine Learning Models, Neural Networks, Algorithm Design</p>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">Tools & Environment</h3>
+                    <p class="card-desc">Git, GitHub Pages, VS Code, Linux CLI Environments</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="section-header">
+                <span class="section-tag">Command Center</span>
+                <h2 class="section-title">Interactive Terminal</h2>
+            </div>
+            
+            <div class="terminal-container">
+                <div class="terminal-topbar">
+                    <span class="term-dot term-dot-red"></span>
+                    <span class="term-dot term-dot-yellow"></span>
+                    <span class="term-dot term-dot-green"></span>
+                    <span style="font-size: 0.75rem; color: var(--text-muted); margin-left: 8px;">bhavit@portfolio:~</span>
+                </div>
+                <div class="terminal-window" id="terminal-window">
+                    <div>> SYSTEM INITIALIZED. TYPE <span style="color: var(--accent);">help</span> FOR AVAILABLE COMMANDS.</div>
+                    <div>> TRY COMMANDS: <span style="color: var(--accent);">sys_info</span>, <span style="color: var(--accent);">achievements</span>, <span style="color: var(--accent);">skills</span>, <span style="color: var(--accent);">github</span>, <span style="color: var(--accent);">linkedin</span>, <span style="color: var(--accent);">clear</span></div>
+                </div>
+                <div style="padding: 0 24px 24px 24px;">
+                    <div class="term-input-line">
+                        <span class="term-prompt">USER@BHAVIT:~$</span>
+                        <input type="text" id="term-input" class="term-input" placeholder="Type a command..." autocomplete="off" spellcheck="false">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>© 2026 Bhavit Bansal. Designed with craftsmanship & precision.</p>
+        </footer>
 
     </div>
-</div>
 
-<script>
-    // Audio feedback synthesizer for mechanical keystrokes
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    function playClickSound() {
-        if (audioCtx.state === 'suspended') {
-            audioCtx.resume();
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.0.42/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <script>
+        // Initialize Lenis Smooth Scroll
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smoothWheel: true
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
         }
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(120, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.03);
-        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.03);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.03);
-    }
+        requestAnimationFrame(raf);
 
-    const inputField = document.getElementById('terminal-input');
-    const outputArea = document.getElementById('terminal-output');
+        // Preloader Sequence
+        const progressEl = document.getElementById('loader-progress');
+        gsap.to(progressEl, {
+            width: '100%',
+            duration: 1.2,
+            ease: 'power2.inOut',
+            onComplete: () => {
+                gsap.to('#preloader', {
+                    opacity: 0,
+                    duration: 0.4,
+                    onComplete: () => {
+                        document.getElementById('preloader').style.display = 'none';
+                        animateHero();
+                    }
+                });
+            }
+        });
 
-    // Keypress handler
-    inputField.addEventListener('keydown', (e) => {
-        playClickSound();
-        if (e.key === 'Enter') {
-            const command = inputField.value.trim().toLowerCase();
-            if (command) {
-                printLine(`<span class="cmd-prefix">USER@BHAVIT:~$</span> ${inputField.value}`);
-                executeCommand(command);
-                inputField.value = '';
+        // Hero Entrance Animation
+        function animateHero() {
+            gsap.from('.hero-content > *', {
+                opacity: 0,
+                y: 30,
+                duration: 1,
+                stagger: 0.15,
+                ease: 'power3.out'
+            });
+
+            gsap.from('.profile-card', {
+                opacity: 0,
+                scale: 0.95,
+                duration: 1,
+                delay: 0.3,
+                ease: 'power3.out'
+            });
+        }
+
+        // Navbar Directional Auto-Hide
+        let lastScrollY = window.scrollY;
+        const nav = document.getElementById('navbar');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                if (window.scrollY > lastScrollY) {
+                    nav.classList.add('nav-hidden');
+                } else {
+                    nav.classList.remove('nav-hidden');
+                }
+            } else {
+                nav.classList.remove('nav-hidden');
+            }
+            lastScrollY = window.scrollY;
+        });
+
+        // ScrollTrigger Reveal for Cards
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.utils.toArray('section').forEach((section) => {
+            gsap.from(section.querySelectorAll('.card'), {
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top 80%',
+                },
+                opacity: 0,
+                y: 40,
+                duration: 0.8,
+                stagger: 0.15,
+                ease: 'power3.out'
+            });
+        });
+
+        // Interactive Terminal Logic
+        const termInput = document.getElementById('term-input');
+        const termWindow = document.getElementById('terminal-window');
+
+        termInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const cmd = termInput.value.trim().toLowerCase();
+                if (cmd) {
+                    printTermLine(`USER@BHAVIT:~$ ${cmd}`, 'var(--accent)');
+                    handleCommand(cmd);
+                    termInput.value = '';
+                }
+            }
+        });
+
+        function printTermLine(text, color = 'var(--text-primary)') {
+            const line = document.createElement('div');
+            line.style.color = color;
+            line.innerHTML = text;
+            termWindow.appendChild(line);
+            termWindow.scrollTop = termWindow.scrollHeight;
+        }
+
+        function handleCommand(cmd) {
+            switch (cmd) {
+                case 'help':
+                    printTermLine('> Available commands: sys_info, achievements, skills, github, linkedin, clear');
+                    break;
+                case 'sys_info':
+                    printTermLine('> NAME: Bhavit Bansal | SCHOOL: Vardhman | COLLEGE: Tensor College');
+                    break;
+                case 'achievements':
+                    printTermLine('> AI Camp U-19: Silver Medal | Ethical Hacking Camp: Bronze Medal');
+                    break;
+                case 'skills':
+                    printTermLine('> Python, C, JavaScript, Machine Learning (In Progress)');
+                    break;
+                case 'github':
+                    printTermLine('> Redirecting to GitHub...');
+                    window.open('http://bhavitbansal.github.io/', '_blank');
+                    break;
+                case 'linkedin':
+                    printTermLine('> Redirecting to LinkedIn...');
+                    window.open('https://www.linkedin.com/in/bhavit-bansal', '_blank');
+                    break;
+                case 'clear':
+                    termWindow.innerHTML = '';
+                    break;
+                default:
+                    printTermLine(`> Command not recognized: '${cmd}'. Type 'help' for options.`, '#ef4444');
             }
         }
-    });
-
-    function printLine(text) {
-        const line = document.createElement('div');
-        line.className = 'output-line';
-        line.innerHTML = text;
-        outputArea.appendChild(line);
-        outputArea.scrollTop = outputArea.scrollHeight;
-    }
-
-    function executeCommand(cmd) {
-        playClickSound();
-        switch (cmd) {
-            case 'sys_info':
-            case 'about':
-                printLine('>>> <span class="highlight">[SYSTEM INFO / KERNEL SPECS]</span>');
-                printLine('NAME       : <span class="highlight">Bhavit Bansal</span>');
-                printLine('SCHOOL     : Vardhman School');
-                printLine('COLLEGE    : Tensor College');
-                printLine('STATUS     : Active / Learning & Building AI');
-                break;
-
-            case 'achievements':
-            case 'logs':
-                printLine('>>> <span class="highlight">[SYSTEM LOGS / ACHIEVEMENTS]</span>');
-                printLine('🏆 AI Camp U-19          : <span class="highlight">SILVER MEDAL</span>');
-                printLine('🛡️ Ethical Hacking Camp  : <span class="highlight">BRONZE MEDAL</span>');
-                break;
-
-            case 'skills':
-            case 'tech':
-                printLine('>>> <span class="highlight">[TECH STACK & CORE COMPETENCIES]</span>');
-                printLine('LANGUAGES KNOWN    : <span class="highlight">Python, C</span>');
-                printLine('CURRENT OPERATIVE  : <span class="highlight-cyan">Machine Learning (In Progress...)</span>');
-                break;
-
-            case 'links':
-            case 'social':
-            case 'github':
-            case 'linkedin':
-                printLine('>>> <span class="highlight">[CONNECT & TRANSMISSION LINKS]</span>');
-                printLine('🌐 GITHUB PORTFOLIO : <a href="http://bhavitbansal.github.io/" target="_blank" class="term-link">bhavitbansal.github.io</a>');
-                printLine('💼 LINKEDIN PROFILE : <a href="https://www.linkedin.com/in/bhavit-bansal" target="_blank" class="term-link">linkedin.com/in/bhavit-bansal</a>');
-                break;
-
-            case 'help':
-                printLine('>>> <span class="highlight">[AVAILABLE COMMANDS]</span>');
-                printLine('  <span class="highlight">sys_info</span>     - Display user credentials & institutions');
-                printLine('  <span class="highlight">achievements</span> - Display medals and awards');
-                printLine('  <span class="highlight">skills</span>       - List programming languages & active focus');
-                printLine('  <span class="highlight">links</span>        - Display GitHub and LinkedIn URLs');
-                printLine('  <span class="highlight">clear</span>        - Clear terminal screen');
-                break;
-
-            case 'clear':
-                outputArea.innerHTML = '';
-                break;
-
-            default:
-                printLine(`Command not recognized: '<span style="color:#ff5555;">${cmd}</span>'. Type '<span class="highlight">help</span>' for a list of available commands.`);
-                break;
-        }
-    }
-</script>
-
+    </script>
 </body>
 </html>
