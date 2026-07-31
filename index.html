@@ -11,8 +11,8 @@
 
     <style>
         :root {
-            --bg: #090a0f;
-            --surface: #12151e;
+            --bg: #09090B;
+            --surface: rgba(18, 21, 30, 0.75);
             --surface-border: rgba(255, 255, 255, 0.08);
             --surface-hover: rgba(255, 255, 255, 0.05);
             --text-primary: #f3f4f6;
@@ -40,12 +40,64 @@
             min-height: 100vh;
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
+            position: relative;
+            background-color: var(--bg);
+            overflow-x: hidden;
         }
 
         a {
             color: inherit;
             text-decoration: none;
         }
+
+        /* ==========================================================================
+           TOPOGRAPHIC TERRAIN CANVAS & LIGHTING LAYERS
+           ========================================================================== */
+
+        #topo-canvas {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Soft Hero Radial Lighting Glow */
+        #hero::before {
+            content: "";
+            position: absolute;
+            top: 40%;
+            left: 30%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(120, 150, 255, 0.04) 0%, rgba(16, 185, 129, 0.02) 45%, transparent 70%);
+            filter: blur(90px);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .noise-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .vignette-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 2;
+            background: radial-gradient(circle at center, transparent 60%, rgba(0, 0, 0, 0.65) 100%);
+        }
+
+        /* ==========================================================================
+           PRESERVED COMPONENT STYLES
+           ========================================================================== */
 
         /* Preloader */
         #preloader {
@@ -125,6 +177,8 @@
             max-width: 1100px;
             margin: 0 auto;
             padding: 0 24px;
+            position: relative;
+            z-index: 10;
         }
 
         /* Hero Section */
@@ -133,6 +187,7 @@
             display: flex;
             align-items: center;
             padding-top: 80px;
+            position: relative;
         }
 
         .hero-grid {
@@ -216,10 +271,12 @@
             background: var(--surface);
             border: 1px solid var(--surface-border);
             color: var(--text-primary);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
 
         .btn-secondary:hover {
-            background: var(--surface-hover);
+            background: rgba(255, 255, 255, 0.08);
             border-color: rgba(255, 255, 255, 0.2);
             transform: translateY(-2px);
         }
@@ -233,6 +290,8 @@
             border: 1px solid var(--surface-border);
             padding: 16px;
             border-radius: 24px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
         }
 
         .profile-img {
@@ -246,6 +305,7 @@
         /* Section Layouts */
         section {
             padding: 100px 0;
+            position: relative;
         }
 
         .section-header {
@@ -282,6 +342,8 @@
 
         .card {
             background: var(--surface);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--surface-border);
             border-radius: 20px;
             padding: 28px;
@@ -291,7 +353,7 @@
         .card:hover {
             border-color: rgba(255, 255, 255, 0.2);
             transform: translateY(-4px);
-            background: var(--surface-hover);
+            background: rgba(255, 255, 255, 0.05);
         }
 
         .card-header-logo {
@@ -336,7 +398,9 @@
 
         /* Terminal Window */
         .terminal-container {
-            background: #0b0d14;
+            background: rgba(11, 13, 20, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--surface-border);
             border-radius: 16px;
             overflow: hidden;
@@ -399,10 +463,17 @@
             text-align: center;
             color: var(--text-muted);
             font-size: 0.85rem;
+            position: relative;
+            z-index: 10;
         }
     </style>
 </head>
 <body>
+
+    <canvas id="topo-canvas"></canvas>
+
+    <div class="noise-overlay"></div>
+    <div class="vignette-overlay"></div>
 
     <div id="preloader">
         <div class="loader-text">INITIALIZING PORTFOLIO</div>
@@ -544,7 +615,239 @@
     </div>
 
     <script>
-        // Preloader Logic
+        // ==========================================================================
+        // INLINE SIMPLEX NOISE ALGORITHM
+        // ==========================================================================
+        const SimplexNoise = (function() {
+            const F2 = 0.5 * (Math.sqrt(3.0) - 1.0);
+            const G2 = (3.0 - Math.sqrt(3.0)) / 6.0;
+            const p = new Uint8Array(256);
+            for (let i = 0; i < 256; i++) p[i] = Math.floor(Math.random() * 256);
+            const perm = new Uint8Array(512);
+            const permMod12 = new Uint8Array(512);
+            for (let i = 0; i < 512; i++) {
+                perm[i] = p[i & 255];
+                permMod12[i] = (perm[i] % 12);
+            }
+            const grad3 = new Float32Array([
+                1,1, -1,1, 1,-1, -1,-1,
+                1,0, -1,0, 1,0, -1,0,
+                0,1, 0,-1, 0,1, 0,-1
+            ]);
+
+            return {
+                noise2D: function(xin, yin) {
+                    let n0, n1, n2;
+                    let s = (xin + yin) * F2;
+                    let i = Math.floor(xin + s);
+                    let j = Math.floor(yin + s);
+                    let t = (i + j) * G2;
+                    let X0 = i - t;
+                    let Y0 = j - t;
+                    let x0 = xin - X0;
+                    let y0 = yin - Y0;
+
+                    let i1, j1;
+                    if (x0 > y0) { i1 = 1; j1 = 0; }
+                    else { i1 = 0; j1 = 1; }
+
+                    let x1 = x0 - i1 + G2;
+                    let y1 = y0 - j1 + G2;
+                    let x2 = x0 - 1.0 + 2.0 * G2;
+                    let y2 = y0 - 1.0 + 2.0 * G2;
+
+                    let ii = i & 255;
+                    let jj = j & 255;
+                    let gi0 = permMod12[ii + perm[jj]];
+                    let gi1 = permMod12[ii + i1 + perm[jj + j1]];
+                    let gi2 = permMod12[ii + 1 + perm[jj + 1]];
+
+                    let t0 = 0.5 - x0*x0 - y0*y0;
+                    if (t0 < 0) n0 = 0.0;
+                    else {
+                        t0 *= t0;
+                        n0 = t0 * t0 * (grad3[gi0*2] * x0 + grad3[gi0*2+1] * y0);
+                    }
+
+                    let t1 = 0.5 - x1*x1 - y1*y1;
+                    if (t1 < 0) n1 = 0.0;
+                    else {
+                        t1 *= t1;
+                        n1 = t1 * t1 * (grad3[gi1*2] * x1 + grad3[gi1*2+1] * y1);
+                    }
+
+                    let t2 = 0.5 - x2*x2 - y2*y2;
+                    if (t2 < 0) n2 = 0.0;
+                    else {
+                        t2 *= t2;
+                        n2 = t2 * t2 * (grad3[gi2*2] * x2 + grad3[gi2*2+1] * y2);
+                    }
+
+                    return 70.0 * (n0 + n1 + n2);
+                }
+            };
+        })();
+
+        // ==========================================================================
+        // DYNAMIC TOPOGRAPHIC TERRAIN CANVAS ENGINE
+        // ==========================================================================
+        const canvas = document.getElementById('topo-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let mouseX = -1000, mouseY = -1000;
+        let smoothMouseX = -1000, smoothMouseY = -1000;
+        let scrollY = 0;
+        let isTabActive = true;
+        let time = 0;
+
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        window.addEventListener('mouseleave', () => {
+            mouseX = -1000;
+            mouseY = -1000;
+        });
+
+        window.addEventListener('scroll', () => {
+            scrollY = window.scrollY;
+        });
+
+        document.addEventListener('visibilitychange', () => {
+            isTabActive = !document.hidden;
+        });
+
+        // Iso-Contour Threshold Levels & Colors
+        const contourLevels = [
+            { threshold: -0.45, color: 'rgba(120, 150, 255, 0.025)', width: 1.0 },
+            { threshold: -0.25, color: 'rgba(180, 200, 255, 0.035)', width: 1.1 },
+            { threshold: -0.05, color: 'rgba(255, 255, 255, 0.045)', width: 1.2 },
+            { threshold: 0.15,  color: 'rgba(180, 200, 255, 0.035)', width: 1.1 },
+            { threshold: 0.35,  color: 'rgba(120, 150, 255, 0.025)', width: 1.0 }
+        ];
+
+        const step = 24; // Grid cell size in pixels
+
+        function render() {
+            if (!isTabActive) {
+                requestAnimationFrame(render);
+                return;
+            }
+
+            // Smooth interpolation for spring-damper cursor inertia
+            smoothMouseX += (mouseX - smoothMouseX) * 0.06;
+            smoothMouseY += (mouseY - smoothMouseY) * 0.06;
+
+            if (!prefersReducedMotion) {
+                time += 0.003;
+            }
+
+            ctx.clearRect(0, 0, width, height);
+
+            const cols = Math.ceil(width / step) + 1;
+            const rows = Math.ceil(height / step) + 1;
+
+            // Evaluate noise elevation field
+            const grid = [];
+            const noiseScale = 0.0022;
+            const scrollFactor = scrollY * 0.0004;
+
+            for (let r = 0; r < rows; r++) {
+                grid[r] = [];
+                for (let c = 0; c < cols; c++) {
+                    let posX = c * step;
+                    let posY = r * step;
+
+                    // Cursor gravitational displacement
+                    let dx = posX - smoothMouseX;
+                    let dy = posY - smoothMouseY;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    let influenceRadius = 260;
+
+                    if (dist < influenceRadius) {
+                        let pull = Math.pow(1 - dist / influenceRadius, 2) * 28;
+                        posX -= (dx / (dist || 1)) * pull;
+                        posY -= (dy / (dist || 1)) * pull;
+                    }
+
+                    let val = SimplexNoise.noise2D(posX * noiseScale + time, posY * noiseScale + scrollFactor);
+                    grid[r][c] = { x: c * step, y: r * step, val: val };
+                }
+            }
+
+            // Marching Squares Iso-Line Rendering
+            contourLevels.forEach((level) => {
+                ctx.beginPath();
+                ctx.strokeStyle = level.color;
+                ctx.lineWidth = level.width;
+
+                for (let r = 0; r < rows - 1; r++) {
+                    for (let c = 0; c < cols - 1; c++) {
+                        let p0 = grid[r][c];
+                        let p1 = grid[r][c + 1];
+                        let p2 = grid[r + 1][c + 1];
+                        let p3 = grid[r + 1][c];
+
+                        let state = 0;
+                        if (p0.val >= level.threshold) state |= 8;
+                        if (p1.val >= level.threshold) state |= 4;
+                        if (p2.val >= level.threshold) state |= 2;
+                        if (p3.val >= level.threshold) state |= 1;
+
+                        if (state === 0 || state === 15) continue;
+
+                        // Linear Interpolation helper
+                        let lerp = (v1, v2, p1, p2) => {
+                            if (Math.abs(v1 - v2) < 0.00001) return p1;
+                            let t = (level.threshold - v1) / (v2 - v1);
+                            return { x: p1.x + t * (p2.x - p1.x), y: p1.y + t * (p2.y - p1.y) };
+                        };
+
+                        let top = lerp(p0.val, p1.val, p0, p1);
+                        let right = lerp(p1.val, p2.val, p1, p2);
+                        let bottom = lerp(p3.val, p2.val, p3, p2);
+                        let left = lerp(p0.val, p3.val, p0, p3);
+
+                        switch (state) {
+                            case 1: case 14: drawLine(left, bottom); break;
+                            case 2: case 13: drawLine(bottom, right); break;
+                            case 3: case 12: drawLine(left, right); break;
+                            case 4: case 11: drawLine(top, right); break;
+                            case 5: drawLine(left, top); drawLine(bottom, right); break;
+                            case 6: case 9: drawLine(top, bottom); break;
+                            case 7: case 8: drawLine(left, top); break;
+                            case 10: drawLine(top, right); drawLine(left, bottom); break;
+                        }
+                    }
+                }
+                ctx.stroke();
+            });
+
+            requestAnimationFrame(render);
+        }
+
+        function drawLine(p1, p2) {
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+        }
+
+        render();
+
+        // ==========================================================================
+        // PRESERVED UI & TERMINAL SCRIPTS
+        // ==========================================================================
         window.addEventListener('DOMContentLoaded', () => {
             const progressBar = document.getElementById('loader-progress');
             const preloader = document.getElementById('preloader');
