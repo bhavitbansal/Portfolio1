@@ -69,6 +69,11 @@
             text-decoration: none;
         }
 
+        a:focus-visible, button:focus-visible {
+            outline: 2px solid var(--accent-purple);
+            outline-offset: 4px;
+        }
+
         /* Background Layers */
         #topo-canvas {
             position: fixed;
@@ -377,20 +382,10 @@
             box-shadow: 0 0 10px var(--accent-pink);
         }
 
-        .hero-headline {
-            font-family: var(--font-display);
-            font-size: clamp(2.8rem, 5.8vw, 5rem);
-            font-weight: 800;
-            line-height: 1.06;
-            letter-spacing: -0.035em;
-            color: var(--text-primary);
-            margin-bottom: 24px;
-        }
-
         .hero-subtitle {
-            font-size: clamp(1.05rem, 1.9vw, 1.25rem);
+            font-size: clamp(1.1rem, 2vw, 1.3rem);
             color: var(--text-secondary);
-            max-width: 580px;
+            max-width: 600px;
             margin-bottom: 40px;
             font-weight: 400;
             line-height: 1.7;
@@ -405,12 +400,14 @@
         .btn {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             padding: 14px 28px;
             border-radius: 999px;
             font-size: 0.9rem;
             font-weight: 600;
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: pointer;
+            border: 1px solid transparent;
         }
 
         .btn-primary {
@@ -445,19 +442,21 @@
             align-items: center;
             background: var(--card-glass);
             border: 1px solid var(--border-subtle);
-            padding: 20px;
-            border-radius: 32px;
+            padding: 22px;
+            border-radius: 36px;
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             box-shadow: 0 20px 50px rgba(168, 85, 247, 0.08);
+            max-width: 100%;
         }
 
         .profile-img {
-            width: 180px;
-            height: 180px;
-            border-radius: 24px;
+            width: 205px;
+            height: 205px;
+            border-radius: 28px;
             object-fit: cover;
             border: 1px solid var(--border-subtle);
+            max-width: 100%;
         }
 
         /* SECTION COMMONS */
@@ -562,7 +561,7 @@
             line-height: 1.65;
         }
 
-        /* REFINED ABOUT SECTION STYLING */
+        /* ABOUT SECTION STYLING */
         .about-story-card {
             background: var(--card-glass);
             backdrop-filter: blur(20px);
@@ -588,11 +587,11 @@
             }
         }
 
-        /* REFINED CURIOSITY SECTION STYLING */
+        /* CURIOSITY SECTION STYLING */
         .curiosity-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 28px;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 24px;
         }
 
         .curiosity-card {
@@ -673,7 +672,211 @@
             color: var(--accent-purple);
         }
 
-        /* REFINED SKILLS CATEGORIES & CARDS */
+        /* ==========================================================================
+           REFINED FEATURED WORK / PROJECTS SECTION (STRICT 6-PART HIERARCHY)
+           ========================================================================== */
+        .section-subtitle {
+            font-size: 0.98rem;
+            color: var(--text-secondary);
+            margin-top: 8px;
+            font-weight: 400;
+            max-width: 680px;
+            line-height: 1.6;
+        }
+
+        .projects-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .project-card {
+            background: var(--card-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 32px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.04);
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 36px;
+            align-items: center;
+            transition: transform 300ms ease-in-out, box-shadow 300ms ease-in-out, border-color 300ms ease-in-out;
+        }
+
+        .project-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            border-color: var(--border-hover);
+            box-shadow: 0 20px 45px rgba(168, 85, 247, 0.12);
+        }
+
+        .project-card.featured-project {
+            background: rgba(255, 255, 255, 0.88);
+            border-color: rgba(168, 85, 247, 0.25);
+            box-shadow: 0 14px 38px rgba(168, 85, 247, 0.08);
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: 24px;
+            right: 28px;
+            background-color: var(--accent-purple);
+            color: #FFFFFF;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 5px 14px;
+            border-radius: 999px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(168, 85, 247, 0.2);
+            z-index: 5;
+        }
+
+        /* 1. Project Image */
+        .project-image-wrapper {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-secondary);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 300ms ease-in-out;
+        }
+
+        .project-card:hover .project-image {
+            transform: scale(1.05);
+        }
+
+        .project-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* 2. Project Category */
+        .project-category {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--accent-purple);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        /* 3. Project Title */
+        .project-title {
+            font-family: var(--font-display);
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            letter-spacing: -0.01em;
+        }
+
+        /* 4. One-Line Project Summary */
+        .project-summary {
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            color: var(--accent-purple);
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        /* 5. Project Description (Story-Driven) */
+        .project-desc {
+            font-size: 0.94rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
+            margin-bottom: 18px;
+        }
+
+        /* 6. Technology Chips */
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+
+        .tech-chip {
+            font-family: var(--font-mono);
+            font-size: 0.73rem;
+            background: rgba(168, 85, 247, 0.08);
+            color: var(--accent-purple);
+            padding: 4px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--border-subtle);
+            font-weight: 500;
+        }
+
+        .tech-chip-type {
+            background: rgba(236, 72, 153, 0.08);
+            color: var(--accent-pink);
+            border-color: rgba(236, 72, 153, 0.18);
+        }
+
+        /* 7. Action Buttons */
+        .project-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-sm {
+            padding: 8px 20px;
+            font-size: 0.82rem;
+            border-radius: 999px;
+        }
+
+        .btn-disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            background: rgba(0, 0, 0, 0.04);
+            border-color: var(--border-subtle);
+            color: var(--text-muted);
+        }
+
+        .btn-disabled:hover {
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        .badge-coming-soon {
+            font-size: 0.65rem;
+            font-family: var(--font-mono);
+            background: rgba(168, 85, 247, 0.15);
+            color: var(--accent-purple);
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 6px;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 900px) {
+            .project-card {
+                grid-template-columns: 1fr;
+                gap: 24px;
+                padding: 24px;
+            }
+
+            .featured-badge {
+                top: 16px;
+                right: 16px;
+            }
+        }
+
+        /* SKILLS CATEGORIES & CARDS */
         .skills-categories {
             display: flex;
             flex-direction: column;
@@ -805,192 +1008,6 @@
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-
-        /* FEATURED WORK / PROJECTS SECTION */
-        .section-subtitle {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            margin-top: 6px;
-            font-weight: 400;
-        }
-
-        .projects-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 32px;
-        }
-
-        .project-card {
-            background: var(--card-glass);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--border-subtle);
-            border-radius: 24px;
-            padding: 28px;
-            position: relative;
-            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.04);
-            display: grid;
-            grid-template-columns: 360px 1fr;
-            gap: 32px;
-            align-items: center;
-            transition: transform 280ms ease-in-out, box-shadow 280ms ease-in-out, border-color 280ms ease-in-out;
-        }
-
-        .project-card:hover {
-            transform: translateY(-6px) scale(1.02);
-            border-color: var(--border-hover);
-            box-shadow: 0 20px 45px rgba(168, 85, 247, 0.12);
-        }
-
-        .project-card.featured-project {
-            background: rgba(255, 255, 255, 0.85);
-            border-color: rgba(168, 85, 247, 0.22);
-            box-shadow: 0 14px 38px rgba(168, 85, 247, 0.08);
-        }
-
-        .featured-badge {
-            position: absolute;
-            top: 20px;
-            right: 24px;
-            background-color: var(--accent-purple);
-            color: #FFFFFF;
-            font-family: var(--font-mono);
-            font-size: 0.72rem;
-            font-weight: 600;
-            padding: 5px 14px;
-            border-radius: 999px;
-            letter-spacing: 0.5px;
-            box-shadow: 0 2px 8px rgba(168, 85, 247, 0.2);
-        }
-
-        .project-image-wrapper {
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid var(--border-subtle);
-            background: var(--bg-secondary);
-        }
-
-        .project-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            transition: transform 280ms ease-in-out;
-        }
-
-        .project-card:hover .project-image {
-            transform: scale(1.05);
-        }
-
-        .project-content {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            justify-content: center;
-        }
-
-        .project-title {
-            font-family: var(--font-display);
-            font-size: 1.45rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 4px;
-        }
-
-        .project-subtitle {
-            font-family: var(--font-mono);
-            font-size: 0.82rem;
-            color: var(--accent-purple);
-            margin-bottom: 12px;
-        }
-
-        .project-desc {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-            margin-bottom: 16px;
-        }
-
-        .project-tags,
-        .project-features {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-
-        .tech-chip {
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            background: rgba(168, 85, 247, 0.08);
-            color: var(--accent-purple);
-            padding: 4px 12px;
-            border-radius: 999px;
-            border: 1px solid var(--border-subtle);
-        }
-
-        .feature-chip {
-            font-size: 0.75rem;
-            font-weight: 500;
-            background: var(--card-glass);
-            color: var(--text-primary);
-            padding: 4px 12px;
-            border-radius: 6px;
-            border: 1px solid var(--border-subtle);
-        }
-
-        .project-actions {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-top: 8px;
-            flex-wrap: wrap;
-        }
-
-        .btn-sm {
-            padding: 8px 18px;
-            font-size: 0.82rem;
-            border-radius: 999px;
-        }
-
-        .btn-disabled {
-            opacity: 0.65;
-            cursor: not-allowed;
-            background: rgba(0, 0, 0, 0.04);
-            border-color: var(--border-subtle);
-            color: var(--text-muted);
-        }
-
-        .btn-disabled:hover {
-            transform: none !important;
-            box-shadow: none !important;
-        }
-
-        .badge-coming-soon {
-            font-size: 0.65rem;
-            font-family: var(--font-mono);
-            background: rgba(168, 85, 247, 0.15);
-            color: var(--accent-purple);
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-left: 6px;
-            text-transform: uppercase;
-        }
-
-        @media (max-width: 900px) {
-            .project-card {
-                grid-template-columns: 1fr;
-                gap: 20px;
-                padding: 24px;
-            }
-
-            .featured-badge {
-                top: 16px;
-                right: 16px;
-            }
         }
 
         .terminal-container {
@@ -1139,12 +1156,11 @@
                         <span class="status-dot"></span>
                         Available for Engineering Roles
                     </div>
-                    <h1 class="hero-headline">Engineering software where precision meets human intuition.</h1>
                     <p class="hero-subtitle">Hi, I'm Bhavit Bansal—a Frontend Developer and UI Engineer pursuing B.Tech in CS &amp; AI. I construct high-performance digital products, blending clean architecture with analytical insights from cricket biomechanics.</p>
                     <div class="hero-actions">
-                        <a href="mailto:bhavitbansal@gmail.com" class="btn btn-primary">✉ Email Me</a>
-                        <a href="https://github.com/bhavitbansal" target="_blank" class="btn btn-secondary">GitHub</a>
-                        <a href="https://www.linkedin.com/in/bhavit-bansal" target="_blank" class="btn btn-secondary">LinkedIn</a>
+                        <a href="mailto:bhavitbansal@gmail.com" class="btn btn-primary">Email Me</a>
+                        <a href="https://github.com/bhavitbansal" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">GitHub</a>
+                        <a href="https://www.linkedin.com/in/bhavit-bansal" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">LinkedIn</a>
                     </div>
                 </div>
 
@@ -1187,6 +1203,11 @@
                     <h3 class="curiosity-title">Research-Driven Learning</h3>
                     <p class="curiosity-desc">Before building solutions, I enjoy researching deeply, exploring different approaches and understanding the reasoning behind them.</p>
                 </div>
+
+                <div class="curiosity-card">
+                    <h3 class="curiosity-title">Chess</h3>
+                    <p class="curiosity-desc">I enjoy playing and studying chess because it improves strategic thinking, pattern recognition and decision-making under pressure.</p>
+                </div>
             </div>
 
             <div class="exploring-container">
@@ -1205,7 +1226,7 @@
             <div class="section-header">
                 <span class="section-tag">Portfolio Showcase</span>
                 <h2 class="section-title">Featured Work</h2>
-                <p class="section-subtitle">A selection of projects that reflect my approach to building thoughtful digital experiences.</p>
+                <p class="section-subtitle">A collection of projects that reflect my approach to solving problems through thoughtful design and engineering.</p>
             </div>
 
             <div class="projects-grid">
@@ -1213,36 +1234,31 @@
                     <div class="featured-badge">★ Featured Build</div>
                     
                     <div class="project-image-wrapper">
-                        <img src="game-preview.jpg" alt="Browser Arcade Game Gameplay Screenshot" class="project-image" onerror="this.src='https://placehold.co/600x340/2A1B3D/E9D5FF?text=Arcade+Game+Preview'">
+                        <img src="game-preview.jpg" alt="Browser Arcade Game Gameplay Screenshot displaying active player canvas and score tracking UI" class="project-image" onerror="this.src='https://placehold.co/600x340/2A1B3D/E9D5FF?text=Arcade+Game+Preview'">
                     </div>
 
                     <div class="project-content">
+                        <span class="project-category">Interactive Game Engine</span>
+
                         <h3 class="project-title">Browser Arcade Game</h3>
-                        <div class="project-subtitle">Built using HTML, CSS and Vanilla JavaScript</div>
-                        
+
+                        <p class="project-summary">High-performance canvas arcade game built with zero external dependencies.</p>
+
                         <p class="project-desc">
-                            Designed and developed a browser-based arcade game from scratch focusing on responsive gameplay, animation systems, collision detection, score management and clean JavaScript architecture.
+                            Built to explore real-time render loops and collision physics without heavy engine overhead. Solves frame-rate drops and spatial hit detection across varying refresh rates by engineering a custom object-pooling system, delivering a smooth 60 FPS browser-native experience.
                         </p>
 
                         <div class="project-tags">
+                            <span class="tech-chip tech-chip-type">Personal Project</span>
                             <span class="tech-chip">HTML5</span>
                             <span class="tech-chip">CSS3</span>
                             <span class="tech-chip">JavaScript</span>
-                            <span class="tech-chip">Canvas</span>
-                        </div>
-
-                        <div class="project-features">
-                            <span class="feature-chip">Custom Game Logic</span>
-                            <span class="feature-chip">Collision Detection</span>
-                            <span class="feature-chip">Animation Loop</span>
-                            <span class="feature-chip">Responsive Gameplay</span>
-                            <span class="feature-chip">Performance Optimized</span>
-                            <span class="feature-chip">Score System</span>
+                            <span class="tech-chip">Canvas API</span>
                         </div>
 
                         <div class="project-actions">
-                            <a href="https://bhavitbansal.github.io/Game/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">Play Live</a>
-                            <a href="https://github.com/bhavitbansal" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm">GitHub</a>
+                            <a href="https://bhavitbansal.github.io/Game/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" aria-label="Play Browser Arcade Game Live">Live Demo</a>
+                            <a href="https://github.com/bhavitbansal" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" aria-label="View Browser Arcade Game Repository on GitHub">GitHub</a>
                             <button class="btn btn-secondary btn-sm btn-disabled" disabled aria-disabled="true">
                                 Case Study <span class="badge-coming-soon">Coming Soon</span>
                             </button>
@@ -1252,18 +1268,22 @@
 
                 <article class="project-card">
                     <div class="project-image-wrapper">
-                        <img src="portfolio-preview.jpg" alt="Bhavit Bansal Portfolio Screenshot" class="project-image" onerror="this.src='https://placehold.co/600x340/2A1B3D/E9D5FF?text=Portfolio+Preview'">
+                        <img src="portfolio-preview.jpg" alt="Bhavit Bansal Portfolio preview showing dark lavender theme and terminal interface" class="project-image" onerror="this.src='https://placehold.co/600x340/2A1B3D/E9D5FF?text=Portfolio+Preview'">
                     </div>
 
                     <div class="project-content">
+                        <span class="project-category">Web Architecture &amp; Systems</span>
+
                         <h3 class="project-title">Bhavit Bansal Portfolio</h3>
-                        <div class="project-subtitle">Digital Portfolio &amp; Interactive Web Systems</div>
-                        
+
+                        <p class="project-summary">Minimalist digital showcase engineered for fluid user navigation and low latency.</p>
+
                         <p class="project-desc">
-                            A high-performance personal website featuring smooth canvas animations, dynamic scroll tracking, terminal integration, and dark lavender aesthetics.
+                            Designed to establish a personal digital identity reflecting engineering rigor and visual clarity. Eliminates framework bloat by implementing custom marching-squares topological canvas backgrounds and responsive CSS grid architectures to achieve sub-second load performance.
                         </p>
 
                         <div class="project-tags">
+                            <span class="tech-chip tech-chip-type">Personal Portfolio</span>
                             <span class="tech-chip">HTML5</span>
                             <span class="tech-chip">CSS3</span>
                             <span class="tech-chip">JavaScript</span>
@@ -1271,33 +1291,45 @@
                         </div>
 
                         <div class="project-actions">
-                            <a href="https://bhavitbansal.github.io/Portfolio1/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">View Live</a>
-                            <a href="https://github.com/bhavitbansal/Portfolio1" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm">GitHub</a>
+                            <a href="https://bhavitbansal.github.io/Portfolio1/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" aria-label="View Live Portfolio Website">Live Demo</a>
+                            <a href="https://github.com/bhavitbansal/Portfolio1" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" aria-label="View Portfolio Source Code on GitHub">GitHub</a>
+                            <button class="btn btn-secondary btn-sm btn-disabled" disabled aria-disabled="true">
+                                Case Study <span class="badge-coming-soon">Coming Soon</span>
+                            </button>
                         </div>
                     </div>
                 </article>
 
                 <article class="project-card">
                     <div class="project-image-wrapper">
-                        <img src="document-parser-preview.jpg" alt="Document Parser Screenshot" class="project-image" onerror="this.src='https://placehold.co/600x340/2A1B3D/E9D5FF?text=Document+Parser+Preview'">
+                        <img src="document-parser-preview.jpg" alt="Document Parser interface rendering extracted data and metadata structure" class="project-image" onerror="this.src='https://placehold.co/600x340/2A1B3D/E9D5FF?text=Document+Parser+Preview'">
                     </div>
 
                     <div class="project-content">
+                        <span class="project-category">Data Extraction &amp; Automation</span>
+
                         <h3 class="project-title">Document Parser</h3>
-                        <div class="project-subtitle">Automated Information Extraction Tool</div>
-                        
+
+                        <p class="project-summary">Automated information extraction utility for heterogeneous document formats.</p>
+
                         <p class="project-desc">
-                            An efficient document parsing and analysis tool designed to extract structural data, text metadata, and key metrics from various document formats.
+                            Engineered to replace slow, error-prone manual document inspection in data pipelines. Resolves structural parsing inconsistencies by applying deterministic pattern-matching algorithms, significantly accelerating metadata extraction while maintaining high output reliability.
                         </p>
 
                         <div class="project-tags">
+                            <span class="tech-chip tech-chip-type">Automation Tool</span>
                             <span class="tech-chip">Python</span>
-                            <span class="tech-chip">Data Extraction</span>
+                            <span class="tech-chip">Data Parsing</span>
+                            <span class="tech-chip">Regex</span>
                             <span class="tech-chip">Automation</span>
                         </div>
 
                         <div class="project-actions">
-                            <a href="https://github.com/bhavitbansal" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm">GitHub</a>
+                            <a href="https://github.com/bhavitbansal" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" aria-label="View Document Parser Demo Repository">Live Demo</a>
+                            <a href="https://github.com/bhavitbansal" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" aria-label="View Document Parser GitHub Repository">GitHub</a>
+                            <button class="btn btn-secondary btn-sm btn-disabled" disabled aria-disabled="true">
+                                Case Study <span class="badge-coming-soon">Coming Soon</span>
+                            </button>
                         </div>
                     </div>
                 </article>
@@ -1401,7 +1433,7 @@
                         <img src="vardhman.jpg" alt="Vardhman International School" class="card-logo-img">
                     </div>
                     <h3 class="card-title">Vardhman International School</h3>
-                    <div class="card-subtitle">High School Foundation</div>
+                    <div class="card-subtitle">Higher Secondary Education</div>
                     <p class="card-desc">Completed high school education with a focus on Mathematics, Physics, and Computer Science foundations.</p>
                 </div>
             </div>
