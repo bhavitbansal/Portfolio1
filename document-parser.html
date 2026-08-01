@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Parser — Case Study | Bhavit Bansal</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-primary: #FFF7FC;
+            --bg-secondary: #F8F1FF;
+            --bg-gradient-soft: #FFE4F4;
+            --lavender: #E9D5FF;
+            --accent-purple: #A855F7;
+            --accent-pink: #EC4899;
+            --highlight: #8B5CF6;
+            --text-primary: #2A1B3D;
+            --text-secondary: #5B5568;
+            --text-muted: #8E869B;
+            --border-subtle: rgba(168, 85, 247, 0.12);
+            --border-hover: rgba(168, 85, 247, 0.28);
+            --card-glass: rgba(255, 255, 255, 0.72);
+            --card-glass-hover: rgba(255, 255, 255, 0.90);
+            --font-display: 'Sora', sans-serif;
+            --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { background-color: var(--bg-primary); color: var(--text-primary); font-family: var(--font-body); scroll-behavior: smooth; }
+        body { min-height: 100vh; line-height: 1.7; -webkit-font-smoothing: antialiased; background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-gradient-soft) 100%); }
+        a { color: inherit; text-decoration: none; }
+        
+        a:focus-visible, button:focus-visible { outline: 2px solid var(--accent-purple); outline-offset: 4px; }
+
+        .container { max-width: 920px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 10; }
+
+        #navbar {
+            position: fixed; top: 24px; left: 50%; transform: translateX(-50%); z-index: 100;
+            background: rgba(255, 255, 255, 0.82); backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle); border-radius: 999px;
+            padding: 10px 28px; display: flex; align-items: center; justify-content: space-between;
+            width: min(1120px, calc(100vw - 40px));
+        }
+
+        .nav-brand { display: flex; flex-direction: column; line-height: 1.1; }
+        .brand-title { font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; color: var(--text-primary); }
+        .brand-subtitle { font-family: var(--font-mono); font-size: 0.48rem; font-weight: 500; color: var(--accent-purple); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 2px; }
+        .nav-back-link { font-family: var(--font-mono); font-size: 0.82rem; color: var(--accent-purple); font-weight: 600; }
+
+        .case-hero { padding-top: 140px; padding-bottom: 40px; }
+        .breadcrumb { font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent-purple); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; display: block; }
+        .case-title { font-family: var(--font-display); font-size: clamp(2.2rem, 4.5vw, 3.2rem); font-weight: 800; color: var(--text-primary); margin-bottom: 16px; }
+        .case-lead { font-size: 1.15rem; color: var(--text-secondary); max-width: 780px; margin-bottom: 28px; }
+
+        .hero-banner-wrapper { width: 100%; aspect-ratio: 16 / 9; border-radius: 24px; overflow: hidden; border: 1px solid var(--border-subtle); margin-bottom: 36px; background: var(--bg-secondary); }
+        .hero-banner-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        .hero-actions-bar { display: flex; align-items: center; gap: 16px; margin-bottom: 64px; flex-wrap: wrap; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 14px 28px; border-radius: 999px; font-size: 0.9rem; font-weight: 600; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer; border: 1px solid transparent; }
+        .btn-primary { background: linear-gradient(135deg, var(--accent-purple), var(--highlight)); color: #FFFFFF; box-shadow: 0 8px 24px rgba(168, 85, 247, 0.25); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(168, 85, 247, 0.38); }
+        .btn-secondary { background: var(--card-glass); border: 1px solid var(--border-subtle); color: var(--text-primary); }
+        .btn-secondary:hover { background: var(--card-glass-hover); border-color: var(--border-hover); transform: translateY(-2px); }
+
+        .case-section { margin-bottom: 60px; }
+        .case-section-title { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+        .case-section-title::before { content: ''; width: 4px; height: 22px; background: var(--accent-purple); border-radius: 2px; }
+        .case-body { font-size: 1.02rem; color: var(--text-secondary); line-height: 1.8; }
+        .case-body p { margin-bottom: 18px; }
+
+        .tech-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+        .tech-chip { font-family: var(--font-mono); font-size: 0.8rem; background: rgba(168, 85, 247, 0.08); color: var(--accent-purple); padding: 6px 16px; border-radius: 999px; border: 1px solid var(--border-subtle); font-weight: 500; }
+
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 20px; }
+        .gallery-item { border-radius: 16px; overflow: hidden; border: 1px solid var(--border-subtle); aspect-ratio: 16 / 10; background: var(--bg-secondary); }
+        .gallery-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s ease; }
+        .gallery-item:hover .gallery-img { transform: scale(1.03); }
+
+        .cta-box { display: flex; align-items: center; justify-content: space-between; padding: 32px; background: var(--card-glass); border: 1px solid var(--border-subtle); border-radius: 24px; margin-bottom: 70px; gap: 20px; flex-wrap: wrap; }
+
+        .project-nav-bar { display: flex; justify-content: space-between; align-items: center; padding-top: 40px; margin-bottom: 80px; border-top: 1px solid var(--border-subtle); gap: 20px; }
+        .project-nav-link { display: flex; flex-direction: column; gap: 4px; text-decoration: none; transition: transform 0.25s ease; }
+        .project-nav-link:hover { transform: translateY(-2px); }
+        .project-nav-dir { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-purple); text-transform: uppercase; letter-spacing: 1px; }
+        .project-nav-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--text-primary); }
+
+        footer { padding: 40px 0; border-top: 1px solid var(--border-subtle); text-align: center; color: var(--text-secondary); font-size: 0.88rem; }
+    </style>
+</head>
+<body>
+
+    <nav id="navbar">
+        <a href="index.html" class="nav-brand">
+            <span class="brand-title">Bhavit Bansal</span>
+            <span class="brand-subtitle">Digital Portfolio</span>
+        </a>
+        <a href="index.html#projects" class="nav-back-link">← Back to Overview</a>
+    </nav>
+
+    <div class="container">
+
+        <header class="case-hero">
+            <span class="breadcrumb">Automation Tool • Data Extraction &amp; Processing</span>
+            <h1 class="case-title">Document Parser</h1>
+            <p class="case-lead">An automated Python-based document processing utility designed to ingest unstructured text documents, extract key structural metadata, and output validated JSON schemas.</p>
+            
+            <div class="tech-grid" style="margin-bottom: 28px;">
+                <span class="tech-chip">Python</span>
+                <span class="tech-chip">Data Parsing</span>
+                <span class="tech-chip">Regex</span>
+                <span class="tech-chip">Automation</span>
+            </div>
+
+            <div class="hero-actions-bar">
+                <a href="https://github.com/bhavitbansal" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Play Live ↗</a>
+                <a href="https://github.com/bhavitbansal" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">GitHub Repository ↗</a>
+                <a href="index.html#projects" class="btn btn-secondary">Back to Portfolio</a>
+            </div>
+
+            <div class="hero-banner-wrapper">
+                <img src="document-parser-preview.jpg" alt="Document Parser Tool Interface" class="hero-banner-img" onerror="this.src='https://placehold.co/900x500/2A1B3D/E9D5FF?text=Document+Parser+Tool'">
+            </div>
+        </header>
+
+        <section class="case-section">
+            <h2 class="case-section-title">Project Overview</h2>
+            <div class="case-body">
+                <p>The Document Parser tool was built to automate data extraction workflows, converting unstructured text records into clean, validated JSON datasets for downstream software integration.</p>
+                <p>By applying deterministic rule-based algorithms, the script eliminates human error in repetitive data entry tasks and processes batch documents efficiently.</p>
+            </div>
+        </section>
+
+        <section class="case-section">
+            <h2 class="case-section-title">Problem Statement</h2>
+            <div class="case-body">
+                <p>Unstructured text files contain vital operational data, but manual inspection is slow, error-prone, and difficult to scale across heterogeneous document formats.</p>
+                <p>The objective was to create a lightweight, dependable Python parser capable of identifying key-value pairs, dates, and structural headers without requiring expensive ML API services.</p>
+            </div>
+        </section>
+
+        <section class="case-section">
+            <h2 class="case-section-title">Solution</h2>
+            <div class="case-body">
+                <p>Developed a multi-stage parsing pipeline in Python that ingests raw files, performs character normalization, executes pre-compiled Regular Expression matching, and validates extracted dictionary payloads prior to JSON export.</p>
+            </div>
+        </section>
+
+        <section class="case-section">
+            <h2 class="case-section-title">Technologies Used</h2>
+            <div class="tech-grid">
+                <span class="tech-chip">Python 3</span>
+                <span class="tech-chip">Regular Expressions (re)</span>
+                <span class="tech-chip">JSON Serializer</span>
+                <span class="tech-chip">CLI Argument Parser</span>
+                <span class="tech-chip">File Stream I/O</span>
+            </div>
+        </section>
+
+        <section class="case-section">
+            <h2 class="case-section-title">Challenges &amp; Engineering Solutions</h2>
+            <div class="case-body">
+                <p><strong>Handling Irregular Spacing & Linebreaks:</strong> Heterogeneous documents often include varying linebreaks and whitespace. Solved by implementing a pre-parsing sanitization pass that standardizes text streams before regex matching.</p>
+            </div>
+        </section>
+
+        <section class="case-section">
+            <h2 class="case-section-title">What I Learned</h2>
+            <div class="case-body">
+                <p>Reinforced fundamental principles of regular expressions, memory-efficient string manipulation in Python, and robust exception handling in automated data processing pipelines.</p>
+            </div>
+        </section>
+
+        <section class="case-section">
+            <h2 class="case-section-title">Screenshot Gallery</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="document-parser-preview.jpg" alt="Document Parser CLI Output" class="gallery-img" onerror="this.src='https://placehold.co/600x380/2A1B3D/E9D5FF?text=CLI+Parsing+Output'">
+                </div>
+                <div class="gallery-item">
+                    <img src="document-parser-preview.jpg" alt="Extracted Data Schema" class="gallery-img" onerror="this.src='https://placehold.co/600x380/2A1B3D/E9D5FF?text=JSON+Schema+Output'">
+                </div>
+            </div>
+        </section>
+
+        <div class="cta-box">
+            <div>
+                <h3 style="font-family: var(--font-display); font-size: 1.2rem; color: var(--text-primary); margin-bottom: 4px;">Inspect the Source Repository</h3>
+                <p style="font-size: 0.9rem; color: var(--text-secondary);">Review the Python extraction scripts and sample parsing outputs on GitHub.</p>
+            </div>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <a href="https://github.com/bhavitbansal" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Play Live ↗</a>
+                <a href="https://github.com/bhavitbansal" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">GitHub Repository ↗</a>
+            </div>
+        </div>
+
+        <div class="project-nav-bar">
+            <a href="portfolio.html" class="project-nav-link" style="align-items: flex-start;">
+                <span class="project-nav-dir">← Previous Project</span>
+                <span class="project-nav-title">Bhavit Bansal Portfolio</span>
+            </a>
+            <a href="game.html" class="project-nav-link" style="align-items: flex-end; text-align: right;">
+                <span class="project-nav-dir">Next Project →</span>
+                <span class="project-nav-title">Browser Arcade Game</span>
+            </a>
+        </div>
+
+        <footer>
+            <p>© 2026 Bhavit Bansal • Built with purpose and precision.</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>

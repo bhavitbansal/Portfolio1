@@ -524,14 +524,22 @@
             margin-bottom: 16px;
         }
 
+        /* TASK 1: FIXED TENSOR & BRAND LOGO STYLING */
         .card-logo-img {
-            height: 46px;
+            height: 32px;
             width: auto;
+            max-width: 32px;
             object-fit: contain;
             border-radius: 8px;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.85);
             padding: 4px;
             border: 1px solid var(--border-subtle);
+            transition: transform 250ms ease, border-color 250ms ease;
+        }
+
+        .card-logo-img:hover {
+            transform: translateY(-2px);
+            border-color: var(--border-hover);
         }
 
         .card-icon {
@@ -673,7 +681,7 @@
         }
 
         /* ==========================================================================
-           REFINED FEATURED WORK / PROJECTS SECTION (STRICT 6-PART HIERARCHY)
+           FEATURED WORK / PROJECTS SECTION
            ========================================================================== */
         .section-subtitle {
             font-size: 0.98rem;
@@ -707,7 +715,7 @@
         }
 
         .project-card:hover {
-            transform: translateY(-6px) scale(1.02);
+            transform: translateY(-6px) scale(1.015);
             border-color: var(--border-hover);
             box-shadow: 0 20px 45px rgba(168, 85, 247, 0.12);
         }
@@ -734,7 +742,6 @@
             z-index: 5;
         }
 
-        /* 1. Project Image */
         .project-image-wrapper {
             width: 100%;
             aspect-ratio: 16 / 9;
@@ -762,7 +769,6 @@
             justify-content: center;
         }
 
-        /* 2. Project Category */
         .project-category {
             font-family: var(--font-mono);
             font-size: 0.75rem;
@@ -773,7 +779,6 @@
             margin-bottom: 4px;
         }
 
-        /* 3. Project Title */
         .project-title {
             font-family: var(--font-display);
             font-size: 1.45rem;
@@ -783,7 +788,6 @@
             letter-spacing: -0.01em;
         }
 
-        /* 4. One-Line Project Summary */
         .project-summary {
             font-family: var(--font-mono);
             font-size: 0.82rem;
@@ -792,7 +796,6 @@
             margin-bottom: 12px;
         }
 
-        /* 5. Project Description (Story-Driven) */
         .project-desc {
             font-size: 0.94rem;
             color: var(--text-secondary);
@@ -800,7 +803,6 @@
             margin-bottom: 18px;
         }
 
-        /* 6. Technology Chips */
         .project-tags {
             display: flex;
             flex-wrap: wrap;
@@ -825,7 +827,6 @@
             border-color: rgba(236, 72, 153, 0.18);
         }
 
-        /* 7. Action Buttons */
         .project-actions {
             display: flex;
             align-items: center;
@@ -837,30 +838,6 @@
             padding: 8px 20px;
             font-size: 0.82rem;
             border-radius: 999px;
-        }
-
-        .btn-disabled {
-            opacity: 0.65;
-            cursor: not-allowed;
-            background: rgba(0, 0, 0, 0.04);
-            border-color: var(--border-subtle);
-            color: var(--text-muted);
-        }
-
-        .btn-disabled:hover {
-            transform: none !important;
-            box-shadow: none !important;
-        }
-
-        .badge-coming-soon {
-            font-size: 0.65rem;
-            font-family: var(--font-mono);
-            background: rgba(168, 85, 247, 0.15);
-            color: var(--accent-purple);
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-left: 6px;
-            text-transform: uppercase;
         }
 
         @media (max-width: 900px) {
@@ -1234,18 +1211,21 @@
                     <div class="featured-badge">★ Featured Build</div>
                     
                     <div class="project-image-wrapper">
-                        <img src="game-preview.jpg" alt="Browser Arcade Game Gameplay Screenshot displaying active player canvas and score tracking UI" class="project-image" onerror="this.src='https://placehold.co/600x340/2A1B3D/E9D5FF?text=Arcade+Game+Preview'">
+                        <a href="game.html" aria-label="Open Browser Arcade Game Case Study Page">
+                            <img src="game-preview.jpg" alt="Browser Arcade Game Gameplay Preview" class="project-image" onerror="this.src='https://placehold.co/600x340/2A1B3D/E9D5FF?text=Arcade+Game+Preview'">
+                        </a>
                     </div>
 
                     <div class="project-content">
                         <span class="project-category">Interactive Game Engine</span>
-
-                        <h3 class="project-title">Browser Arcade Game</h3>
-
-                        <p class="project-summary">High-performance canvas arcade game built with zero external dependencies.</p>
+                        <h3 class="project-title">
+                            <a href="game.html">Browser Arcade Game</a>
+                        </h3>
+                        
+                        <p class="project-summary">High-performance canvas game engine engineered with zero external dependencies.</p>
 
                         <p class="project-desc">
-                            Built to explore real-time render loops and collision physics without heavy engine overhead. Solves frame-rate drops and spatial hit detection across varying refresh rates by engineering a custom object-pooling system, delivering a smooth 60 FPS browser-native experience.
+                            Built to explore real-time render loops and collision physics without heavy framework overhead. Solves frame-rate drops and spatial hit detection across varying refresh rates by engineering a dynamic object-pooling pipeline, delivering a smooth 60 FPS browser-native experience.
                         </p>
 
                         <div class="project-tags">
@@ -1257,25 +1237,26 @@
                         </div>
 
                         <div class="project-actions">
-                            <a href="https://bhavitbansal.github.io/Game/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" aria-label="Play Browser Arcade Game Live">Live Demo</a>
+                            <a href="https://bhavitbansal.github.io/Game/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" aria-label="Play Live Demo of Browser Arcade Game">Play Live</a>
                             <a href="https://github.com/bhavitbansal" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" aria-label="View Browser Arcade Game Repository on GitHub">GitHub</a>
-                            <button class="btn btn-secondary btn-sm btn-disabled" disabled aria-disabled="true">
-                                Case Study <span class="badge-coming-soon">Coming Soon</span>
-                            </button>
+                            <a href="game.html" class="btn btn-secondary btn-sm" aria-label="Read Dedicated Case Study Page for Browser Arcade Game">Case Study</a>
                         </div>
                     </div>
                 </article>
 
                 <article class="project-card">
                     <div class="project-image-wrapper">
-                        <img src="portfolio-preview.jpg" alt="Bhavit Bansal Portfolio preview showing dark lavender theme and terminal interface" class="project-image" onerror="this.src='https://placehold.co/600x340/2A1B3D/E9D5FF?text=Portfolio+Preview'">
+                        <a href="portfolio.html" aria-label="Open Bhavit Bansal Portfolio Case Study Page">
+                            <img src="portfolio-preview.jpg" alt="Bhavit Bansal Portfolio Preview" class="project-image" onerror="this.src='https://placehold.co/600x340/2A1B3D/E9D5FF?text=Portfolio+Preview'">
+                        </a>
                     </div>
 
                     <div class="project-content">
                         <span class="project-category">Web Architecture &amp; Systems</span>
-
-                        <h3 class="project-title">Bhavit Bansal Portfolio</h3>
-
+                        <h3 class="project-title">
+                            <a href="portfolio.html">Bhavit Bansal Portfolio</a>
+                        </h3>
+                        
                         <p class="project-summary">Minimalist digital showcase engineered for fluid user navigation and low latency.</p>
 
                         <p class="project-desc">
@@ -1283,7 +1264,7 @@
                         </p>
 
                         <div class="project-tags">
-                            <span class="tech-chip tech-chip-type">Personal Portfolio</span>
+                            <span class="tech-chip tech-chip-type">Personal Project</span>
                             <span class="tech-chip">HTML5</span>
                             <span class="tech-chip">CSS3</span>
                             <span class="tech-chip">JavaScript</span>
@@ -1291,25 +1272,26 @@
                         </div>
 
                         <div class="project-actions">
-                            <a href="https://bhavitbansal.github.io/Portfolio1/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" aria-label="View Live Portfolio Website">Live Demo</a>
+                            <a href="https://bhavitbansal.github.io/Portfolio1/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" aria-label="View Live Portfolio Website">Play Live</a>
                             <a href="https://github.com/bhavitbansal/Portfolio1" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" aria-label="View Portfolio Source Code on GitHub">GitHub</a>
-                            <button class="btn btn-secondary btn-sm btn-disabled" disabled aria-disabled="true">
-                                Case Study <span class="badge-coming-soon">Coming Soon</span>
-                            </button>
+                            <a href="portfolio.html" class="btn btn-secondary btn-sm" aria-label="Read Dedicated Case Study Page for Bhavit Bansal Portfolio">Case Study</a>
                         </div>
                     </div>
                 </article>
 
                 <article class="project-card">
                     <div class="project-image-wrapper">
-                        <img src="document-parser-preview.jpg" alt="Document Parser interface rendering extracted data and metadata structure" class="project-image" onerror="this.src='https://placehold.co/600x340/2A1B3D/E9D5FF?text=Document+Parser+Preview'">
+                        <a href="document-parser.html" aria-label="Open Document Parser Case Study Page">
+                            <img src="document-parser-preview.jpg" alt="Document Parser Tool Preview" class="project-image" onerror="this.src='https://placehold.co/600x340/2A1B3D/E9D5FF?text=Document+Parser+Preview'">
+                        </a>
                     </div>
 
                     <div class="project-content">
                         <span class="project-category">Data Extraction &amp; Automation</span>
-
-                        <h3 class="project-title">Document Parser</h3>
-
+                        <h3 class="project-title">
+                            <a href="document-parser.html">Document Parser</a>
+                        </h3>
+                        
                         <p class="project-summary">Automated information extraction utility for heterogeneous document formats.</p>
 
                         <p class="project-desc">
@@ -1325,11 +1307,9 @@
                         </div>
 
                         <div class="project-actions">
-                            <a href="https://github.com/bhavitbansal" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" aria-label="View Document Parser Demo Repository">Live Demo</a>
-                            <a href="https://github.com/bhavitbansal" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" aria-label="View Document Parser GitHub Repository">GitHub</a>
-                            <button class="btn btn-secondary btn-sm btn-disabled" disabled aria-disabled="true">
-                                Case Study <span class="badge-coming-soon">Coming Soon</span>
-                            </button>
+                            <a href="https://github.com/bhavitbansal" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" aria-label="View Document Parser Live Demo Repository">Play Live</a>
+                            <a href="https://github.com/bhavitbansal" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" aria-label="View Document Parser Code on GitHub">GitHub</a>
+                            <a href="document-parser.html" class="btn btn-secondary btn-sm" aria-label="Read Dedicated Case Study Page for Document Parser">Case Study</a>
                         </div>
                     </div>
                 </article>
@@ -1604,7 +1584,6 @@
             isTabActive = !document.hidden;
         });
 
-        // Abstract Pitch Progress Function
         function updateInningsProgress() {
             const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
             const pct = Math.min(100, Math.max(0, (window.scrollY / (totalHeight || 1)) * 100));
@@ -1682,7 +1661,6 @@
                 }
             }
 
-            // Marching Squares Algorithm
             contourLevels.forEach((level) => {
                 ctx.beginPath();
                 ctx.strokeStyle = level.color;
