@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bhavit Bansal Portfolio — Case Study | Bhavit Bansal</title>
+    <title>Bhavit Bansal Portfolio — Editorial Case Study | Bhavit Bansal</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
         :root {
+            /* Bloom Palette Design Tokens */
             --bg-primary: #FFF7FC;
             --bg-secondary: #F8F1FF;
             --bg-gradient-soft: #FFE4F4;
@@ -18,81 +19,719 @@
             --accent-purple: #A855F7;
             --accent-pink: #EC4899;
             --highlight: #8B5CF6;
+            
             --text-primary: #2A1B3D;
             --text-secondary: #5B5568;
             --text-muted: #8E869B;
+            
             --border-subtle: rgba(168, 85, 247, 0.12);
             --border-hover: rgba(168, 85, 247, 0.28);
-            --card-glass: rgba(255, 255, 255, 0.72);
-            --card-glass-hover: rgba(255, 255, 255, 0.90);
+            --card-glass: rgba(255, 255, 255, 0.76);
+            --card-glass-hover: rgba(255, 255, 255, 0.94);
+            
             --font-display: 'Sora', sans-serif;
             --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
         }
 
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { background-color: var(--bg-primary); color: var(--text-primary); font-family: var(--font-body); scroll-behavior: smooth; }
-        body { min-height: 100vh; line-height: 1.7; -webkit-font-smoothing: antialiased; background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-gradient-soft) 100%); }
-        a { color: inherit; text-decoration: none; }
-        
-        a:focus-visible, button:focus-visible { outline: 2px solid var(--accent-purple); outline-offset: 4px; }
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-        .container { max-width: 920px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 10; }
+        html {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            scroll-behavior: smooth;
+        }
 
+        body {
+            min-height: 100vh;
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-gradient-soft) 100%);
+            background-size: 300% 300%;
+            animation: ambientGradientDrift 50s ease infinite alternate;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        @keyframes ambientGradientDrift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        a:focus-visible, button:focus-visible {
+            outline: 2px solid var(--accent-purple);
+            outline-offset: 4px;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 28px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Ambient Background Blobs (Soft & Subtle) */
+        .watercolor-blobs {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.28;
+            will-change: transform;
+        }
+
+        .blob-1 {
+            top: -10%;
+            left: -5%;
+            width: 650px;
+            height: 650px;
+            background: radial-gradient(circle, var(--lavender) 0%, var(--bg-gradient-soft) 70%, transparent 100%);
+            animation: floatBlob1 42s infinite alternate ease-in-out;
+        }
+
+        .blob-2 {
+            top: 50%;
+            right: -10%;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, #fbcfe8 0%, var(--lavender) 65%, transparent 100%);
+            animation: floatBlob2 48s infinite alternate ease-in-out;
+        }
+
+        @keyframes floatBlob1 {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, 70px) scale(1.08); }
+            100% { transform: translate(-30px, 90px) scale(0.96); }
+        }
+
+        @keyframes floatBlob2 {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-70px, -50px) scale(1.12); }
+            100% { transform: translate(40px, 60px) scale(0.92); }
+        }
+
+        /* Navigation Bar */
         #navbar {
-            position: fixed; top: 24px; left: 50%; transform: translateX(-50%); z-index: 100;
-            background: rgba(255, 255, 255, 0.82); backdrop-filter: blur(20px);
-            border: 1px solid var(--border-subtle); border-radius: 999px;
-            padding: 10px 28px; display: flex; align-items: center; justify-content: space-between;
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.05);
+            border-radius: 999px;
+            padding: 10px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             width: min(1120px, calc(100vw - 40px));
         }
 
-        .nav-brand { display: flex; flex-direction: column; line-height: 1.1; }
-        .brand-title { font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; color: var(--text-primary); }
-        .brand-subtitle { font-family: var(--font-mono); font-size: 0.48rem; font-weight: 500; color: var(--accent-purple); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 2px; }
-        .nav-back-link { font-family: var(--font-mono); font-size: 0.82rem; color: var(--accent-purple); font-weight: 600; }
+        .nav-brand {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
 
-        .case-hero { padding-top: 140px; padding-bottom: 40px; }
-        .breadcrumb { font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent-purple); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; display: block; }
-        .case-title { font-family: var(--font-display); font-size: clamp(2.2rem, 4.5vw, 3.2rem); font-weight: 800; color: var(--text-primary); margin-bottom: 16px; }
-        .case-lead { font-size: 1.15rem; color: var(--text-secondary); max-width: 780px; margin-bottom: 28px; }
+        .brand-title {
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
 
-        .hero-banner-wrapper { width: 100%; aspect-ratio: 16 / 9; border-radius: 24px; overflow: hidden; border: 1px solid var(--border-subtle); margin-bottom: 36px; background: var(--bg-secondary); }
-        .hero-banner-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .brand-subtitle {
+            font-family: var(--font-mono);
+            font-size: 0.48rem;
+            font-weight: 500;
+            color: var(--accent-purple);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-top: 2px;
+        }
 
-        .hero-actions-bar { display: flex; align-items: center; gap: 16px; margin-bottom: 64px; flex-wrap: wrap; }
-        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 14px 28px; border-radius: 999px; font-size: 0.9rem; font-weight: 600; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer; border: 1px solid transparent; }
-        .btn-primary { background: linear-gradient(135deg, var(--accent-purple), var(--highlight)); color: #FFFFFF; box-shadow: 0 8px 24px rgba(168, 85, 247, 0.25); }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(168, 85, 247, 0.38); }
-        .btn-secondary { background: var(--card-glass); border: 1px solid var(--border-subtle); color: var(--text-primary); }
-        .btn-secondary:hover { background: var(--card-glass-hover); border-color: var(--border-hover); transform: translateY(-2px); }
+        .nav-back-link {
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            color: var(--accent-purple);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: transform 0.28s ease-in-out;
+        }
 
-        .case-section { margin-bottom: 60px; }
-        .case-section-title { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
-        .case-section-title::before { content: ''; width: 4px; height: 22px; background: var(--accent-purple); border-radius: 2px; }
-        .case-body { font-size: 1.02rem; color: var(--text-secondary); line-height: 1.8; }
-        .case-body p { margin-bottom: 18px; }
+        .nav-back-link:hover {
+            transform: translateX(-3px);
+        }
 
-        .tech-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
-        .tech-chip { font-family: var(--font-mono); font-size: 0.8rem; background: rgba(168, 85, 247, 0.08); color: var(--accent-purple); padding: 6px 16px; border-radius: 999px; border: 1px solid var(--border-subtle); font-weight: 500; }
+        /* Buttons & Controls */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 999px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            transition: transform 280ms ease-in-out, box-shadow 280ms ease-in-out, background 280ms ease-in-out, border-color 280ms ease-in-out;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
 
-        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 20px; }
-        .gallery-item { border-radius: 16px; overflow: hidden; border: 1px solid var(--border-subtle); aspect-ratio: 16 / 10; background: var(--bg-secondary); }
-        .gallery-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s ease; }
-        .gallery-item:hover .gallery-img { transform: scale(1.03); }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-purple), var(--highlight));
+            color: #FFFFFF;
+            box-shadow: 0 8px 24px rgba(168, 85, 247, 0.22);
+        }
 
-        .cta-box { display: flex; align-items: center; justify-content: space-between; padding: 32px; background: var(--card-glass); border: 1px solid var(--border-subtle); border-radius: 24px; margin-bottom: 70px; gap: 20px; flex-wrap: wrap; }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(168, 85, 247, 0.36);
+        }
 
-        .project-nav-bar { display: flex; justify-content: space-between; align-items: center; padding-top: 40px; margin-bottom: 80px; border-top: 1px solid var(--border-subtle); gap: 20px; }
-        .project-nav-link { display: flex; flex-direction: column; gap: 4px; text-decoration: none; transition: transform 0.25s ease; }
-        .project-nav-link:hover { transform: translateY(-2px); }
-        .project-nav-dir { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-purple); text-transform: uppercase; letter-spacing: 1px; }
-        .project-nav-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--text-primary); }
+        .btn-secondary {
+            background: var(--card-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+            box-shadow: 0 4px 16px rgba(168, 85, 247, 0.03);
+        }
 
-        footer { padding: 40px 0; border-top: 1px solid var(--border-subtle); text-align: center; color: var(--text-secondary); font-size: 0.88rem; }
+        .btn-secondary:hover {
+            background: var(--card-glass-hover);
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(168, 85, 247, 0.08);
+        }
+
+        /* HERO SECTION */
+        .hero-section {
+            padding-top: 150px;
+            padding-bottom: 70px;
+        }
+
+        .hero-kicker {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--accent-purple);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.4rem, 5vw, 3.8rem);
+            font-weight: 800;
+            line-height: 1.08;
+            letter-spacing: -0.03em;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.08rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            line-height: 1.75;
+            max-width: 820px;
+            margin-bottom: 32px;
+            font-weight: 400;
+        }
+
+        .tech-chips-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 36px;
+        }
+
+        .tech-chip {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            background: rgba(168, 85, 247, 0.08);
+            color: var(--accent-purple);
+            padding: 6px 16px;
+            border-radius: 999px;
+            border: 1px solid var(--border-subtle);
+            font-weight: 500;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
+
+        /* Large Desktop Mockup Showcase Frame */
+        .mockup-window-frame {
+            width: 100%;
+            aspect-ratio: 16 / 9.5;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--border-hover);
+            box-shadow: 0 24px 60px rgba(168, 85, 247, 0.1);
+            background: var(--bg-secondary);
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .mockup-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 280ms ease-in-out;
+        }
+
+        .mockup-window-frame:hover .mockup-img {
+            transform: scale(1.015);
+        }
+
+        /* EDITORIAL SECTION COMMONS */
+        .editorial-section {
+            padding: 90px 0;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .section-label {
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            color: var(--accent-purple);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            display: block;
+            font-weight: 600;
+        }
+
+        .section-heading {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 3.2vw, 2.3rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            margin-bottom: 28px;
+        }
+
+        .editorial-prose {
+            font-size: 1.06rem;
+            color: var(--text-secondary);
+            line-height: 1.9;
+            max-width: 840px;
+        }
+
+        .editorial-prose p {
+            margin-bottom: 24px;
+        }
+
+        .editorial-prose p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* SECTION 2: DESIGN PHILOSOPHY GRID */
+        .philosophy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 28px;
+            margin-top: 36px;
+        }
+
+        .philosophy-card {
+            background: var(--card-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 28px;
+            transition: transform 280ms ease-in-out, border-color 280ms ease-in-out, box-shadow 280ms ease-in-out;
+        }
+
+        .philosophy-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-hover);
+            box-shadow: 0 16px 36px rgba(168, 85, 247, 0.07);
+        }
+
+        .philosophy-title {
+            font-family: var(--font-display);
+            font-size: 1.12rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .philosophy-body {
+            font-size: 0.94rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* SECTION 3: FEATURE CARDS GRID */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 24px;
+            margin-top: 36px;
+        }
+
+        .feature-card {
+            background: var(--card-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 22px;
+            padding: 28px;
+            transition: transform 280ms ease-in-out, border-color 280ms ease-in-out, box-shadow 280ms ease-in-out;
+            box-shadow: 0 8px 24px rgba(168, 85, 247, 0.03);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-hover);
+            box-shadow: 0 16px 36px rgba(168, 85, 247, 0.08);
+        }
+
+        .feature-icon-box {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(168, 85, 247, 0.08);
+            color: var(--accent-purple);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 18px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .feature-card-title {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .feature-card-desc {
+            font-size: 0.93rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
+        }
+
+        /* SECTION 4: DESIGN PROCESS TIMELINE */
+        .process-timeline {
+            position: relative;
+            margin-top: 40px;
+            padding-left: 28px;
+            border-left: 2px solid var(--border-subtle);
+        }
+
+        .process-step {
+            position: relative;
+            margin-bottom: 36px;
+        }
+
+        .process-step:last-child {
+            margin-bottom: 0;
+        }
+
+        .process-dot {
+            position: absolute;
+            left: -35px;
+            top: 4px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-purple);
+            border: 3px solid var(--bg-primary);
+            box-shadow: 0 0 0 2px var(--accent-purple);
+        }
+
+        .process-phase {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--accent-purple);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .process-title {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .process-desc {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
+            max-width: 780px;
+        }
+
+        /* SECTION 5: SCREENSHOTS GALLERY */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .gallery-card {
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+            aspect-ratio: 16 / 10;
+            background: var(--bg-secondary);
+            box-shadow: 0 12px 32px rgba(168, 85, 247, 0.04);
+            cursor: pointer;
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 280ms ease-in-out;
+        }
+
+        .gallery-card:hover .gallery-img {
+            transform: scale(1.02);
+        }
+
+        /* SECTION 6: DEVELOPMENT CHALLENGES */
+        .challenges-list {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-top: 36px;
+        }
+
+        .challenge-item {
+            background: var(--card-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 22px;
+            padding: 28px;
+            transition: transform 280ms ease-in-out, border-color 280ms ease-in-out;
+        }
+
+        .challenge-item:hover {
+            transform: translateY(-3px);
+            border-color: var(--border-hover);
+        }
+
+        .challenge-title {
+            font-family: var(--font-display);
+            font-size: 1.18rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .challenge-body {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* SECTION 7: REFLECTIONS GRID */
+        .reflection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-top: 36px;
+        }
+
+        .reflection-card {
+            background: var(--card-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 24px;
+            transition: transform 280ms ease-in-out, border-color 280ms ease-in-out;
+        }
+
+        .reflection-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--border-hover);
+        }
+
+        .reflection-topic {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--accent-pink);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .reflection-title {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .reflection-body {
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
+        }
+
+        /* BOTTOM CTA BANNER */
+        .bottom-cta-banner {
+            background: var(--card-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-hover);
+            border-radius: 28px;
+            padding: 44px 40px;
+            margin: 70px 0 60px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 28px;
+            box-shadow: 0 16px 45px rgba(168, 85, 247, 0.06);
+            flex-wrap: wrap;
+        }
+
+        .bottom-cta-content h3 {
+            font-family: var(--font-display);
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .bottom-cta-content p {
+            font-size: 0.96rem;
+            color: var(--text-secondary);
+        }
+
+        .bottom-cta-buttons {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        /* CHAPTER NAVIGATION FOOTER */
+        .project-chapter-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 36px;
+            padding-bottom: 70px;
+            border-top: 1px solid var(--border-subtle);
+            gap: 20px;
+        }
+
+        .chapter-nav-link {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            transition: transform 250ms ease-in-out;
+        }
+
+        .chapter-nav-link:hover {
+            transform: translateY(-2px);
+        }
+
+        .chapter-dir {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--accent-purple);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+
+        .chapter-title {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid var(--border-subtle);
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .bottom-cta-banner {
+                padding: 32px 24px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .bottom-cta-buttons {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
+
+    <div class="watercolor-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
 
     <nav id="navbar">
         <a href="index.html" class="nav-brand">
@@ -102,121 +741,299 @@
         <a href="index.html#projects" class="nav-back-link">← Back to Overview</a>
     </nav>
 
-    <div class="container">
+    <main class="container">
 
-        <header class="case-hero">
-            <span class="breadcrumb">Personal Build • Web Architecture &amp; Systems</span>
-            <h1 class="case-title">Bhavit Bansal Portfolio</h1>
-            <p class="case-lead">Architecting a minimalist, zero-framework personal website featuring interactive topological canvas background renders, dynamic scroll tracking, and a command-line terminal interface.</p>
+        <header class="hero-section">
+            <span class="hero-kicker">Product Design &amp; Web Systems</span>
+            <h1 class="hero-title">Bhavit Bansal Portfolio</h1>
             
-            <div class="tech-grid" style="margin-bottom: 28px;">
+            <p class="hero-subtitle">
+                A personal portfolio designed to present my work, personality and technical skills through thoughtful interaction design and clean frontend engineering.
+            </p>
+
+            <div class="tech-chips-group">
                 <span class="tech-chip">HTML5</span>
-                <span class="tech-chip">CSS3 Glassmorphism</span>
-                <span class="tech-chip">Vanilla JavaScript</span>
-                <span class="tech-chip">Canvas API</span>
+                <span class="tech-chip">CSS3</span>
+                <span class="tech-chip">JavaScript</span>
+                <span class="tech-chip">Responsive Design</span>
             </div>
 
-            <div class="hero-actions-bar">
-                <a href="https://bhavitbansal.github.io/Portfolio1/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Play Live ↗</a>
-                <a href="https://github.com/bhavitbansal/Portfolio1" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">GitHub Repository ↗</a>
-                <a href="index.html#projects" class="btn btn-secondary">Back to Portfolio</a>
+            <div class="hero-actions">
+                <a href="https://bhavitbansal.github.io/Portfolio1/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                    View Live ↗
+                </a>
+                <a href="https://github.com/bhavitbansal/Portfolio1" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                    GitHub Repository ↗
+                </a>
+                <a href="index.html#projects" class="btn btn-secondary">
+                    Back to Portfolio
+                </a>
             </div>
 
-            <div class="hero-banner-wrapper">
-                <img src="portfolio-preview.jpg" alt="Bhavit Bansal Portfolio Interface" class="hero-banner-img" onerror="this.src='https://placehold.co/900x500/2A1B3D/E9D5FF?text=Portfolio+Interface'">
+            <div class="mockup-window-frame">
+                <img src="portfolio-preview.jpg" alt="Bhavit Bansal Portfolio Interface Desktop Showcase" class="mockup-img" onerror="this.src='https://placehold.co/1000x580/2A1B3D/E9D5FF?text=Bhavit+Bansal+Portfolio+Desktop+Showcase'">
             </div>
         </header>
 
-        <section class="case-section">
-            <h2 class="case-section-title">Project Overview</h2>
-            <div class="case-body">
-                <p>This personal portfolio was engineered as a digital showcase reflecting both engineering discipline and UI design intuition. It presents technical capabilities alongside personal interests in systems thinking and cricket biomechanics.</p>
-                <p>Built entirely without third-party CSS or JS frameworks, it demonstrates mastery over foundational web technologies, custom CSS variable tokens, and responsive layout architectures.</p>
+        <section class="editorial-section">
+            <span class="section-label">01 • Intent</span>
+            <h2 class="section-heading">The Idea</h2>
+            <div class="editorial-prose">
+                <p>
+                    A portfolio shouldn't be a passive list of repositories. It is a digital product—an immediate reflection of an engineer's design taste, code discipline, and attention to detail.
+                </p>
+                <p>
+                    This project was built from the ground up without third-party template frameworks or heavy single-page application abstractions. The intent was to communicate personality, design thinking, and technical craftsmanship directly through fluid typography, sub-second performance, and deliberate micro-interactions.
+                </p>
             </div>
         </section>
 
-        <section class="case-section">
-            <h2 class="case-section-title">Problem Statement</h2>
-            <div class="case-body">
-                <p>Developer portfolios often rely heavily on multi-megabyte JavaScript single-page application frameworks, causing slow first-contentful-paint times, layout shift instability, and generic component aesthetics.</p>
-                <p>The goal was to construct a fast, sub-second loading web experience that balances subtle interactive canvas animations with clear editorial typography and WCAG accessibility standards.</p>
+        <section class="editorial-section">
+            <span class="section-label">02 • Architecture</span>
+            <h2 class="section-heading">Design Philosophy</h2>
+            
+            <div class="editorial-prose">
+                <p>
+                    The visual language balances editorial clarity with an organic aesthetic, ensuring every UI element serves a distinct communication purpose.
+                </p>
+            </div>
+
+            <div class="philosophy-grid">
+                <div class="philosophy-card">
+                    <h3 class="philosophy-title">Typography Hierarchy</h3>
+                    <p class="philosophy-body">Combines Sora for strong display headlines, Plus Jakarta Sans for high-legibility body prose, and JetBrains Mono for code metadata.</p>
+                </div>
+
+                <div class="philosophy-card">
+                    <h3 class="philosophy-title">Editorial Whitespace</h3>
+                    <p class="philosophy-body">Generous section padding and relaxed line-heights prevent cognitive clutter, guiding the reviewer naturally from section to section.</p>
+                </div>
+
+                <div class="philosophy-card">
+                    <h3 class="philosophy-title">Bloom Palette</h3>
+                    <p class="philosophy-body">Custom CSS tokens featuring soft lavenders, rich purple accents, and high-contrast dark text establish a memorable personal brand identity.</p>
+                </div>
+
+                <div class="philosophy-card">
+                    <h3 class="philosophy-title">Interaction Design</h3>
+                    <p class="philosophy-body">Subtle 280ms hover lifts and background topological canvas animations respond smoothly to cursor movements without distracting from reading.</p>
+                </div>
+
+                <div class="philosophy-card">
+                    <h3 class="philosophy-title">Accessibility (a11y)</h3>
+                    <p class="philosophy-body">Semantic HTML5 tags, high contrast ratios, meaningful image alt descriptions, and explicit WCAG focus-visible indicators across controls.</p>
+                </div>
+
+                <div class="philosophy-card">
+                    <h3 class="philosophy-title">Visual Rhythm</h3>
+                    <p class="philosophy-body">Equal border radii, glassmorphism backdrop blurs, and strict card grid alignments ensure visual balance across device sizes.</p>
+                </div>
             </div>
         </section>
 
-        <section class="case-section">
-            <h2 class="case-section-title">Solution</h2>
-            <div class="case-body">
-                <p>Established a centralized CSS design token architecture known as the <strong>Bloom Palette</strong> (`--bg-primary: #FFF7FC`, `--accent-purple: #A855F7`), pairing soft lavender glassmorphic cards with responsive CSS Grid layouts.</p>
-                <p>Integrated a lightweight mathematical <strong>Marching Squares algorithm</strong> on an underlying HTML5 Canvas element to generate ambient, real-time topological contour lines that interact subtly with cursor movements.</p>
+        <section class="editorial-section">
+            <span class="section-label">03 • Core Features</span>
+            <h2 class="section-heading">Capabilities &amp; Features</h2>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon-box">📱</div>
+                    <h3 class="feature-card-title">Responsive Design</h3>
+                    <p class="feature-card-desc">Fluid flexbox and grid layouts that adapt flawlessly across mobile, tablet, laptop, and ultrawide viewports.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-box">🧩</div>
+                    <h3 class="feature-card-title">Reusable Components</h3>
+                    <p class="feature-card-desc">Handcrafted modular CSS classes enforcing systematic design token reuse for cards, buttons, and badges.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-box">⚡</div>
+                    <h3 class="feature-card-title">Interactive Sections</h3>
+                    <p class="feature-card-desc">Includes a built-in interactive command terminal and dynamic Marching Squares mathematical canvas background.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-box">✨</div>
+                    <h3 class="feature-card-title">Modern UI Aesthetic</h3>
+                    <p class="feature-card-desc">Dark lavender glassmorphism backdrop filters paired with soft gradient overlays creating a premium feel.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-box">♿</div>
+                    <h3 class="feature-card-title">Accessibility Engineered</h3>
+                    <p class="feature-card-desc">Fully keyboard navigable with visible focus states, ARIA labels, and reduced-motion media query support.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-box">🚀</div>
+                    <h3 class="feature-card-title">Zero-Framework Performance</h3>
+                    <p class="feature-card-desc">Sub-second First Contentful Paint delivered by eliminating heavy JS library overhead and optimizing asset delivery.</p>
+                </div>
             </div>
         </section>
 
-        <section class="case-section">
-            <h2 class="case-section-title">Technologies Used</h2>
-            <div class="tech-grid">
-                <span class="tech-chip">HTML5 Semantic Structure</span>
-                <span class="tech-chip">CSS3 Custom Properties</span>
-                <span class="tech-chip">Glassmorphism UI</span>
-                <span class="tech-chip">Vanilla JavaScript (ES6+)</span>
-                <span class="tech-chip">Marching Squares Algorithm</span>
-                <span class="tech-chip">Simplex Noise Field</span>
+        <section class="editorial-section">
+            <span class="section-label">04 • Process</span>
+            <h2 class="section-heading">Design Process</h2>
+
+            <div class="process-timeline">
+                <div class="process-step">
+                    <div class="process-dot"></div>
+                    <div class="process-phase">Phase 01 • Discovery</div>
+                    <h3 class="process-title">Research</h3>
+                    <p class="process-desc">Analyzed top engineering portfolios and editorial product pages (Linear, Vercel, Apple) to establish ideal typography scales, spacing tokens, and content layout flow.</p>
+                </div>
+
+                <div class="process-step">
+                    <div class="process-dot"></div>
+                    <div class="process-phase">Phase 02 • Layout Architecture</div>
+                    <h3 class="process-title">Wireframing</h3>
+                    <p class="process-desc">Sketched component hierarchies, card proportions, and multi-column grid alignment rules to ensure content scannability on all screen widths.</p>
+                </div>
+
+                <div class="process-step">
+                    <div class="process-dot"></div>
+                    <div class="process-phase">Phase 03 • Frontend Engineering</div>
+                    <h3 class="process-title">Development</h3>
+                    <p class="process-desc">Constructed the HTML5 semantic structure, CSS variables design system, topological Marching Squares canvas background, and interactive terminal system.</p>
+                </div>
+
+                <div class="process-step">
+                    <div class="process-dot"></div>
+                    <div class="process-phase">Phase 04 • Refinement</div>
+                    <h3 class="process-title">Iteration</h3>
+                    <p class="process-desc">Optimized mobile navigation controls, refined touch target areas, tuned scroll-tracking progress logic, and balanced card backdrop-filter values.</p>
+                </div>
+
+                <div class="process-step">
+                    <div class="process-dot"></div>
+                    <div class="process-phase">Phase 05 • Optimization</div>
+                    <h3 class="process-title">Polish</h3>
+                    <p class="process-desc">Audited Lighthouse accessibility metrics, verified WCAG color contrast levels, optimized image load performance, and deployed to GitHub Pages.</p>
+                </div>
             </div>
         </section>
 
-        <section class="case-section">
-            <h2 class="case-section-title">Challenges &amp; Engineering Solutions</h2>
-            <div class="case-body">
-                <p><strong>Canvas Battery &amp; GPU Optimization:</strong> Continuously evaluating noise grids on mobile displays can degrade battery life. Solved by implementing dynamic step-size scaling on small viewports and binding a <code>visibilitychange</code> event listener to pause rendering cycles whenever the tab is unfocused.</p>
-                <p><strong>Interactive Terminal System:</strong> Building a command-line interface in pure JS required parsing string commands, output history DOM appending, and auto-scrolling terminal containers without causing layout shifts.</p>
-            </div>
-        </section>
+        <section class="editorial-section">
+            <span class="section-label">05 • Interface</span>
+            <h2 class="section-heading">Interface Showcase</h2>
 
-        <section class="case-section">
-            <h2 class="case-section-title">What I Learned</h2>
-            <div class="case-body">
-                <p>Designing this portfolio reinforced the value of constraint-driven engineering—proving that high visual polish and interactive depth can be achieved using lean native web standards.</p>
-            </div>
-        </section>
-
-        <section class="case-section">
-            <h2 class="case-section-title">Screenshot Gallery</h2>
             <div class="gallery-grid">
-                <div class="gallery-item">
-                    <img src="portfolio-preview.jpg" alt="Portfolio Homepage Interface" class="gallery-img" onerror="this.src='https://placehold.co/600x380/2A1B3D/E9D5FF?text=Portfolio+Homepage'">
+                <div class="gallery-card">
+                    <img src="portfolio-preview.jpg" alt="Portfolio Homepage Interface Preview" class="gallery-img" onerror="this.src='https://placehold.co/600x380/2A1B3D/E9D5FF?text=Portfolio+Homepage+Preview'">
                 </div>
-                <div class="gallery-item">
-                    <img src="portfolio-preview.jpg" alt="Terminal Command Section" class="gallery-img" onerror="this.src='https://placehold.co/600x380/2A1B3D/E9D5FF?text=Terminal+Section'">
+                <div class="gallery-card">
+                    <img src="portfolio-preview.jpg" alt="Interactive Command Terminal Preview" class="gallery-img" onerror="this.src='https://placehold.co/600x380/2A1B3D/E9D5FF?text=Command+Terminal+Preview'">
                 </div>
             </div>
         </section>
 
-        <div class="cta-box">
-            <div>
-                <h3 style="font-family: var(--font-display); font-size: 1.2rem; color: var(--text-primary); margin-bottom: 4px;">Explore the Portfolio</h3>
-                <p style="font-size: 0.9rem; color: var(--text-secondary);">Experience the live site or inspect the open-source code on GitHub.</p>
+        <section class="editorial-section">
+            <span class="section-label">06 • Technical Insight</span>
+            <h2 class="section-heading">Engineering Challenges</h2>
+
+            <div class="challenges-list">
+                <div class="challenge-item">
+                    <h3 class="challenge-title">📐 Responsive Grid Precision</h3>
+                    <p class="challenge-body">
+                        <strong>Challenge:</strong> Maintaining strict card height and padding consistency across varying viewport breakpoints without layout breaking.
+                        <br><strong>Solution:</strong> Leveraged CSS Grid `clamp()` font sizes and flexible `minmax()` track sizes paired with custom media queries.
+                    </p>
+                </div>
+
+                <div class="challenge-item">
+                    <h3 class="challenge-title">🎨 Canvas Animation Performance</h3>
+                    <p class="challenge-body">
+                        <strong>Challenge:</strong> Rendering dynamic mathematical contours on HTML5 Canvas without draining mobile battery or dropping frame rates.
+                        <br><strong>Solution:</strong> Implemented dynamic step-size grid throttling on smaller displays and bound tab visibility pause handlers.
+                    </p>
+                </div>
+
+                <div class="challenge-item">
+                    <h3 class="challenge-title">⚡ Zero-Framework System Setup</h3>
+                    <p class="challenge-body">
+                        <strong>Challenge:</strong> Managing state transitions and component reusability without React or external UI libraries.
+                        <br><strong>Solution:</strong> Architected clean CSS variable tokens and modular Vanilla JS functions to handle modal and terminal logic.
+                    </p>
+                </div>
+
+                <div class="challenge-item">
+                    <h3 class="challenge-title">💎 Glassmorphism &amp; Contrast Balance</h3>
+                    <p class="challenge-body">
+                        <strong>Challenge:</strong> Achieving soft, semi-transparent frosted glass UI cards while maintaining AA-level contrast legibility.
+                        <br><strong>Solution:</strong> Carefully calibrated dark purple text tokens (`#2A1B3D`) over 76% white glass cards with backdrop blurs.
+                    </p>
+                </div>
             </div>
-            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                <a href="https://bhavitbansal.github.io/Portfolio1/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Play Live ↗</a>
-                <a href="https://github.com/bhavitbansal/Portfolio1" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">GitHub Repository ↗</a>
+        </section>
+
+        <section class="editorial-section">
+            <span class="section-label">07 • Reflections</span>
+            <h2 class="section-heading">Key Takeaways</h2>
+
+            <div class="reflection-grid">
+                <div class="reflection-card">
+                    <div class="reflection-topic">Architecture</div>
+                    <h3 class="reflection-title">Frontend Systems</h3>
+                    <p class="reflection-body">Deepened mastery of semantic HTML structure, CSS custom properties, and modular script organization.</p>
+                </div>
+
+                <div class="reflection-card">
+                    <div class="reflection-topic">Design System</div>
+                    <h3 class="reflection-title">UI Consistency</h3>
+                    <p class="reflection-body">Experienced the value of strict tokenized spacing, typography scales, and unified card radius rules.</p>
+                </div>
+
+                <div class="reflection-card">
+                    <div class="reflection-topic">UX Intent</div>
+                    <h3 class="reflection-title">Product Mindset</h3>
+                    <p class="reflection-body">Learned to design interfaces that guide visitor attention seamlessly through clear hierarchy and scannability.</p>
+                </div>
+
+                <div class="reflection-card">
+                    <div class="reflection-topic">Optimization</div>
+                    <h3 class="reflection-title">Web Speed</h3>
+                    <p class="reflection-body">Proved that zero-framework vanilla builds offer unparalleled load performance and execution control.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="bottom-cta-banner">
+            <div class="bottom-cta-content">
+                <h3>Explore the Live Website</h3>
+                <p>View the live digital portfolio or inspect the open-source codebase on GitHub.</p>
+            </div>
+            <div class="bottom-cta-buttons">
+                <a href="https://bhavitbansal.github.io/Portfolio1/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                    View Live ↗
+                </a>
+                <a href="https://github.com/bhavitbansal/Portfolio1" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                    GitHub Repository ↗
+                </a>
+                <a href="index.html#projects" class="btn btn-secondary">
+                    Back to Portfolio
+                </a>
             </div>
         </div>
 
-        <div class="project-nav-bar">
-            <a href="game.html" class="project-nav-link" style="align-items: flex-start;">
-                <span class="project-nav-dir">← Previous Project</span>
-                <span class="project-nav-title">Browser Arcade Game</span>
+        <div class="project-chapter-nav">
+            <a href="game.html" class="chapter-nav-link" style="align-items: flex-start;">
+                <span class="chapter-dir">← Previous Project</span>
+                <span class="chapter-title">Browser Arcade Game</span>
             </a>
-            <a href="document-parser.html" class="project-nav-link" style="align-items: flex-end; text-align: right;">
-                <span class="project-nav-dir">Next Project →</span>
-                <span class="project-nav-title">Document Parser</span>
+            <a href="document-parser.html" class="chapter-nav-link" style="align-items: flex-end; text-align: right;">
+                <span class="chapter-dir">Next Project →</span>
+                <span class="chapter-title">Document Parser</span>
             </a>
         </div>
 
-        <footer>
-            <p>© 2026 Bhavit Bansal • Built with purpose and precision.</p>
-        </footer>
+    </main>
 
-    </div>
+    <footer>
+        <p>© 2026 Bhavit Bansal • Built with purpose and engineering precision.</p>
+    </footer>
 
 </body>
 </html>
