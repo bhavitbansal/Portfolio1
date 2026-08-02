@@ -9,6 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
     <style>
         :root {
             /* Bloom Palette */
@@ -67,6 +70,35 @@
         a {
             color: inherit;
             text-decoration: none;
+        }
+
+        /* ==========================================================================
+           CINEMATIC SCROLL INTRO SECTION
+           ========================================================================== */
+        #intro-pin-wrapper{
+            position:relative;
+            width:100%;
+            height:100vh;
+            overflow:hidden;
+            background:#faf8f7;
+            z-index:999;
+        }#intro-video-container{
+            position:absolute;
+            inset:0;
+            width:100%;
+            height:100%;
+            z-index:100;
+            will-change:opacity;
+        }#intro-video{
+            width:100%;
+            height:100%;
+            object-fit:cover;
+            display:block;
+            pointer-events:none;
+            user-select:none;
+        }#hero{
+            position:relative;
+            z-index:1;
         }
 
         /* Background Layers */
@@ -251,7 +283,7 @@
             transition: width 1s ease-in-out;
         }
 
-        /* NAVBAR */
+        /* NAVBAR BRANDING UPGRADE */
         #navbar {
             position: fixed;
             top: 24px;
@@ -269,6 +301,13 @@
             align-items: center;
             gap: 28px;
             transition: transform 0.4s ease, opacity 0.4s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #navbar.nav-visible {
+            opacity: 1;
+            pointer-events: auto;
         }
 
         #navbar.nav-hidden {
@@ -334,6 +373,9 @@
             padding-top: 130px;
             padding-bottom: 90px;
             position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            will-change: opacity, transform;
         }
 
         .hero-grid {
@@ -528,7 +570,6 @@
             margin-bottom: 16px;
         }
 
-        /* REFINED & ENLARGED EDUCATION LOGO STYLING (~35% INCREASE) */
         .card-logo-img {
             height: 62px;
             width: auto;
@@ -672,6 +713,213 @@
             color: var(--accent-purple);
         }
 
+        /* FEATURED WORK / PROJECTS SECTION */
+        .section-subtitle {
+            font-size: 0.98rem;
+            color: var(--text-secondary);
+            margin-top: 8px;
+            font-weight: 400;
+            max-width: 680px;
+            line-height: 1.6;
+        }
+
+        .projects-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .project-card {
+            background: var(--card-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 32px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.04);
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 36px;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 280ms ease-in-out, box-shadow 280ms ease-in-out, border-color 280ms ease-in-out, background 280ms ease-in-out;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--border-hover);
+            box-shadow: 0 20px 45px rgba(168, 85, 247, 0.12);
+            background: var(--card-glass-hover);
+        }
+
+        .project-card.featured-project {
+            background: rgba(255, 255, 255, 0.88);
+            border-color: rgba(168, 85, 247, 0.25);
+            box-shadow: 0 14px 38px rgba(168, 85, 247, 0.08);
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: 24px;
+            right: 28px;
+            background-color: var(--accent-purple);
+            color: #FFFFFF;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 5px 14px;
+            border-radius: 999px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(168, 85, 247, 0.2);
+            z-index: 5;
+        }
+
+        .project-image-wrapper {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-secondary);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 280ms ease-in-out;
+        }
+
+        .project-card:hover .project-image {
+            transform: scale(1.03);
+        }
+
+        .project-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .project-category {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--accent-purple);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .project-title {
+            font-family: var(--font-display);
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            letter-spacing: -0.01em;
+            transition: color 280ms ease-in-out;
+        }
+
+        .project-card:hover .project-title {
+            color: var(--accent-purple);
+        }
+
+        .project-summary {
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            color: var(--accent-purple);
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .project-desc {
+            font-size: 0.94rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
+            margin-bottom: 18px;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+
+        .tech-chip {
+            font-family: var(--font-mono);
+            font-size: 0.73rem;
+            background: rgba(168, 85, 247, 0.08);
+            color: var(--accent-purple);
+            padding: 4px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--border-subtle);
+            font-weight: 500;
+        }
+
+        .tech-chip-type {
+            background: rgba(236, 72, 153, 0.08);
+            color: var(--accent-pink);
+            border-color: rgba(236, 72, 153, 0.18);
+        }
+
+        .project-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 4px;
+        }
+
+        .btn-sm {
+            padding: 8px 20px;
+            font-size: 0.82rem;
+            border-radius: 999px;
+        }
+
+        .explore-indicator {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--accent-purple);
+            opacity: 0.45;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: opacity 280ms ease-in-out, transform 280ms ease-in-out;
+            pointer-events: none;
+        }
+
+        .project-card:hover .explore-indicator {
+            opacity: 1;
+            transform: translateX(4px);
+        }
+
+        @media (max-width: 900px) {
+            .project-card {
+                grid-template-columns: 1fr;
+                gap: 24px;
+                padding: 24px;
+            }
+
+            .featured-badge {
+                top: 16px;
+                right: 16px;
+            }
+
+            .explore-indicator {
+                position: relative;
+                margin-top: 12px;
+                align-self: flex-end;
+            }
+        }
+
         .terminal-container {
             background: rgba(42, 27, 61, 0.95);
             backdrop-filter: blur(20px);
@@ -758,6 +1006,23 @@
 </head>
 <body>
 
+    <section id="intro-pin-wrapper">
+
+        <div id="intro-video-container">
+
+            <video
+                id="intro-video"
+                muted
+                playsinline
+                webkit-playsinline
+                preload="auto"
+                crossorigin="anonymous"
+            >
+                <source src="intro.mp4" type="video/mp4">
+            </video>
+
+        </div></section>
+
     <div class="watercolor-blobs">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
@@ -801,6 +1066,7 @@
             <a href="#hero" class="nav-link">Home</a>
             <a href="#about" class="nav-link">About</a>
             <a href="#curiosity" class="nav-link">Curiosity</a>
+            <a href="#projects" class="nav-link">Projects</a>
             <a href="#education" class="nav-link">Education</a>
             <a href="#achievements" class="nav-link">Honors</a>
             <a href="#skills" class="nav-link">Skills</a>
@@ -886,6 +1152,114 @@
                 <span class="explore-pill">Cricket Biomechanics Analytics</span>
                 <span class="explore-pill">AI-Assisted Development</span>
                 <span class="explore-pill">Accessibility (a11y)</span>
+            </div>
+        </section>
+
+        <section id="projects">
+            <div class="section-header">
+                <span class="section-tag">Portfolio Showcase</span>
+                <h2 class="section-title">Featured Work</h2>
+                <p class="section-subtitle">A collection of projects that reflect my approach to solving problems through thoughtful design and engineering.</p>
+            </div>
+
+            <div class="projects-grid">
+                <article class="project-card featured-project" onclick="if (!event.target.closest('a, button')) window.location.href='game.html';">
+                    <div class="featured-badge">★ Featured Build</div>
+                    
+                    <div class="project-image-wrapper">
+                        <img src="game-preview.jpg" alt="Browser Arcade Game Gameplay Preview" class="project-image" onerror="this.src='https://placehold.co/600x340/2A1B3D/E9D5FF?text=Arcade+Game+Preview'">
+                    </div>
+
+                    <div class="project-content">
+                        <span class="project-category">Interactive Game Engine</span>
+                        <h3 class="project-title">Browser Arcade Game</h3>
+                        
+                        <p class="project-summary">High-performance canvas game engine engineered with zero external dependencies.</p>
+
+                        <p class="project-desc">
+                            Built to explore real-time render loops and collision physics without heavy framework overhead. Solves frame-rate drops and spatial hit detection across varying refresh rates by engineering a dynamic object-pooling pipeline, delivering a smooth 60 FPS browser-native experience.
+                        </p>
+
+                        <div class="project-tags">
+                            <span class="tech-chip tech-chip-type">Personal Project</span>
+                            <span class="tech-chip">HTML5</span>
+                            <span class="tech-chip">CSS3</span>
+                            <span class="tech-chip">JavaScript</span>
+                            <span class="tech-chip">Canvas API</span>
+                        </div>
+
+                        <div class="project-actions">
+                            <a href="game.html" class="btn btn-primary btn-sm" aria-label="View Project Browser Arcade Game">View Project</a>
+                            <a href="https://bhavitbansal.github.io/Game/" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" aria-label="Play Live Demo of Browser Arcade Game">Play Live</a>
+                        </div>
+
+                        <span class="explore-indicator">Explore →</span>
+                    </div>
+                </article>
+
+                <article class="project-card" onclick="if (!event.target.closest('a, button')) window.location.href='portfolio.html';">
+                    <div class="project-image-wrapper">
+                        <img src="portfolio-preview.jpg" alt="Bhavit Bansal Portfolio Preview" class="project-image" onerror="this.src='https://placehold.co/600x340/2A1B3D/E9D5FF?text=Portfolio+Preview'">
+                    </div>
+
+                    <div class="project-content">
+                        <span class="project-category">Web Architecture &amp; Systems</span>
+                        <h3 class="project-title">Bhavit Bansal Portfolio</h3>
+                        
+                        <p class="project-summary">Minimalist digital showcase engineered for fluid user navigation and low latency.</p>
+
+                        <p class="project-desc">
+                            Designed to establish a personal digital identity reflecting engineering rigor and visual clarity. Eliminates framework bloat by implementing custom marching-squares topological canvas backgrounds and responsive CSS grid architectures to achieve sub-second load performance.
+                        </p>
+
+                        <div class="project-tags">
+                            <span class="tech-chip tech-chip-type">Personal Project</span>
+                            <span class="tech-chip">HTML5</span>
+                            <span class="tech-chip">CSS3</span>
+                            <span class="tech-chip">JavaScript</span>
+                            <span class="tech-chip">Canvas API</span>
+                        </div>
+
+                        <div class="project-actions">
+                            <a href="portfolio.html" class="btn btn-primary btn-sm" aria-label="View Project Bhavit Bansal Portfolio">View Project</a>
+                            <a href="https://github.com/bhavitbansal/Portfolio1" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" aria-label="View Portfolio Source Code on GitHub">GitHub</a>
+                        </div>
+
+                        <span class="explore-indicator">Explore →</span>
+                    </div>
+                </article>
+
+                <article class="project-card" onclick="if (!event.target.closest('a, button')) window.location.href='document-parser.html';">
+                    <div class="project-image-wrapper">
+                        <img src="document-parser-preview.jpg" alt="Document Parser Tool Preview" class="project-image" onerror="this.src='https://placehold.co/600x340/2A1B3D/E9D5FF?text=Document+Parser+Preview'">
+                    </div>
+
+                    <div class="project-content">
+                        <span class="project-category">Data Extraction &amp; Automation</span>
+                        <h3 class="project-title">Document Parser</h3>
+                        
+                        <p class="project-summary">Automated information extraction utility for heterogeneous document formats.</p>
+
+                        <p class="project-desc">
+                            Engineered to replace slow, error-prone manual document inspection in data pipelines. Resolves structural parsing inconsistencies by applying deterministic pattern-matching algorithms, significantly accelerating metadata extraction while maintaining high output reliability.
+                        </p>
+
+                        <div class="project-tags">
+                            <span class="tech-chip tech-chip-type">Automation Tool</span>
+                            <span class="tech-chip">Python</span>
+                            <span class="tech-chip">Data Parsing</span>
+                            <span class="tech-chip">Regex</span>
+                            <span class="tech-chip">Automation</span>
+                        </div>
+
+                        <div class="project-actions">
+                            <a href="document-parser.html" class="btn btn-primary btn-sm" aria-label="View Project Document Parser">View Project</a>
+                            <a href="https://github.com/bhavitbansal" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" aria-label="View Document Parser Code on GitHub">GitHub</a>
+                        </div>
+
+                        <span class="explore-indicator">Explore →</span>
+                    </div>
+                </article>
             </div>
         </section>
 
@@ -993,6 +1367,59 @@
     </div>
 
     <script>
+        // ==========================================================================
+        // CINEMATIC SCROLL INTRO SCRUBBING ENGINE (GSAP + ScrollTrigger)
+        // ==========================================================================
+        
+        const INTRO_VIDEO = "intro.mp4";gsap.registerPlugin(ScrollTrigger);const video = document.querySelector("#intro-video");const intro = document.querySelector("#intro-pin-wrapper");const introContainer = document.querySelector("#intro-video-container");const hero = document.querySelector("#hero");const navbar = document.querySelector("#navbar");hero.style.opacity = "0";hero.style.transform = "translateY(40px)";navbar.style.opacity = "0";video.pause();video.addEventListener("loadedmetadata", () => {
+
+            video.currentTime = 0;
+
+            const playPromise = video.play();
+
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+
+                    video.pause();
+
+                    gsap.timeline({
+
+                        scrollTrigger:{
+                            trigger:intro,
+                            start:"top top",
+                            end:"+=500%",
+                            scrub:true,
+                            pin:true,
+                            anticipatePin:1
+                        }
+
+                    })
+
+                    .to(video,{
+                        currentTime:video.duration-0.05,
+                        ease:"none"
+                    },0)
+
+                    .to(introContainer,{
+                        opacity:0,
+                        ease:"power1.out"
+                    },0.88)
+
+                    .to(hero,{
+                        opacity:1,
+                        y:0,
+                        ease:"power2.out"
+                    },0.90)
+
+                    .to(navbar,{
+                        opacity:1
+                    },0.92);
+
+                });
+            }
+
+        });
+
         // Inline Simplex Noise Algorithm
         const SimplexNoise = (function() {
             const F2 = 0.5 * (Math.sqrt(3.0) - 1.0);
