@@ -9,9 +9,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-
     <style>
         :root {
             /* Bloom Palette */
@@ -70,35 +67,6 @@
         a {
             color: inherit;
             text-decoration: none;
-        }
-
-        /* ==========================================================================
-           CINEMATIC SCROLL INTRO SECTION
-           ========================================================================== */
-        #intro-pin-wrapper{
-            position:relative;
-            width:100%;
-            height:100vh;
-            overflow:hidden;
-            background:#faf8f7;
-            z-index:999;
-        }#intro-video-container{
-            position:absolute;
-            inset:0;
-            width:100%;
-            height:100%;
-            z-index:100;
-            will-change:opacity;
-        }#intro-video{
-            width:100%;
-            height:100%;
-            object-fit:cover;
-            display:block;
-            pointer-events:none;
-            user-select:none;
-        }#hero{
-            position:relative;
-            z-index:1;
         }
 
         /* Background Layers */
@@ -283,7 +251,7 @@
             transition: width 1s ease-in-out;
         }
 
-        /* NAVBAR BRANDING UPGRADE */
+        /* NAVBAR */
         #navbar {
             position: fixed;
             top: 24px;
@@ -301,13 +269,6 @@
             align-items: center;
             gap: 28px;
             transition: transform 0.4s ease, opacity 0.4s ease;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        #navbar.nav-visible {
-            opacity: 1;
-            pointer-events: auto;
         }
 
         #navbar.nav-hidden {
@@ -373,9 +334,6 @@
             padding-top: 130px;
             padding-bottom: 90px;
             position: relative;
-            opacity: 0;
-            transform: translateY(20px);
-            will-change: opacity, transform;
         }
 
         .hero-grid {
@@ -713,7 +671,7 @@
             color: var(--accent-purple);
         }
 
-        /* FEATURED WORK / PROJECTS SECTION */
+        /* PROJECTS SECTION STYLES */
         .section-subtitle {
             font-size: 0.98rem;
             color: var(--text-secondary);
@@ -1005,23 +963,6 @@
     </style>
 </head>
 <body>
-
-    <section id="intro-pin-wrapper">
-
-        <div id="intro-video-container">
-
-            <video
-                id="intro-video"
-                muted
-                playsinline
-                webkit-playsinline
-                preload="auto"
-                crossorigin="anonymous"
-            >
-                <source src="intro.mp4" type="video/mp4">
-            </video>
-
-        </div></section>
 
     <div class="watercolor-blobs">
         <div class="blob blob-1"></div>
@@ -1367,55 +1308,6 @@
     </div>
 
     <script>
-        // ==========================================================================
-        // CINEMATIC SCROLL INTRO SCRUBBING ENGINE (GSAP + ScrollTrigger)
-        // ==========================================================================
-        
-        gsap.registerPlugin(ScrollTrigger);const video = document.querySelector("#intro-video");const intro = document.querySelector("#intro-pin-wrapper");const introContainer = document.querySelector("#intro-video-container");const hero = document.querySelector("#hero");const navbar = document.querySelector("#navbar");hero.style.opacity = "0";hero.style.transform = "translateY(40px)";navbar.style.opacity = "0";video.addEventListener("loadedmetadata", () => {
-
-            video.pause();
-            video.currentTime = 0;
-
-            ScrollTrigger.create({
-
-                trigger: intro,
-                start: "top top",
-                end: "+=500%",
-                scrub: true,
-                pin: true,
-
-                onUpdate(self){
-
-                    video.currentTime = self.progress * (video.duration - 0.05);
-
-                    if(self.progress < 0.88){
-
-                        introContainer.style.opacity = 1;
-
-                    }else{
-
-                        introContainer.style.opacity =
-                            1 - ((self.progress - 0.88)/0.12);
-                    }
-
-                    if(self.progress > 0.90){
-
-                        hero.style.opacity =
-                            (self.progress-0.90)/0.10;
-
-                        hero.style.transform =
-                            `translateY(${40-(40*((self.progress-0.90)/0.10))}px)`;
-
-                        navbar.style.opacity =
-                            (self.progress-0.92)/0.08;
-
-                    }
-                }
-
-            });
-
-        });
-
         // Inline Simplex Noise Algorithm
         const SimplexNoise = (function() {
             const F2 = 0.5 * (Math.sqrt(3.0) - 1.0);
