@@ -16,8 +16,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Helper: Ensure metadata is loaded to calculate frame precise duration
     function onVideoReady() {
-        // Effective duration condensed from 6s to ~3s speed equivalent
-        const effectiveDuration = Math.max(1, video.duration / 2);
+        // Fix 1: Prime the video decoder buffer so currentTime updates render immediately
+        video.pause();
+        video.currentTime = 0;
+        video.play().then(() => {
+            video.pause();
+        }).catch(() => {});
+
+        // Fix 2: Preserve full video timeline duration
+        const effectiveDuration = video.duration;
 
         // Smooth requestAnimationFrame Interpolator to eliminate browser frame stutter
         function renderLoop() {
@@ -37,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
             onUpdate: (self) => {
                 if (isRedirecting) return;
 
-                // Scrub forward & backward smoothly
+                // Scrub forward & backward smoothly across full video duration
                 targetTime = self.progress * (effectiveDuration - 0.05);
 
                 // Near completion triggers smooth fade to black and immediate transition
