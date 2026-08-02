@@ -1371,52 +1371,48 @@
         // CINEMATIC SCROLL INTRO SCRUBBING ENGINE (GSAP + ScrollTrigger)
         // ==========================================================================
         
-        const INTRO_VIDEO = "intro.mp4";gsap.registerPlugin(ScrollTrigger);const video = document.querySelector("#intro-video");const intro = document.querySelector("#intro-pin-wrapper");const introContainer = document.querySelector("#intro-video-container");const hero = document.querySelector("#hero");const navbar = document.querySelector("#navbar");hero.style.opacity = "0";hero.style.transform = "translateY(40px)";navbar.style.opacity = "0";video.pause();video.addEventListener("loadedmetadata", () => {
+        gsap.registerPlugin(ScrollTrigger);const video = document.querySelector("#intro-video");const intro = document.querySelector("#intro-pin-wrapper");const introContainer = document.querySelector("#intro-video-container");const hero = document.querySelector("#hero");const navbar = document.querySelector("#navbar");hero.style.opacity = "0";hero.style.transform = "translateY(40px)";navbar.style.opacity = "0";video.addEventListener("loadedmetadata", () => {
 
+            video.pause();
             video.currentTime = 0;
 
-            const playPromise = video.play();
+            ScrollTrigger.create({
 
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
+                trigger: intro,
+                start: "top top",
+                end: "+=500%",
+                scrub: true,
+                pin: true,
 
-                    video.pause();
+                onUpdate(self){
 
-                    gsap.timeline({
+                    video.currentTime = self.progress * (video.duration - 0.05);
 
-                        scrollTrigger:{
-                            trigger:intro,
-                            start:"top top",
-                            end:"+=500%",
-                            scrub:true,
-                            pin:true,
-                            anticipatePin:1
-                        }
+                    if(self.progress < 0.88){
 
-                    })
+                        introContainer.style.opacity = 1;
 
-                    .to(video,{
-                        currentTime:video.duration-0.05,
-                        ease:"none"
-                    },0)
+                    }else{
 
-                    .to(introContainer,{
-                        opacity:0,
-                        ease:"power1.out"
-                    },0.88)
+                        introContainer.style.opacity =
+                            1 - ((self.progress - 0.88)/0.12);
+                    }
 
-                    .to(hero,{
-                        opacity:1,
-                        y:0,
-                        ease:"power2.out"
-                    },0.90)
+                    if(self.progress > 0.90){
 
-                    .to(navbar,{
-                        opacity:1
-                    },0.92);
+                        hero.style.opacity =
+                            (self.progress-0.90)/0.10;
 
-                });
-            }
+                        hero.style.transform =
+                            `translateY(${40-(40*((self.progress-0.90)/0.10))}px)`;
+
+                        navbar.style.opacity =
+                            (self.progress-0.92)/0.08;
+
+                    }
+                }
+
+            });
 
         });
 
