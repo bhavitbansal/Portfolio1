@@ -1354,9 +1354,10 @@
     </div>
 
     <script>
-        // REGISTER GSAP SCROLLTRIGGER
-        gsAP = window.gsap;
-        gsap.registerPlugin(ScrollTrigger);
+        // REGISTER GSAP SCROLLTRIGGER (Fixed variable typo)
+        if (window.gsap) {
+            gsap.registerPlugin(ScrollTrigger);
+        }
 
         // APPLE-STYLE CINEMATIC INTRO CONTROLLER
         const introVideo = document.getElementById('intro-video');
@@ -1364,24 +1365,31 @@
         const navbar = document.getElementById('navbar');
         const heroSection = document.getElementById('hero');
 
+        function revealMainContent() {
+            if (introContainer) introContainer.style.display = 'none';
+            if (heroSection) heroSection.style.opacity = '1';
+            if (navbar) navbar.style.opacity = '1';
+        }
+
         function initIntroAnimation() {
-            // Accelerate payback speed to condense 6s video into ~2-3s feel
+            if (!window.gsap || !window.ScrollTrigger) {
+                revealMainContent();
+                return;
+            }
+
             introVideo.playbackRate = 2.2;
 
-            // Define ScrollTrigger after video metadata loads for frame-accurate timeline binding
             ScrollTrigger.create({
                 trigger: introContainer,
                 start: "top top",
-                end: "+=2200", // Controls duration/distance of pinned scroll intro
+                end: "+=2200",
                 pin: true,
-                scrub: 0.1, // Smooth precision scrubbing
+                scrub: 0.1,
                 onUpdate: (self) => {
                     if (introVideo.duration) {
-                        // Directly control video playback frame-accurately with scroll progress
                         introVideo.currentTime = self.progress * (introVideo.duration - 0.05);
                     }
 
-                    // Transition at ~80% progress: fade video out, unveil hero and navbar smoothly
                     if (self.progress >= 0.8) {
                         const fadeProgress = (self.progress - 0.8) / 0.2;
                         introVideo.style.opacity = 1 - fadeProgress;
@@ -1396,7 +1404,9 @@
             });
         }
 
-        // Wait for loadedmetadata to ensure accurate video duration before initializing ScrollTrigger
+        // Fallback: If intro.mp4 fails or doesn't exist, bypass intro automatically
+        introVideo.addEventListener('error', revealMainContent);
+
         if (introVideo.readyState >= 1) {
             initIntroAnimation();
         } else {
