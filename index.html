@@ -1,33 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bhavit Bansal — Experience</title>
+
+    <meta charset="UTF-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>Bhavit Bansal | Experience</title>
 
     <link rel="stylesheet" href="intro.css">
 
-    <link rel="preload" href="intro.mp4" as="video" type="video/mp4">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/ScrollTrigger.min.js"></script>
+
 </head>
+
 <body>
 
+    <!-- Virtual Scroll Area -->
     <div id="scroll-container">
-        
-        <div id="intro-stage">
-            <div class="video-wrapper">
-                <video id="intro-video" muted playsinline preload="auto">
-                    <source src="intro.mp4" type="video/mp4">
-                </video>
-            </div>
-            
+
+        <!-- Pinned Intro -->
+        <section id="intro-stage">
+
+            <video
+                id="intro-video"
+                muted
+                playsinline
+                preload="auto"
+                disablepictureinpicture
+            >
+
+                <source
+                    src="intro.mp4"
+                    type="video/mp4">
+
+            </video>
+
             <div id="fade-overlay"></div>
-        </div>
+
+        </section>
 
     </div>
 
     <script src="intro.js"></script>
+
 </body>
+
 </html>
