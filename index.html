@@ -9,6 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
     <style>
         :root {
             /* Bloom Palette */
@@ -67,6 +70,41 @@
         a {
             color: inherit;
             text-decoration: none;
+        }
+
+        /* CINEMATIC INTRO STYLES */
+        #intro-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        .intro-video-wrapper {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #intro-video {
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            display: block;
+            pointer-events: none;
+        }
+
+        /* Initial hidden states for main page content during intro */
+        #navbar {
+            opacity: 0;
+        }
+
+        #hero {
+            opacity: 0;
         }
 
         /* Background Layers */
@@ -964,6 +1002,14 @@
 </head>
 <body>
 
+    <div id="intro-container">
+        <div class="intro-video-wrapper">
+            <video id="intro-video" muted playsinline preload="auto">
+                <source src="intro.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+
     <div class="watercolor-blobs">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
@@ -1308,6 +1354,55 @@
     </div>
 
     <script>
+        // REGISTER GSAP SCROLLTRIGGER
+        gsAP = window.gsap;
+        gsap.registerPlugin(ScrollTrigger);
+
+        // APPLE-STYLE CINEMATIC INTRO CONTROLLER
+        const introVideo = document.getElementById('intro-video');
+        const introContainer = document.getElementById('intro-container');
+        const navbar = document.getElementById('navbar');
+        const heroSection = document.getElementById('hero');
+
+        function initIntroAnimation() {
+            // Accelerate payback speed to condense 6s video into ~2-3s feel
+            introVideo.playbackRate = 2.2;
+
+            // Define ScrollTrigger after video metadata loads for frame-accurate timeline binding
+            ScrollTrigger.create({
+                trigger: introContainer,
+                start: "top top",
+                end: "+=2200", // Controls duration/distance of pinned scroll intro
+                pin: true,
+                scrub: 0.1, // Smooth precision scrubbing
+                onUpdate: (self) => {
+                    if (introVideo.duration) {
+                        // Directly control video playback frame-accurately with scroll progress
+                        introVideo.currentTime = self.progress * (introVideo.duration - 0.05);
+                    }
+
+                    // Transition at ~80% progress: fade video out, unveil hero and navbar smoothly
+                    if (self.progress >= 0.8) {
+                        const fadeProgress = (self.progress - 0.8) / 0.2;
+                        introVideo.style.opacity = 1 - fadeProgress;
+                        heroSection.style.opacity = fadeProgress;
+                        navbar.style.opacity = fadeProgress;
+                    } else {
+                        introVideo.style.opacity = 1;
+                        heroSection.style.opacity = 0;
+                        navbar.style.opacity = 0;
+                    }
+                }
+            });
+        }
+
+        // Wait for loadedmetadata to ensure accurate video duration before initializing ScrollTrigger
+        if (introVideo.readyState >= 1) {
+            initIntroAnimation();
+        } else {
+            introVideo.addEventListener('loadedmetadata', initIntroAnimation);
+        }
+
         // Inline Simplex Noise Algorithm
         const SimplexNoise = (function() {
             const F2 = 0.5 * (Math.sqrt(3.0) - 1.0);
