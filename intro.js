@@ -2,21 +2,48 @@ gsap.registerPlugin(ScrollTrigger);
 
 const video = document.getElementById("intro-video");
 const fade = document.getElementById("fade-overlay");
+const introUI = document.getElementById("intro-ui");
 
 let redirected = false;
+let uiHidden = false;
 let duration = 0;
 
 video.muted = true;
 video.playsInline = true;
 video.preload = "auto";
 
-// Wait until metadata is available
 video.addEventListener("loadedmetadata", () => {
 
     duration = video.duration;
 
-    // Show first frame
     video.currentTime = 0;
+
+    // Mouse wheel animation
+    gsap.to(".wheel", {
+        y: 10,
+        duration: 0.9,
+        repeat: -1,
+        yoyo: true,
+        ease: "power1.inOut"
+    });
+
+    // Arrow animation
+    gsap.to(".arrow", {
+        y: 8,
+        duration: 0.9,
+        repeat: -1,
+        yoyo: true,
+        ease: "power1.inOut"
+    });
+
+    // Text pulse
+    gsap.to("#intro-ui h2", {
+        opacity: 0.4,
+        duration: 1.2,
+        repeat: -1,
+        yoyo: true,
+        ease: "power1.inOut"
+    });
 
     ScrollTrigger.create({
 
@@ -42,6 +69,22 @@ video.addEventListener("loadedmetadata", () => {
                 video.currentTime = targetTime;
             }
 
+            // Hide intro UI once scrolling starts
+            if (self.progress > 0.01 && !uiHidden) {
+
+                uiHidden = true;
+
+                gsap.to(introUI, {
+                    opacity: 0,
+                    y: 20,
+                    scale: 0.96,
+                    duration: 0.45,
+                    ease: "power2.out"
+                });
+
+            }
+
+            // Redirect at end
             if (self.progress >= 0.999 && !redirected) {
 
                 redirected = true;
