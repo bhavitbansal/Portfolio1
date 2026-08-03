@@ -4,18 +4,19 @@ const video = document.getElementById("intro-video");
 const fade = document.getElementById("fade-overlay");
 
 let redirected = false;
+let duration = 0;
 
 video.muted = true;
 video.playsInline = true;
 video.preload = "auto";
 
-function init() {
+// Wait until metadata is available
+video.addEventListener("loadedmetadata", () => {
 
-    const duration = video.duration;
+    duration = video.duration;
 
-    gsap.set(video, {
-        opacity: 1
-    });
+    // Show first frame
+    video.currentTime = 0;
 
     ScrollTrigger.create({
 
@@ -23,13 +24,11 @@ function init() {
 
         start: "top top",
 
-        end: "+=2000",
+        end: "bottom bottom",
+
+        pin: true,
 
         scrub: true,
-
-        pin: "#intro-stage",
-
-        pinSpacing: true,
 
         anticipatePin: 1,
 
@@ -37,15 +36,13 @@ function init() {
 
         onUpdate(self) {
 
-            const target = self.progress * duration;
+            const targetTime = self.progress * duration;
 
-            if (Math.abs(video.currentTime - target) > 0.02) {
-
-                video.currentTime = target;
-
+            if (Math.abs(video.currentTime - targetTime) > 0.01) {
+                video.currentTime = targetTime;
             }
 
-            if (self.progress > 0.995 && !redirected) {
+            if (self.progress >= 0.999 && !redirected) {
 
                 redirected = true;
 
@@ -53,7 +50,7 @@ function init() {
 
                     opacity: 1,
 
-                    duration: 0.35,
+                    duration: 0.4,
 
                     ease: "power2.out",
 
@@ -71,14 +68,6 @@ function init() {
 
     });
 
-}
+    ScrollTrigger.refresh();
 
-if (video.readyState >= 1) {
-
-    init();
-
-} else {
-
-    video.addEventListener("loadedmetadata", init);
-
-}
+});
