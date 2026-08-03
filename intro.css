@@ -35,13 +35,9 @@ body::-webkit-scrollbar{
 ========================================================== */
 
 #scroll-container{
-
     position:relative;
-
     width:100%;
-
     min-height:300vh;
-
 }
 
 /* ==========================================================
@@ -49,17 +45,11 @@ body::-webkit-scrollbar{
 ========================================================== */
 
 #intro-stage{
-
     position:relative;
-
     width:100%;
-
     height:100vh;
-
     overflow:hidden;
-
     background:#000;
-
 }
 
 /* ==========================================================
@@ -67,37 +57,110 @@ body::-webkit-scrollbar{
 ========================================================== */
 
 #intro-video{
-
     position:absolute;
-
     inset:0;
 
     width:100%;
-
     height:100%;
 
     object-fit:cover;
-
     object-position:center;
 
     display:block;
 
-    pointer-events:none;
-
-    user-select:none;
-
     background:#000;
 
+    pointer-events:none;
+    user-select:none;
+
+    z-index:1;
 }
 
 /* ==========================================================
-   FADE
+   INTRO UI
+========================================================== */
+
+#intro-ui{
+    position:absolute;
+    inset:0;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    text-align:center;
+
+    color:#ffffff;
+
+    z-index:5000;
+
+    pointer-events:none;
+}
+
+#intro-ui h1{
+    font-size:24px;
+    font-weight:700;
+    letter-spacing:0.45em;
+    margin-bottom:26px;
+    text-transform:uppercase;
+}
+
+#intro-ui h2{
+    font-size:15px;
+    font-weight:500;
+    letter-spacing:0.35em;
+    margin-bottom:30px;
+    text-transform:uppercase;
+}
+
+.mouse{
+    width:36px;
+    height:58px;
+
+    border:2px solid rgba(255,255,255,.95);
+    border-radius:30px;
+
+    position:relative;
+
+    margin-bottom:14px;
+}
+
+.wheel{
+    position:absolute;
+
+    left:50%;
+    top:8px;
+
+    transform:translateX(-50%);
+
+    width:5px;
+    height:10px;
+
+    background:#fff;
+
+    border-radius:20px;
+}
+
+.arrow{
+    font-size:22px;
+    color:#fff;
+    margin-bottom:20px;
+}
+
+#intro-ui p{
+    font-size:12px;
+    line-height:1.6;
+    color:rgba(255,255,255,.65);
+    letter-spacing:.04em;
+}
+
+/* ==========================================================
+   FADE OVERLAY
 ========================================================== */
 
 #fade-overlay{
-
     position:absolute;
-
     inset:0;
 
     background:#000;
@@ -106,8 +169,7 @@ body::-webkit-scrollbar{
 
     pointer-events:none;
 
-    z-index:999;
-
+    z-index:9999;
 }
 
 /* ==========================================================
@@ -116,10 +178,31 @@ body::-webkit-scrollbar{
 
 @media (max-width:768px){
 
+    #intro-ui h1{
+        font-size:18px;
+        letter-spacing:.3em;
+    }
+
+    #intro-ui h2{
+        font-size:13px;
+        letter-spacing:.25em;
+    }
+
+    #intro-ui p{
+        font-size:11px;
+    }
+
+    .mouse{
+        width:30px;
+        height:48px;
+    }
+
+    .arrow{
+        font-size:18px;
+    }
+
     #intro-video{
-
         object-position:center;
-
     }
 
 }
