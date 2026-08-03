@@ -379,23 +379,35 @@
             box-shadow: 0 0 10px var(--accent-pink);
         }
 
+        .hero-eyebrow {
+            font-family: var(--font-mono);
+            font-size: clamp(0.9rem, 1vw, 1rem);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent-purple);
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
         .hero-headline {
             font-family: var(--font-display);
-            font-size: clamp(2.8rem, 5.8vw, 5rem);
-            font-weight: 800;
-            line-height: 1.06;
-            letter-spacing: -0.035em;
+            font-size: clamp(1.2rem, 2vw, 1.8rem);
+            font-weight: 600;
+            line-height: 1.35;
+            letter-spacing: -0.01em;
             color: var(--text-primary);
             margin-bottom: 24px;
+            max-width: 500px;
+            opacity: 0.9;
         }
 
         .hero-subtitle {
-            font-size: clamp(1.05rem, 1.9vw, 1.25rem);
+            font-size: 1.05rem;
             color: var(--text-secondary);
-            max-width: 580px;
+            max-width: 650px;
             margin-bottom: 40px;
             font-weight: 400;
-            line-height: 1.7;
+            line-height: 1.8;
         }
 
         .hero-actions {
@@ -407,6 +419,7 @@
         .btn {
             display: inline-flex;
             align-items: center;
+            gap: 8px;
             padding: 14px 28px;
             border-radius: 999px;
             font-size: 0.9rem;
@@ -462,6 +475,57 @@
             border: 1px solid var(--border-subtle);
         }
 
+        /* STATISTICS SECTION */
+        #statistics {
+            padding: 40px 0 80px 0;
+            position: relative;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            max-width: 1050px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            background: var(--card-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 24px 16px;
+            text-align: center;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.04);
+        }
+
+        .stat-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+            background: var(--card-glass-hover);
+            box-shadow: 0 16px 36px rgba(168, 85, 247, 0.1);
+        }
+
+        .stat-value {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 2.5vw, 2.4rem);
+            font-weight: 800;
+            color: var(--accent-purple);
+            margin-bottom: 4px;
+            line-height: 1.1;
+        }
+
+        .stat-label {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
         /* Section Commons */
         section {
             padding: 110px 0;
@@ -498,7 +562,7 @@
 
         .grid-3 {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 28px;
         }
 
@@ -1008,7 +1072,8 @@
         <div class="nav-links">
             <a href="#hero" class="nav-link">Home</a>
             <a href="#about" class="nav-link">About</a>
-            <a href="#curiosity" class="nav-link">Curiosity</a>
+            <a href="#focus-areas" class="nav-link">Focus Areas</a>
+            <a href="#interests" class="nav-link">Interests</a>
             <a href="#projects" class="nav-link">Projects</a>
             <a href="#education" class="nav-link">Education</a>
             <a href="#achievements" class="nav-link">Honors</a>
@@ -1026,17 +1091,44 @@
                         <span class="status-dot"></span>
                         Available for Engineering Roles
                     </div>
-                    <h1 class="hero-headline">Hi, I'm Bhavit Bansal</h1>
-                    <p class="hero-subtitle">Frontend Developer and UI Engineer pursuing B.Tech in CS &amp; AI. I construct high-performance digital products.</p>
+                    <div class="hero-eyebrow">I'm Bhavit Bansal</div>
+                    <h1 class="hero-headline">Aspiring AI Engineer &amp; Full-Stack Developer</h1>
+                    <p class="hero-subtitle">Pursuing a B.Tech in Computer Science &amp; Artificial Intelligence. I'm passionate about turning ideas into intelligent and user-friendly applications, with a focus on scalability, performance, and real-world impact. I enjoy learning by building projects and continuously exploring new technologies.</p>
                     <div class="hero-actions">
                         <a href="mailto:bhavitbansal@gmail.com" class="btn btn-primary">✉ Email Me</a>
+                        <a href="#" target="_blank" class="btn btn-secondary">📄 Resume</a>
                         <a href="https://github.com/bhavitbansal" target="_blank" class="btn btn-secondary">GitHub</a>
                         <a href="https://www.linkedin.com/in/bhavit-bansal" target="_blank" class="btn btn-secondary">LinkedIn</a>
                     </div>
                 </div>
 
                 <div class="profile-card">
-                    <img src="Bhavit.png" alt="Bhavit Bansal" class="profile-img">
+                    <img src="Bhavit.jpg" alt="Bhavit Bansal" class="profile-img">
+                </div>
+            </div>
+        </section>
+
+        <section id="statistics">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">🥈 1</div>
+                    <div class="stat-label">AI Medals</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">💻 1</div>
+                    <div class="stat-label">Projects Built</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">📜 1</div>
+                    <div class="stat-label">Certificates</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">🚀 0</div>
+                    <div class="stat-label">GitHub Commits</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">🏆 0</div>
+                    <div class="stat-label">Hackathons</div>
                 </div>
             </div>
         </section>
@@ -1044,9 +1136,9 @@
         <section id="about">
             <div class="section-header">
                 <span class="section-tag">Story &amp; Mindset</span>
-                <h2 class="section-title">Driven by Quality, Intent &amp; Clarity</h2>
+                <h2 class="section-title">Driven by Curiosity, Innovation &amp; Excellence</h2>
             </div>
-            <div class="grid-2">
+            <div class="grid-3">
                 <div class="card">
                     <span class="card-icon">🌸</span>
                     <h3 class="card-title">Why I Build Software</h3>
@@ -1057,29 +1149,63 @@
                     <h3 class="card-title">Engineering Approach</h3>
                     <p class="card-desc">From systems programming in C to modern frontend architecture and Python automation, I prioritize clean logic, deep research, and deliberate craftsmanship.</p>
                 </div>
+                <div class="card">
+                    <span class="card-icon">👁️</span>
+                    <h3 class="card-title">Vision</h3>
+                    <p class="card-desc">To become a world-class AI &amp; Software Engineer, contribute to open-source communities, build products that positively impact millions of people, and continuously push the boundaries of technology.</p>
+                </div>
             </div>
         </section>
 
-        <section id="curiosity">
+        <section id="focus-areas">
             <div class="section-header">
-                <span class="section-tag">Interests &amp; Exploration</span>
-                <h2 class="section-title">What I'm Curious About</h2>
+                <span class="section-tag">Core Competencies</span>
+                <h2 class="section-title">Focus Areas</h2>
             </div>
             <div class="grid-3">
                 <div class="card">
+                    <span class="card-icon">🤖</span>
+                    <h3 class="card-title">Artificial Intelligence &amp; Machine Learning</h3>
+                    <p class="card-desc">Building intelligent systems using modern AI techniques while continuously exploring machine learning concepts and real-world applications.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🏛️</span>
+                    <h3 class="card-title">Software Architecture &amp; System Design</h3>
+                    <p class="card-desc">Learning how scalable, reliable, and maintainable software systems are designed and engineered.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🔬</span>
+                    <h3 class="card-title">Research &amp; Continuous Learning</h3>
+                    <p class="card-desc">Continuously improving through technical research, documentation, experimentation, and learning emerging technologies.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🌐</span>
+                    <h3 class="card-title">Open Source &amp; Innovation</h3>
+                    <p class="card-desc">Exploring open-source projects, collaborative development, and innovative solutions that create meaningful impact.</p>
+                </div>
+                <div class="card">
+                    <span class="card-icon">🧩</span>
+                    <h3 class="card-title">Problem Solving &amp; Engineering Mindset</h3>
+                    <p class="card-desc">Developing logical thinking and structured approaches to solving complex software engineering challenges.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="interests">
+            <div class="section-header">
+                <span class="section-tag">Personal Edge</span>
+                <h2 class="section-title">Interests</h2>
+            </div>
+            <div class="grid-2">
+                <div class="card">
                     <span class="card-icon">🏏</span>
-                    <h3 class="card-title">Cricket Biomechanics</h3>
-                    <p class="card-desc">I enjoy reading biomechanics research and understanding how movement, technique, and decision-making influence cricket performance.</p>
+                    <h3 class="card-title">Cricket</h3>
+                    <p class="card-desc">I enjoy playing and following cricket. It helps me develop teamwork, discipline, strategic thinking, and consistency.</p>
                 </div>
                 <div class="card">
-                    <span class="card-icon">🧠</span>
-                    <h3 class="card-title">Systems Thinking</h3>
-                    <p class="card-desc">I'm fascinated by understanding complex systems—whether in software architecture or sports—and breaking them into simpler, improvable parts.</p>
-                </div>
-                <div class="card">
-                    <span class="card-icon">📚</span>
-                    <h3 class="card-title">Research-Driven Learning</h3>
-                    <p class="card-desc">I enjoy reading technical articles, researching topics deeply, and learning foundational principles before building solutions.</p>
+                    <span class="card-icon">♟️</span>
+                    <h3 class="card-title">Chess</h3>
+                    <p class="card-desc">Chess strengthens analytical thinking, patience, planning, and decision-making, which directly influence my approach to software engineering.</p>
                 </div>
             </div>
         </section>
@@ -1087,21 +1213,21 @@
         <section id="exploring" style="padding-top: 0;">
             <div class="section-header" style="margin-bottom: 24px;">
                 <span class="section-tag">Active Horizons</span>
-                <h2 class="section-title" style="font-size: 1.8rem;">Currently Exploring</h2>
+                <h2 class="section-title" style="font-size: 1.8rem;">Currently Learning &amp; Building</h2>
             </div>
             <div class="exploration-grid">
-                <span class="explore-pill">Motion Design</span>
-                <span class="explore-pill">Web Performance</span>
-                <span class="explore-pill">Cricket Biomechanics Analytics</span>
+                <span class="explore-pill">Artificial Intelligence</span>
+                <span class="explore-pill">Data Structures &amp; Algorithms</span>
+                <span class="explore-pill">Full Stack Development</span>
+                <span class="explore-pill">Cloud Computing</span>
                 <span class="explore-pill">AI-Assisted Development</span>
-                <span class="explore-pill">Accessibility (a11y)</span>
             </div>
         </section>
 
         <section id="projects">
             <div class="section-header">
                 <span class="section-tag">Portfolio Showcase</span>
-                <h2 class="section-title">Featured Work</h2>
+                <h2 class="section-title">Featured Projects</h2>
                 <p class="section-subtitle">A collection of projects that reflect my approach to solving problems through thoughtful design and engineering.</p>
             </div>
 
@@ -1209,7 +1335,7 @@
         <section id="education">
             <div class="section-header">
                 <span class="section-tag">Academic Journey</span>
-                <h2 class="section-title">Education</h2>
+                <h2 class="section-title">Education &amp; Growth</h2>
             </div>
             <div class="grid-2">
                 <div class="card">
@@ -1229,15 +1355,15 @@
                     </div>
                     <h3 class="card-title">Vardhman International School</h3>
                     <div class="card-subtitle">Higher Secondary Education</div>
-                    <p class="card-desc">Completed high school education with a focus on Mathematics, Physics, and Computer Science foundations.</p>
+                    <p class="card-desc">Completed high school education with a focus on Mathematics, Physics, and Chemistry.</p>
                 </div>
             </div>
         </section>
 
         <section id="achievements">
             <div class="section-header">
-                <span class="section-tag">Recognition</span>
-                <h2 class="section-title">Honors &amp; Competitions</h2>
+                <span class="section-tag">Milestones</span>
+                <h2 class="section-title">Achievements &amp; Recognition</h2>
             </div>
             <div class="grid-2">
                 <div class="card">
@@ -1257,20 +1383,20 @@
 
         <section id="skills">
             <div class="section-header">
-                <span class="section-tag">Capabilities</span>
-                <h2 class="section-title">Technical Capabilities</h2>
+                <span class="section-tag">Tech Stack</span>
+                <h2 class="section-title">Technical Expertise</h2>
             </div>
             <div class="grid-3">
                 <div class="card">
-                    <h3 class="card-title">Languages</h3>
+                    <h3 class="card-title">Programming Languages</h3>
                     <p class="card-desc">Python, C, HTML5, CSS3, JavaScript (ES6+)</p>
                 </div>
                 <div class="card">
-                    <h3 class="card-title">Active Focus</h3>
+                    <h3 class="card-title">Current Technical Focus</h3>
                     <p class="card-desc">Machine Learning Models, Neural Networks, Systems Architecture</p>
                 </div>
                 <div class="card">
-                    <h3 class="card-title">Direct Contact</h3>
+                    <h3 class="card-title">Connect</h3>
                     <p class="card-desc">
                         <a href="mailto:bhavitbansal@gmail.com" style="color: var(--accent-purple); text-decoration: underline; font-weight:600;">bhavitbansal@gmail.com</a>
                     </p>
@@ -1281,7 +1407,7 @@
         <section id="contact">
             <div class="section-header">
                 <span class="section-tag">Command Center</span>
-                <h2 class="section-title">Interactive Terminal</h2>
+                <h2 class="section-title">Developer Console</h2>
             </div>
             
             <div class="terminal-container">
@@ -1292,6 +1418,7 @@
                     <span style="font-size: 0.75rem; color: #A78BFA; margin-left: 8px;">bhavit@bloom-terminal:~</span>
                 </div>
                 <div class="terminal-window" id="terminal-window">
+                    <div>Welcome to Bhavit Bansal's Developer Console.</div>
                     <div>&gt; SYSTEM INITIALIZED. TYPE <span style="color: var(--accent-pink);">help</span> FOR COMMANDS.</div>
                     <div>&gt; AVAILABLE COMMANDS: <span style="color: var(--accent-pink);">sys_info</span>, <span style="color: var(--accent-pink);">education</span>, <span style="color: var(--accent-pink);">email</span>, <span style="color: var(--accent-pink);">achievements</span>, <span style="color: var(--accent-pink);">skills</span>, <span style="color: var(--accent-pink);">github</span>, <span style="color: var(--accent-pink);">linkedin</span>, <span style="color: var(--accent-pink);">clear</span></div>
                 </div>
@@ -1303,8 +1430,8 @@
         </section>
 
         <footer>
-            <p class="footer-quote">"I enjoy building software with the same curiosity I bring to studying complex systems—whether that's frontend architecture or the biomechanics behind a cover drive."</p>
-            <p>© 2026 Bhavit Bansal • bhavitbansal@gmail.com</p>
+            <p class="footer-quote">"As a Computer Science &amp; AI student, I believe continuous learning, disciplined execution, and relentless curiosity are the foundations of exceptional engineering."</p>
+            <p>© 2026 Bhavit Bansal • Computer Science &amp; AI Student • bhavitbansal@gmail.com</p>
         </footer>
 
     </div>
@@ -1645,7 +1772,7 @@
                     printTermLine('&gt; AI Camp U-19: Silver Medal (Ranked Top 25) | Ethical Hacking Camp: Bronze Medal');
                     break;
                 case 'skills':
-                    printTermLine('&gt; Python, C, JavaScript, Machine Learning, Cricket Biomechanics Analytics');
+                    printTermLine('&gt; Python, C, JavaScript, Machine Learning, Systems Architecture');
                     break;
                 case 'github':
                     printTermLine('&gt; Redirecting to GitHub profile...');
