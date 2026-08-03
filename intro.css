@@ -77,82 +77,41 @@ body::-webkit-scrollbar{
 }
 
 /* ==========================================================
-   INTRO UI
+   SCROLL HINT
 ========================================================== */
 
 #intro-ui{
+
     position:absolute;
-    inset:0;
 
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
+    left:50%;
 
-    text-align:center;
+    bottom:45px;
 
-    color:#ffffff;
+    transform:translateX(-50%);
 
     z-index:5000;
 
     pointer-events:none;
-}
 
-#intro-ui h1{
-    font-size:24px;
-    font-weight:700;
-    letter-spacing:0.45em;
-    margin-bottom:26px;
-    text-transform:uppercase;
-}
-
-#intro-ui h2{
-    font-size:15px;
-    font-weight:500;
-    letter-spacing:0.35em;
-    margin-bottom:30px;
-    text-transform:uppercase;
-}
-
-.mouse{
-    width:36px;
-    height:58px;
-
-    border:2px solid rgba(255,255,255,.95);
-    border-radius:30px;
-
-    position:relative;
-
-    margin-bottom:14px;
-}
-
-.wheel{
-    position:absolute;
-
-    left:50%;
-    top:8px;
-
-    transform:translateX(-50%);
-
-    width:5px;
-    height:10px;
-
-    background:#fff;
-
-    border-radius:20px;
-}
-
-.arrow{
-    font-size:22px;
-    color:#fff;
-    margin-bottom:20px;
 }
 
 #intro-ui p{
-    font-size:12px;
-    line-height:1.6;
-    color:rgba(255,255,255,.65);
-    letter-spacing:.04em;
+
+    color:rgba(255,255,255,.9);
+
+    font-size:13px;
+
+    font-weight:500;
+
+    letter-spacing:.35em;
+
+    text-transform:uppercase;
+
+    white-space:nowrap;
+
+    text-shadow:0 0 10px rgba(255,255,255,.25);
+
 }
 
 /* ==========================================================
@@ -178,27 +137,9 @@ body::-webkit-scrollbar{
 
 @media (max-width:768px){
 
-    #intro-ui h1{
-        font-size:18px;
-        letter-spacing:.3em;
-    }
-
-    #intro-ui h2{
-        font-size:13px;
-        letter-spacing:.25em;
-    }
-
     #intro-ui p{
         font-size:11px;
-    }
-
-    .mouse{
-        width:30px;
-        height:48px;
-    }
-
-    .arrow{
-        font-size:18px;
+        letter-spacing:.25em;
     }
 
     #intro-video{
